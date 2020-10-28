@@ -1,0 +1,3566 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: support@terminal49.com
+    name: Terminal49 API support
+    url: https://www.terminal49.com
+  description: The Terminal 49 API offers a convenient way to programmatically track
+    your shipments from origin to destination.
+  termsOfService: https://www.terminal49.com/terms
+  title: Terminal49 API Reference
+  version: 0.1.0
+  x-label: Beta
+servers:
+- description: Production
+  url: https://api.terminal49.com/v2
+security:
+- Authorization_Header: []
+tags:
+- name: Containers
+- name: Shipments
+- name: Locations
+- name: Events
+- name: Tracking Requests
+- name: Webhooks
+- name: Webhook Notifications
+paths:
+  /shipments:
+    get:
+      description: "Returns a list of your shipments. The shipments are returned sorted\
+        \ by creation date, with the most recent shipments appearing first.\n\nThis\
+        \ api will return all shipments associated with the account. Shipments created\
+        \ via the `tracking_request` API aswell as the ones added via the dashboard\
+        \ will be retuned via this endpoint. "
+      operationId: get-shipments
+      parameters:
+      - explode: true
+        in: query
+        name: page[number]
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: page[size]
+        required: false
+        schema:
+          default: 30
+          type: integer
+        style: form
+      - description: |2-
+
+          Search shipments by master bill of lading, reference number, or container number.
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                En-route to NY with inland move:
+                  value:
+                    data:
+                      id: 512ae32c-a604-44f8-9c15-2ca9cd3d2ae8
+                      type: shipment
+                      attributes:
+                        bill_of_lading_number: "6140575020"
+                        ref_numbers:
+                        - my-ref-49
+                        - PO#18412
+                        created_at: 2020-02-20T13:37:12Z
+                        tags: []
+                        port_of_lading_locode: INVTZ
+                        port_of_lading_name: Visakhapatnam, IN
+                        port_of_discharge_locode: USNYC
+                        port_of_discharge_name: New York / New Jersey, NY
+                        destination_locode: USDET
+                        destination_name: Detroit, MI
+                        shipping_line_scac: HLCU
+                        pod_vessel_name: CMA CGM ALMAVIVA
+                        pod_vessel_imo: "9450648"
+                        pod_voyage_number: 108.0
+                        pol_etd_at: null
+                        pol_atd_at: 2020-02-15T21:53Z
+                        pol_timezone: Asia/Calcutta
+                        pod_eta_at: 2020-03-18T08:00Z
+                        pod_ata_at: null
+                        pod_timezone: America/New_York
+                        destination_eta_at: 2020-03-26T17:00Z
+                        destination_ata_at: null
+                        destination_timezone: America/Detroit
+                      relationships:
+                        containers:
+                          data:
+                          - id: c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa
+                            type: container
+                        port_of_lading:
+                          data:
+                            id: bde5465a-1160-4fde-a026-74df9c362f65
+                            type: port
+                        port_of_discharge:
+                          data:
+                            id: f7cb530a-9e60-412c-a5bc-205a2f34ba54
+                            type: port
+                        destination:
+                          data:
+                            id: c9ae2b6b-5088-4e07-ba09-2872121e4fa2
+                            type: metro_area
+                        customer:
+                          data:
+                            id: ff76b51a-371e-45ec-86d1-9d03ccae566a
+                            type: account
+                    included:
+                    - id: c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa
+                      type: container
+                      attributes:
+                        number: UACU4743531
+                        equipment_type: reefer
+                        length: 40
+                        height: high_cube
+                        weight: 35075
+                        weight_unit: kigs
+                        created_at: 2020-02-20T08:19:52Z
+                        seal_number: null
+                        pickup_lfd: null
+                        availability_known: false
+                        available_for_pickup: null
+                        current_transportation_mode: vessel
+                        pod_discharged_at: null
+                        pod_picked_up_at: null
+                        destination_unloaded_at: null
+                        destination_picked_up_at: null
+                        empty_returned_at: null
+                        pod_timezone: America/Los_Angeles
+                        destination_timezone: America/Detroit
+                        empty_returned_timezone: null
+                      relationships:
+                        most_recent_location:
+                          data:
+                            id: dd179094-a1d4-4129-842d-b952e43df4b7
+                            type: port
+                        shipment:
+                          data:
+                            id: 512ae32c-a604-44f8-9c15-2ca9cd3d2ae8
+                            type: shipment
+                        current_vessel:
+                          data:
+                            id: 252a5450-2893-4207-b5c4-81ce3152ce84
+                            type: vessel
+                    - id: bde5465a-1160-4fde-a026-74df9c362f65
+                      type: port
+                      attributes:
+                        name: Visakhapatnam
+                        locode: INVTZ
+                        country_code: IN
+                        timezone: Asia/Calcutta
+                    - id: dd179094-a1d4-4129-842d-b952e43df4b7
+                      type: port
+                      attributes:
+                        name: Damietta
+                        locode: EGDAM
+                        country_code: EG
+                        time_zone: Africa/Cairo
+                    - id: f7cb530a-9e60-412c-a5bc-205a2f34ba54
+                      type: port
+                      attributes:
+                        name: New York / New Jersey
+                        locode: USNYC
+                        country_code: US
+                        timezone: America/New_York
+                    - id: c9ae2b6b-5088-4e07-ba09-2872121e4fa2
+                      type: metro_area
+                      attributes:
+                        name: Detroit
+                        locode: USDET
+                        country_code: US
+                        state_abbr: MI
+                        timezone: America/Detroit
+                    - id: ff76b51a-371e-45ec-86d1-9d03ccae566a
+                      type: account
+                      attributes:
+                        name: A-Z Imports
+                    - id: 252a5450-2893-4207-b5c4-81ce3152ce84
+                      type: vessel
+                      attributes:
+                        name: CMA CGM ALMAVIVA
+                        imo: "9450648"
+                        mmsi: "228339600"
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: OK
+        "422":
+          content:
+            application/json:
+              examples:
+                Errors:
+                  value:
+                    error:
+                    - title: Invalid arrival_date_from
+                      detail: filter['arrival_from'] must be in the format 'YYYY-MM-DD'
+                        and a valid date
+                    - title: Invalid arrival_date_to
+                      detail: filter['arrival_from'] must be in the format 'YYYY-MM-DD'
+                        and a valid date
+                    - title: Invalid port_of_lading
+                      detail: port_of_discharge must be an array of 5 character UN/LOCODEs
+                    - title: Invalid port_of_discharge
+                      detail: port_of_discharge must be an array of 5 character UN/LOCODEs
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Entity
+      summary: List shipments
+      tags:
+      - Shipments
+  /shipments/{id}:
+    get:
+      description: Retrieves the details of an existing shipment. You need only supply
+        the unique shipment `id` that was returned upon `tracking_request` creation.
+      operationId: get-shipment-id
+      parameters:
+      - description: Shipment Id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                En-route to NY with inland move:
+                  value:
+                    data:
+                      id: 512ae32c-a604-44f8-9c15-2ca9cd3d2ae8
+                      type: shipment
+                      attributes:
+                        bill_of_lading_number: "6140575020"
+                        ref_numbers:
+                        - my-ref-49
+                        - PO#18412
+                        created_at: 2020-02-20T13:37:12Z
+                        tags: []
+                        port_of_lading_locode: INVTZ
+                        port_of_lading_name: Visakhapatnam, IN
+                        port_of_discharge_locode: USNYC
+                        port_of_discharge_name: New York / New Jersey, NY
+                        destination_locode: USDET
+                        destination_name: Detroit, MI
+                        shipping_line_scac: HLCU
+                        pod_vessel_name: CMA CGM ALMAVIVA
+                        pod_vessel_imo: "9450648"
+                        pod_voyage_number: 108.0
+                        pol_etd_at: null
+                        pol_atd_at: 2020-02-15T21:53Z
+                        pol_timezone: Asia/Calcutta
+                        pod_eta_at: 2020-03-18T08:00Z
+                        pod_ata_at: null
+                        pod_timezone: America/New_York
+                        destination_eta_at: 2020-03-26T17:00Z
+                        destination_ata_at: null
+                        destination_timezone: America/Detroit
+                      relationships:
+                        containers:
+                          data:
+                          - id: c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa
+                            type: container
+                        port_of_lading:
+                          data:
+                            id: bde5465a-1160-4fde-a026-74df9c362f65
+                            type: port
+                        port_of_discharge:
+                          data:
+                            id: f7cb530a-9e60-412c-a5bc-205a2f34ba54
+                            type: port
+                        destination:
+                          data:
+                            id: c9ae2b6b-5088-4e07-ba09-2872121e4fa2
+                            type: metro_area
+                        customer:
+                          data:
+                            id: ff76b51a-371e-45ec-86d1-9d03ccae566a
+                            type: account
+                    included:
+                    - id: c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa
+                      type: container
+                      attributes:
+                        number: UACU4743531
+                        equipment_type: reefer
+                        length: 40
+                        height: high_cube
+                        weight: 35075
+                        weight_unit: kigs
+                        created_at: 2020-02-20T08:19:52Z
+                        seal_number: null
+                        pickup_lfd: null
+                        availability_known: false
+                        available_for_pickup: null
+                        current_transportation_mode: vessel
+                        pod_discharged_at: null
+                        pod_picked_up_at: null
+                        destination_unloaded_at: null
+                        destination_picked_up_at: null
+                        empty_returned_at: null
+                        pod_timezone: America/Los_Angeles
+                        destination_timezone: America/Detroit
+                        empty_returned_timezone: null
+                      relationships:
+                        most_recent_location:
+                          data:
+                            id: dd179094-a1d4-4129-842d-b952e43df4b7
+                            type: port
+                        shipment:
+                          data:
+                            id: 512ae32c-a604-44f8-9c15-2ca9cd3d2ae8
+                            type: shipment
+                        current_vessel:
+                          data:
+                            id: 252a5450-2893-4207-b5c4-81ce3152ce84
+                            type: vessel
+                    - id: bde5465a-1160-4fde-a026-74df9c362f65
+                      type: port
+                      attributes:
+                        name: Visakhapatnam
+                        locode: INVTZ
+                        country_code: IN
+                        timezone: Asia/Calcutta
+                    - id: dd179094-a1d4-4129-842d-b952e43df4b7
+                      type: port
+                      attributes:
+                        name: Damietta
+                        locode: EGDAM
+                        country_code: EG
+                        time_zone: Africa/Cairo
+                    - id: f7cb530a-9e60-412c-a5bc-205a2f34ba54
+                      type: port
+                      attributes:
+                        name: New York / New Jersey
+                        locode: USNYC
+                        country_code: US
+                        timezone: America/New_York
+                    - id: c9ae2b6b-5088-4e07-ba09-2872121e4fa2
+                      type: metro_area
+                      attributes:
+                        name: Detroit
+                        locode: USDET
+                        country_code: US
+                        state_abbr: MI
+                        timezone: America/Detroit
+                    - id: ff76b51a-371e-45ec-86d1-9d03ccae566a
+                      type: account
+                      attributes:
+                        name: A-Z Imports
+                    - id: 252a5450-2893-4207-b5c4-81ce3152ce84
+                      type: vessel
+                      attributes:
+                        name: CMA CGM ALMAVIVA
+                        imo: "9450648"
+                        mmsi: "228339600"
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples:
+                En-route to NY with inland move:
+                  value:
+                    data:
+                      id: 512ae32c-a604-44f8-9c15-2ca9cd3d2ae8
+                      type: shipment
+                      attributes:
+                        bill_of_lading_number: "6140575020"
+                        ref_numbers:
+                        - my-ref-49
+                        - PO#18412
+                        created_at: 2020-02-20T13:37:12Z
+                        tags: []
+                        port_of_lading_locode: INVTZ
+                        port_of_lading_name: Visakhapatnam, IN
+                        port_of_discharge_locode: USNYC
+                        port_of_discharge_name: New York / New Jersey, NY
+                        destination_locode: USDET
+                        destination_name: Detroit, MI
+                        shipping_line_scac: HLCU
+                        pod_vessel_name: CMA CGM ALMAVIVA
+                        pod_voyage_number: 108.0
+                        pol_etd_at: null
+                        pol_atd_at: 2020-02-15T21:53Z
+                        pol_timezone: Asia/Calcutta
+                        pod_eta_at: 2020-03-18T08:00Z
+                        pod_ata_at: null
+                        pod_timezone: America/New_York
+                        destination_eta_at: 2020-03-26T17:00Z
+                        destination_ata_at: null
+                        destination_timezone: America/Detroit
+                      relationships:
+                        containers:
+                          data:
+                          - id: c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa
+                            type: container
+                        port_of_lading:
+                          data:
+                            id: bde5465a-1160-4fde-a026-74df9c362f65
+                            type: port
+                        port_of_discharge:
+                          data:
+                            id: f7cb530a-9e60-412c-a5bc-205a2f34ba54
+                            type: port
+                        destination:
+                          data:
+                            id: c9ae2b6b-5088-4e07-ba09-2872121e4fa2
+                            type: metro_area
+                        customer:
+                          data:
+                            id: ff76b51a-371e-45ec-86d1-9d03ccae566a
+                            type: account
+                    included:
+                    - id: c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa
+                      type: container
+                      attributes:
+                        number: UACU4743531
+                        equipment_type: reefer
+                        length: 40
+                        height: high_cube
+                        weight: 35075
+                        weight_unit: kigs
+                        created_at: 2020-02-20T08:19:52Z
+                        seal_number: null
+                        pickup_lfd: null
+                        availability_known: false
+                        available_for_pickup: null
+                        current_transportation_mode: vessel
+                        pod_discharged_at: null
+                        pod_picked_up_at: null
+                        destination_unloaded_at: null
+                        destination_picked_up_at: null
+                        empty_returned_at: null
+                        pod_timezone: America/Los_Angeles
+                        destination_timezone: America/Detroit
+                        empty_returned_timezone: null
+                      relationships:
+                        most_recent_location:
+                          data:
+                            id: dd179094-a1d4-4129-842d-b952e43df4b7
+                            type: port
+                        shipment:
+                          data:
+                            id: 512ae32c-a604-44f8-9c15-2ca9cd3d2ae8
+                            type: shipment
+                        current_vessel:
+                          data:
+                            id: 252a5450-2893-4207-b5c4-81ce3152ce84
+                            type: vessel
+                    - id: bde5465a-1160-4fde-a026-74df9c362f65
+                      type: port
+                      attributes:
+                        name: Visakhapatnam
+                        locode: INVTZ
+                        country_code: IN
+                        timezone: Asia/Calcutta
+                    - id: dd179094-a1d4-4129-842d-b952e43df4b7
+                      type: port
+                      attributes:
+                        name: Damietta
+                        locode: EGDAM
+                        country_code: EG
+                        time_zone: Africa/Cairo
+                    - id: f7cb530a-9e60-412c-a5bc-205a2f34ba54
+                      type: port
+                      attributes:
+                        name: New York / New Jersey
+                        locode: USNYC
+                        country_code: US
+                        timezone: America/New_York
+                    - id: c9ae2b6b-5088-4e07-ba09-2872121e4fa2
+                      type: metro_area
+                      attributes:
+                        name: Detroit
+                        locode: USDET
+                        country_code: US
+                        state_abbr: MI
+                        timezone: America/Detroit
+                    - id: ff76b51a-371e-45ec-86d1-9d03ccae566a
+                      type: account
+                      attributes:
+                        name: A-Z Imports
+                    - id: 252a5450-2893-4207-b5c4-81ce3152ce84
+                      type: vessel
+                      attributes:
+                        name: CMA CGM ALMAVIVA
+                        imo: "9450648"
+                        mmsi: "228339600"
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Not Found
+      summary: Get a shipment
+      tags:
+      - Shipments
+  /tracking_requests:
+    get:
+      description: Returns a list of your tracking requests. The trackig requests
+        are returned sorted by creation date, with the most recent tracking request
+        appearing first.
+      operationId: get-tracking-requests
+      parameters:
+      - description: A search term to be applied against request_number and reference_numbers.
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: filter by `status`
+        explode: true
+        in: query
+        name: filter[status]
+        required: false
+        schema:
+          enum:
+          - created
+          - pending
+          - failed
+          example: created
+          type: string
+        style: form
+      - description: filter by shipping line `scac`
+        explode: true
+        in: query
+        name: filter[scac]
+        required: false
+        schema:
+          example: MSCU
+          type: string
+        style: form
+      - description: filter by tracking_requests `created_at` after a certain ISO8601
+          timestamp
+        explode: true
+        in: query
+        name: filter[created_at][start]
+        required: false
+        schema:
+          example: 2020-04-28T22:59:15Z
+          format: date-time
+          type: string
+        style: form
+      - description: filter by tracking_requests `created_at` before a certain ISO8601
+          timestamp
+        explode: true
+        in: query
+        name: filter[created_at][end]
+        required: false
+        schema:
+          example: 2020-04-28T22:59:15Z
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples: {}
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Not Found
+      summary: List tracking requests
+      tags:
+      - Tracking Requests
+    post:
+      description: "To track an ocean shipment, you create a new tracking request.\
+        \ \nTwo attributes are required to track a shipment. A `bill of lading/booking\
+        \ number` and a shipping line `SCAC`. \n\nOnce a tracking request is created\
+        \ we will attempt to fetch the shipment details and it's related containers\
+        \ from the shipping line. If the attempt is successful we will create in new\
+        \ shipment object including any related container objects. We will send a\
+        \ `tracking_Request.succeeded` webhook notification to your webhooks.  \n\n\
+        If the attempt to fetch fails then we will send a `tracking_Request.failed`\
+        \ webhook notification to your `webhooks`.  \n\nA `tracking_Request.succeeded`\
+        \ or `tracking_Request.failed` webhook notificaiton will only be sent  if\
+        \ you have  atleast one active webhook. "
+      operationId: post-track
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object'
+        content:
+          application/json:
+            examples:
+              'Example: MSC BL':
+                value:
+                  data:
+                    attributes:
+                      request_type: bill_of_lading
+                      request_number: MEDUFR030802
+                      scac: MSCU
+                    type: tracking_request
+            schema:
+              properties:
+                data:
+                  $ref: '#/components/schemas/_tracking_requests_data'
+              type: object
+        description: Create a shipment tracking request
+      responses:
+        "201":
+          content:
+            application/json:
+              examples:
+                Pending Tracking Request:
+                  value:
+                    data:
+                      id: ba4cb904-827f-4038-8e31-1e92b3356218
+                      type: tracking_request
+                      attributes:
+                        request_number: MEDUFR030802
+                        request_type: bill_of_lading
+                        scac: MSCU
+                        ref_numbers: null
+                        created_at: 2020-04-04T16:13:35-07:00
+                        status: pending
+                        failed_reason: null
+                      relationships:
+                        tracked_object:
+                          data: null
+                      links:
+                        self: /v2/tracking_requests/ba4cb904-827f-4038-8e31-1e92b3356218
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+          description: Tracking Request Created
+        "422":
+          content:
+            application/json:
+              examples:
+                Error Examples:
+                  value:
+                    errors:
+                    - status: "422"
+                      source:
+                        pointer: /data/attributes/scac
+                      title: Unprocessable Entity
+                      detail: Scac can't be blank
+                      code: blank
+                    - status: "422"
+                      source:
+                        pointer: /data/attributes/scac
+                      title: Unprocessable Entity
+                      detail: Scac 'XXXX' is not recognized
+                      code: blank
+                    - status: "422"
+                      source:
+                        pointer: /data/attributes/scac
+                      title: Unprocessable Entity
+                      detail: Scac 'UALC' is not supported. We do not currently integrate
+                        with Universal Africa Lines
+                      code: blank
+                    - status: "422"
+                      source:
+                        pointer: /data/attributes/request_number
+                      title: Unprocessable Entity
+                      detail: Request number can't be blank
+                      code: blank
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Entity
+      security:
+      - Authorization_Header: []
+      summary: Create a tracking request
+      tags:
+      - Tracking Requests
+  /tracking_requests/{id}:
+    get:
+      description: 'Get the details and status of an existing tracking request. '
+      operationId: get-track-request-by-id
+      parameters:
+      - description: Tracking Request ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                With Status Created:
+                  value:
+                    data:
+                      id: ba4cb904-827f-4038-8e31-1e92b3356218
+                      type: tracking_request
+                      attributes:
+                        request_number: MEDUFR030802
+                        request_type: bill_of_lading
+                        scac: MSCU
+                        ref_numbers: null
+                        created_at: 2020-04-04T16:13:35-07:00
+                        status: created
+                        failed_reason: null
+                      relationships:
+                        tracked_object:
+                          data:
+                            id: eb6f218a-0b4a-47f9-8ef9-759aa5e0ea83
+                            type: shipment
+                      links:
+                        self: /v2/tracking_requests/ba4cb904-827f-4038-8e31-1e92b3356218
+                    included:
+                    - id: eb6f218a-0b4a-47f9-8ef9-759aa5e0ea83
+                      type: shipment
+                      attributes:
+                        created_at: 2020-04-04T16:13:37-07:00
+                        bill_of_lading_number: MEDUFR030802
+                        ref_numbers:
+                        - null
+                        shipping_line_scac: MSCU
+                        shipping_line_name: Mediterranean Shipping Company
+                        port_of_lading_locode: FRFOS
+                        port_of_lading_name: Fos-Sur-Mer
+                        port_of_discharge_locode: USOAK
+                        port_of_discharge_name: Oakland
+                        pod_vessel_name: MSC ALGECIRAS
+                        pod_vessel_imo: "9605243"
+                        pod_voyage_number: 920A
+                        destination_locode: USOAK
+                        destination_name: Oakland
+                        destination_timezone: America/Los_Angeles
+                        destination_ata_at: 2019-06-21T18:46:00-07:00
+                        destination_eta_at: null
+                        pol_etd_at: null
+                        pol_atd_at: 2019-05-24T03:00:00-07:00
+                        pol_timezone: Europe/Paris
+                        pod_eta_at: null
+                        pod_ata_at: 2019-06-21T18:46:00-07:00
+                        pod_timezone: America/Los_Angeles
+                      relationships:
+                        port_of_lading:
+                          data:
+                            id: 6d8c6c29-72a6-49ad-87b7-fd045f202212
+                            type: port
+                        port_of_discharge:
+                          data:
+                            id: 42d1ba3a-f4b8-431d-a6fe-49fd748a59e7
+                            type: port
+                        pod_terminal:
+                          data: null
+                        destination:
+                          data:
+                            id: 42d1ba3a-f4b8-431d-a6fe-49fd748a59e7
+                            type: port
+                        containers:
+                          data:
+                          - id: 11c1fa10-52a5-48e2-82f4-5523756b3d0f
+                            type: container
+                      links:
+                        self: /v2/shipments/eb6f218a-0b4a-47f9-8ef9-759aa5e0ea83
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples: {}
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Not Found
+      summary: Get a single tracking request
+      tags:
+      - Tracking Requests
+  /webhooks/{id}:
+    delete:
+      description: Delete a webhook
+      operationId: delete-webhooks-id
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      summary: Delete a webhook
+      tags:
+      - Webhooks
+    get:
+      description: Get the details of a single webhook
+      operationId: get-webhooks-id
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+      summary: Get single webhook
+      tags:
+      - Webhooks
+    patch:
+      description: Update a single webhook
+      operationId: patch-webhooks-id
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_1'
+        content:
+          application/json:
+            schema:
+              properties:
+                data:
+                  $ref: '#/components/schemas/_webhooks__id__data'
+              required:
+              - data
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+      summary: Edit a webhook
+      tags:
+      - Webhooks
+  /webhooks:
+    get:
+      description: Get a list of all the webhooks
+      operationId: get-webhooks
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_5'
+          description: OK
+      summary: List webhooks
+      tags:
+      - Webhooks
+    post:
+      description: "You can configure a webhook via the API to be notified about events\
+        \ that happen in your Terminal49 account. These events can be realted to tracking_requests,\
+        \ shipments and containers. \n\nThis is the recommended way tracking shipments\
+        \ and containers via the API. You should use this instead of polling our the\
+        \ API periodically.  "
+      operationId: post-webhooks
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_2'
+        content:
+          application/json:
+            examples:
+              Test Webhook via webhook.site:
+                value:
+                  data:
+                    type: webhook
+                    attributes:
+                      url: https://webhook.site/
+                      active: true
+                      events:
+                      - '*'
+            schema:
+              properties:
+                data:
+                  $ref: '#/components/schemas/_webhooks_data'
+              required:
+              - data
+              type: object
+      responses:
+        "201":
+          content:
+            application/json:
+              examples:
+                Test Endpoint Created:
+                  value:
+                    data:
+                      type: webhook
+                      attributes:
+                        id: 9809fb96-7754-488f-99df-29ca8d410d89
+                        url: https://webhook.site/
+                        active: true
+                        events:
+                        - '*'
+                        created_at: 2020-06-05T19:06:13Z
+              schema:
+                $ref: '#/components/schemas/webhook'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/webhook'
+          description: Create a test webhook endpoint
+      summary: Create a webhook
+      tags:
+      - Webhooks
+  /containers:
+    get:
+      description: |-
+        Returns a list of container. The containers are returned sorted by creation date, with the most recent container appearing first.
+
+        This API will return all containers associated with the account.
+      operationId: get-containers
+      parameters:
+      - explode: true
+        in: query
+        name: page[number]
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: page[size]
+        required: false
+        schema:
+          default: 30
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples: {}
+              schema:
+                $ref: '#/components/schemas/inline_response_200_6'
+          description: OK
+      summary: List containers
+      tags:
+      - Containers
+  /containers/{id}:
+    get:
+      description: Retrieves the details of a container.
+      operationId: get-containers-id
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_7'
+          description: OK
+      summary: Get a container
+      tags:
+      - Containers
+components:
+  requestBodies:
+    inline_object_1:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+    inline_object:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object'
+    inline_object_2:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+  schemas:
+    shipment:
+      example:
+        relationships:
+          port_of_lading:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: port
+          destination:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: port
+          pod_terminal:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: terminal
+          containers:
+            data:
+            - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: container
+            - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: container
+          port_of_discharge:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: port
+          customer:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: account
+        attributes:
+          port_of_discharge_locode: port_of_discharge_locode
+          pod_vessel_name: pod_vessel_name
+          shipping_line_scac: shipping_line_scac
+          destination_timezone: destination_timezone
+          pod_timezone: pod_timezone
+          pod_eta_at: 2000-01-23T04:56:07.000+00:00
+          pol_atd_at: 2000-01-23T04:56:07.000+00:00
+          port_of_lading_name: port_of_lading_name
+          pol_etd_at: 2000-01-23T04:56:07.000+00:00
+          created_at: https://openapi-generator.tech
+          pol_timezone: pol_timezone
+          destination_name: destination_name
+          destination_ata_at: 2000-01-23T04:56:07.000+00:00
+          tags:
+          - tags
+          - tags
+          port_of_discharge_name: port_of_discharge_name
+          port_of_lading_locode: port_of_lading_locode
+          bill_of_lading_number: bill_of_lading_number
+          pod_ata_at: 2000-01-23T04:56:07.000+00:00
+          ref_numbers:
+          - ref_numbers
+          - ref_numbers
+          destination_locode: destination_locode
+          pod_vessel_imo: pod_vessel_imo
+          pod_voyage_number: pod_voyage_number
+          destination_eta_at: 2000-01-23T04:56:07.000+00:00
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: shipment
+      properties:
+        id:
+          format: uuid
+          type: string
+        relationships:
+          $ref: '#/components/schemas/shipment_relationships'
+        attributes:
+          $ref: '#/components/schemas/shipment_attributes'
+        type:
+          enum:
+          - shipment
+          type: string
+      required:
+      - id
+      - type
+      title: Shipment model
+      type: object
+      x-examples: {}
+    meta:
+      example:
+        total: 6
+        size: 0
+      properties:
+        size:
+          type: integer
+        total:
+          type: integer
+      title: meta
+      type: object
+    links:
+      example:
+        next: https://openapi-generator.tech
+        last: https://openapi-generator.tech
+        prev: https://openapi-generator.tech
+        self: https://openapi-generator.tech
+        first: https://openapi-generator.tech
+      properties:
+        last:
+          format: uri
+          type: string
+        next:
+          format: uri
+          type: string
+        prev:
+          format: uri
+          type: string
+        first:
+          format: uri
+          type: string
+        self:
+          format: uri
+          type: string
+      title: links
+      type: object
+    container:
+      description: Represents the equipment during a specific journey.
+      example:
+        relationships:
+          shipment:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: shipment
+          current_vessel:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: vessel
+          final_destination:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: port
+          most_recent_location:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+        pod_terminal:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: terminal
+        attributes:
+          seal_number: seal_number
+          final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
+          destination_timezone: destination_timezone
+          pod_timezone: pod_timezone
+          pickup_lfd: 2000-01-23T04:56:07.000+00:00
+          availability_known: true
+          pod_full_out_at: 2000-01-23T04:56:07.000+00:00
+          destination_unloaded_at: 2000-01-23T04:56:07.000+00:00
+          created_at: 2000-01-23T04:56:07.000+00:00
+          empty_terminated_at: 2000-01-23T04:56:07.000+00:00
+          equipment_type: dry
+          weight_in_lbs: weight_in_lbs
+          number: number
+          empty_returned_timezone: empty_returned_timezone
+          equipment_height: standard
+          fees_at_pod_terminal:
+          - amount: 6.027456183070403
+            type: exam
+          - amount: 6.027456183070403
+            type: exam
+          equipment_length: 0
+          pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
+          current_transportation_mode: vessel
+          holds_at_pod_terminal:
+          - name: customs
+            description: description
+            status: pending
+          - name: customs
+            description: description
+            status: pending
+          pod_discharged_at: 2000-01-23T04:56:07.000+00:00
+          available_for_pickup: true
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        id:
+          format: uuid
+          type: string
+        attributes:
+          $ref: '#/components/schemas/container_attributes'
+        relationships:
+          $ref: '#/components/schemas/container_relationships'
+        pod_terminal:
+          $ref: '#/components/schemas/container_pod_terminal'
+      required:
+      - id
+      title: Container model
+      type: object
+      x-examples: {}
+    port:
+      properties:
+        id:
+          format: uuid
+          type: string
+        attributes:
+          $ref: '#/components/schemas/port_attributes'
+        type:
+          enum:
+          - port
+          type: string
+      required:
+      - id
+      - type
+      title: Port model
+      type: object
+    shipping_line:
+      properties:
+        id:
+          format: uuid
+          type: string
+        attributes:
+          $ref: '#/components/schemas/shipping_line_attributes'
+        type:
+          enum:
+          - shipping_line
+          type: string
+      required:
+      - attributes
+      - id
+      - type
+      title: Shipping line model
+      type: object
+    account:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - container
+          type: string
+        attributes:
+          $ref: '#/components/schemas/account_attributes'
+      required:
+      - attributes
+      - id
+      - type
+      title: Account model
+      type: object
+      x-examples: {}
+    error:
+      properties:
+        detail:
+          type: string
+        title:
+          type: string
+        source:
+          type: string
+        code:
+          type: string
+        status:
+          type: string
+      required:
+      - title
+      title: Error model
+      type: object
+    metro_area:
+      properties:
+        id:
+          format: uuid
+          type: string
+        attributes:
+          $ref: '#/components/schemas/metro_area_attributes'
+        type:
+          enum:
+          - metro_area
+          type: string
+      required:
+      - id
+      - type
+      title: Metro area model
+      type: object
+    terminal:
+      properties:
+        id:
+          format: uuid
+          type: string
+        relationships:
+          $ref: '#/components/schemas/terminal_relationships'
+        attributes:
+          $ref: '#/components/schemas/terminal_attributes'
+        type:
+          enum:
+          - terminal
+          type: string
+      required:
+      - attributes
+      - relationships
+      title: Terminal model
+      type: object
+    rail_terminal:
+      properties:
+        id:
+          format: uuid
+          type: string
+        relationships:
+          $ref: '#/components/schemas/rail_terminal_relationships'
+        attributes:
+          $ref: '#/components/schemas/terminal_attributes'
+        type:
+          enum:
+          - rail_terminal
+          type: string
+      required:
+      - attributes
+      title: Rail Terminal model
+      type: object
+    tracking_request:
+      example:
+        relationships:
+          tracked_object:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: shipment
+        attributes:
+          is_retrying: true
+          request_number: ONEYSH9AME650500
+          request_type: bill_of_lading
+          scac: ONEY
+          retry_count: 0
+          ref_numbers:
+          - ref_numbers
+          - ref_numbers
+          created_at: 2000-01-23T04:56:07.000+00:00
+          failed_reason: shipping_line_unavailable
+          tags:
+          - tags
+          - tags
+          status: pending
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: tracking_request
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - tracking_request
+          type: string
+        attributes:
+          $ref: '#/components/schemas/tracking_request_attributes'
+        relationships:
+          $ref: '#/components/schemas/tracking_request_relationships'
+      required:
+      - id
+      - type
+      title: Tracking Request
+      type: object
+    webhook:
+      example:
+        attributes:
+          active: true
+          secret: secret
+          url: https://openapi-generator.tech
+          events:
+          - events
+          - events
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: webhook
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - webhook
+          type: string
+        attributes:
+          $ref: '#/components/schemas/webhook_attributes'
+      required:
+      - id
+      - type
+      title: webhook
+      type: object
+      x-examples: {}
+    vessel:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - vessel
+          type: string
+        attributes:
+          $ref: '#/components/schemas/vessel_attributes'
+      title: vessel
+      type: object
+    transport_event:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - transport_event
+          type: string
+        attributes:
+          $ref: '#/components/schemas/transport_event_attributes'
+        relationships:
+          $ref: '#/components/schemas/transport_event_relationships'
+      required:
+      - id
+      - type
+      title: Transport Event Model
+      type: object
+    estimated_event:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - estimated_event
+          type: string
+        attributes:
+          $ref: '#/components/schemas/estimated_event_attributes'
+        relationships:
+          $ref: '#/components/schemas/estimated_event_relationships'
+      required:
+      - attributes
+      - id
+      - relationships
+      - type
+      title: Estimated Event Model
+      type: object
+    webhook_notification:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - webhook_notification
+          type: string
+        attributes:
+          $ref: '#/components/schemas/webhook_notification_attributes'
+        relationships:
+          $ref: '#/components/schemas/webhook_notification_relationships'
+      title: webhook_notification
+      type: object
+    terminal_hold:
+      example:
+        name: customs
+        description: description
+        status: pending
+      properties:
+        name:
+          enum:
+          - customs
+          - freight
+          - USDA
+          - TMF
+          - other
+          type: string
+        status:
+          enum:
+          - pending
+          - hold
+          type: string
+        description:
+          description: Text description from the terminal (if any)
+          type: string
+      required:
+      - name
+      - status
+      title: terminal_hold
+      type: object
+    terminal_fee:
+      example:
+        amount: 6.027456183070403
+        type: exam
+      properties:
+        type:
+          enum:
+          - exam
+          - demurrage
+          - total
+          - other
+          type: string
+        amount:
+          description: The fee amount in USD
+          type: number
+      required:
+      - amount
+      - type
+      title: terminal_fee
+      type: object
+    container_updated_event:
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/container_updated_event_attributes'
+        relationships:
+          $ref: '#/components/schemas/container_updated_event_relationships'
+      required:
+      - relationships
+      title: container_updated_event
+      type: object
+    raw_event:
+      description: "Raw Events represent the milestones from the shipping line for\
+        \ a given container.\n\n### About raw_event datetimes\n\nThe events may include\
+        \ estimated future events. The event is a future event if an `estimated_`\
+        \ timestamp is not null. \n\nThe datetime properties `actual_on`, `estimated_on`,\
+        \ `actual_at`, and `estimated_at` are all mutually exclusive. \n\nWhen the\
+        \ `time_zone` property is present the datetimes are UTC timestamps, which\
+        \ can be converted to the local time by parsing the provided `time_zone`.\n\
+        \nWhen the `time_zone` property is absent, the datetimes represent local times\
+        \ which serialized as UTC timestamps for consistency. "
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+          - raw_event
+          type: string
+        attributes:
+          $ref: '#/components/schemas/raw_event_attributes'
+        relationships:
+          $ref: '#/components/schemas/raw_event_relationships'
+      title: Raw Event Model
+      type: object
+    inline_response_200:
+      example:
+        data:
+        - relationships:
+            port_of_lading:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            destination:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            pod_terminal:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+            containers:
+              data:
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+            port_of_discharge:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            customer:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: account
+          attributes:
+            port_of_discharge_locode: port_of_discharge_locode
+            pod_vessel_name: pod_vessel_name
+            shipping_line_scac: shipping_line_scac
+            destination_timezone: destination_timezone
+            pod_timezone: pod_timezone
+            pod_eta_at: 2000-01-23T04:56:07.000+00:00
+            pol_atd_at: 2000-01-23T04:56:07.000+00:00
+            port_of_lading_name: port_of_lading_name
+            pol_etd_at: 2000-01-23T04:56:07.000+00:00
+            created_at: https://openapi-generator.tech
+            pol_timezone: pol_timezone
+            destination_name: destination_name
+            destination_ata_at: 2000-01-23T04:56:07.000+00:00
+            tags:
+            - tags
+            - tags
+            port_of_discharge_name: port_of_discharge_name
+            port_of_lading_locode: port_of_lading_locode
+            bill_of_lading_number: bill_of_lading_number
+            pod_ata_at: 2000-01-23T04:56:07.000+00:00
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            destination_locode: destination_locode
+            pod_vessel_imo: pod_vessel_imo
+            pod_voyage_number: pod_voyage_number
+            destination_eta_at: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: shipment
+        - relationships:
+            port_of_lading:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            destination:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            pod_terminal:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+            containers:
+              data:
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+            port_of_discharge:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            customer:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: account
+          attributes:
+            port_of_discharge_locode: port_of_discharge_locode
+            pod_vessel_name: pod_vessel_name
+            shipping_line_scac: shipping_line_scac
+            destination_timezone: destination_timezone
+            pod_timezone: pod_timezone
+            pod_eta_at: 2000-01-23T04:56:07.000+00:00
+            pol_atd_at: 2000-01-23T04:56:07.000+00:00
+            port_of_lading_name: port_of_lading_name
+            pol_etd_at: 2000-01-23T04:56:07.000+00:00
+            created_at: https://openapi-generator.tech
+            pol_timezone: pol_timezone
+            destination_name: destination_name
+            destination_ata_at: 2000-01-23T04:56:07.000+00:00
+            tags:
+            - tags
+            - tags
+            port_of_discharge_name: port_of_discharge_name
+            port_of_lading_locode: port_of_lading_locode
+            bill_of_lading_number: bill_of_lading_number
+            pod_ata_at: 2000-01-23T04:56:07.000+00:00
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            destination_locode: destination_locode
+            pod_vessel_imo: pod_vessel_imo
+            pod_voyage_number: pod_voyage_number
+            destination_eta_at: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: shipment
+        meta:
+          total: 6
+          size: 0
+        links:
+          next: https://openapi-generator.tech
+          last: https://openapi-generator.tech
+          prev: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+          first: https://openapi-generator.tech
+        included:
+        - ""
+        - ""
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/shipment'
+          type: array
+        included:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/container'
+            - $ref: '#/components/schemas/port'
+            - $ref: '#/components/schemas/terminal'
+          type: array
+        links:
+          $ref: '#/components/schemas/links'
+        meta:
+          $ref: '#/components/schemas/meta'
+    inline_response_422:
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/error'
+          type: array
+    inline_response_200_1:
+      example:
+        data:
+          relationships:
+            port_of_lading:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            destination:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            pod_terminal:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+            containers:
+              data:
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+            port_of_discharge:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            customer:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: account
+          attributes:
+            port_of_discharge_locode: port_of_discharge_locode
+            pod_vessel_name: pod_vessel_name
+            shipping_line_scac: shipping_line_scac
+            destination_timezone: destination_timezone
+            pod_timezone: pod_timezone
+            pod_eta_at: 2000-01-23T04:56:07.000+00:00
+            pol_atd_at: 2000-01-23T04:56:07.000+00:00
+            port_of_lading_name: port_of_lading_name
+            pol_etd_at: 2000-01-23T04:56:07.000+00:00
+            created_at: https://openapi-generator.tech
+            pol_timezone: pol_timezone
+            destination_name: destination_name
+            destination_ata_at: 2000-01-23T04:56:07.000+00:00
+            tags:
+            - tags
+            - tags
+            port_of_discharge_name: port_of_discharge_name
+            port_of_lading_locode: port_of_lading_locode
+            bill_of_lading_number: bill_of_lading_number
+            pod_ata_at: 2000-01-23T04:56:07.000+00:00
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            destination_locode: destination_locode
+            pod_vessel_imo: pod_vessel_imo
+            pod_voyage_number: pod_voyage_number
+            destination_eta_at: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: shipment
+        included:
+        - ""
+        - ""
+      properties:
+        data:
+          $ref: '#/components/schemas/shipment'
+        included:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/container'
+            - $ref: '#/components/schemas/port'
+            - $ref: '#/components/schemas/terminal'
+          type: array
+    inline_response_200_2:
+      example:
+        data:
+        - relationships:
+            tracked_object:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: shipment
+          attributes:
+            is_retrying: true
+            request_number: ONEYSH9AME650500
+            request_type: bill_of_lading
+            scac: ONEY
+            retry_count: 0
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            created_at: 2000-01-23T04:56:07.000+00:00
+            failed_reason: shipping_line_unavailable
+            tags:
+            - tags
+            - tags
+            status: pending
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: tracking_request
+        - relationships:
+            tracked_object:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: shipment
+          attributes:
+            is_retrying: true
+            request_number: ONEYSH9AME650500
+            request_type: bill_of_lading
+            scac: ONEY
+            retry_count: 0
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            created_at: 2000-01-23T04:56:07.000+00:00
+            failed_reason: shipping_line_unavailable
+            tags:
+            - tags
+            - tags
+            status: pending
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: tracking_request
+        meta:
+          total: 6
+          size: 0
+        links:
+          next: https://openapi-generator.tech
+          last: https://openapi-generator.tech
+          prev: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+          first: https://openapi-generator.tech
+        included:
+        - ""
+        - ""
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/tracking_request'
+          type: array
+        links:
+          $ref: '#/components/schemas/links'
+        meta:
+          $ref: '#/components/schemas/meta'
+        included:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/account'
+            - $ref: '#/components/schemas/shipping_line'
+            - properties:
+                id:
+                  format: uuid
+                  type: string
+                type:
+                  enum:
+                  - shipment
+                  type: string
+                links:
+                  properties:
+                    self:
+                      format: uri
+                      type: string
+                  type: object
+              type: object
+          type: array
+    _tracking_requests_data_attributes:
+      properties:
+        request_type:
+          enum:
+          - bill_of_lading
+          - tracking_number
+          example: bill_of_lading
+          type: string
+        request_number:
+          example: MEDUFR030802
+          type: string
+        scac:
+          example: MSCU
+          maxLength: 4
+          minLength: 4
+          type: string
+        ref_numbers:
+          description: Optional list of reference numbers to be added to the shipment
+            when tracking request completes
+          items:
+            type: string
+          type: array
+      required:
+      - request_number
+      - request_type
+      - scac
+    _tracking_requests_data:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/_tracking_requests_data_attributes'
+        type:
+          enum:
+          - tracking_request
+          type: string
+      required:
+      - type
+    inline_object:
+      properties:
+        data:
+          $ref: '#/components/schemas/_tracking_requests_data'
+      type: object
+    inline_response_201:
+      example:
+        data:
+          relationships:
+            tracked_object:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: shipment
+          attributes:
+            is_retrying: true
+            request_number: ONEYSH9AME650500
+            request_type: bill_of_lading
+            scac: ONEY
+            retry_count: 0
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            created_at: 2000-01-23T04:56:07.000+00:00
+            failed_reason: shipping_line_unavailable
+            tags:
+            - tags
+            - tags
+            status: pending
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: tracking_request
+        included:
+        - ""
+        - ""
+      properties:
+        data:
+          $ref: '#/components/schemas/tracking_request'
+        included:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/account'
+            - $ref: '#/components/schemas/shipping_line'
+          type: array
+    inline_response_200_3:
+      example:
+        data:
+          relationships:
+            tracked_object:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: shipment
+          attributes:
+            is_retrying: true
+            request_number: ONEYSH9AME650500
+            request_type: bill_of_lading
+            scac: ONEY
+            retry_count: 0
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            created_at: 2000-01-23T04:56:07.000+00:00
+            failed_reason: shipping_line_unavailable
+            tags:
+            - tags
+            - tags
+            status: pending
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: tracking_request
+        included:
+        - ""
+        - ""
+      properties:
+        data:
+          $ref: '#/components/schemas/tracking_request'
+        included:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/account'
+            - $ref: '#/components/schemas/shipment'
+            - $ref: '#/components/schemas/shipping_line'
+          type: array
+    inline_response_200_4:
+      example:
+        data:
+          attributes:
+            active: true
+            secret: secret
+            url: https://openapi-generator.tech
+            events:
+            - events
+            - events
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: webhook
+      properties:
+        data:
+          $ref: '#/components/schemas/webhook'
+    _webhooks__id__data_attributes_headers:
+      properties:
+        name:
+          description: 'The name of the header. (Please not this will be auto-capitalized) '
+          type: string
+        value:
+          description: |
+            The value to pass for the header
+          type: string
+    _webhooks__id__data_attributes:
+      properties:
+        url:
+          description: The URL of the webhook endpoint.
+          example: https://webhook.site/#!/39084fbb-d887-42e8-be08-b9183ad02362
+          format: uri
+          type: string
+        events:
+          description: The list of events to enable for this endpoint. You may specify
+            `['*']` to enable all events.
+          items:
+            example: '[''*'']'
+            type: string
+          type: array
+          uniqueItems: true
+        active:
+          type: boolean
+        headers:
+          description: Optional custom headers to pass with each webhook invocation
+          items:
+            $ref: '#/components/schemas/_webhooks__id__data_attributes_headers'
+          type: array
+    _webhooks__id__data:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/_webhooks__id__data_attributes'
+        type:
+          enum:
+          - webhook
+          type: string
+      required:
+      - attributes
+      - type
+    inline_object_1:
+      properties:
+        data:
+          $ref: '#/components/schemas/_webhooks__id__data'
+      required:
+      - data
+      type: object
+    inline_response_200_5:
+      example:
+        data:
+        - attributes:
+            active: true
+            secret: secret
+            url: https://openapi-generator.tech
+            events:
+            - events
+            - events
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: webhook
+        - attributes:
+            active: true
+            secret: secret
+            url: https://openapi-generator.tech
+            events:
+            - events
+            - events
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: webhook
+        meta:
+          total: 6
+          size: 0
+        links:
+          next: https://openapi-generator.tech
+          last: https://openapi-generator.tech
+          prev: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+          first: https://openapi-generator.tech
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/webhook'
+          type: array
+        meta:
+          $ref: '#/components/schemas/meta'
+        links:
+          $ref: '#/components/schemas/links'
+    _webhooks_data_attributes:
+      properties:
+        url:
+          description: The URL of the webhook endpoint.
+          example: https://webhook.site/#!/39084fbb-d887-42e8-be08-b9183ad02362
+          format: uri
+          type: string
+        events:
+          description: The list of events to enable for this endpoint. You may specify
+            `['*']` to enable all events.
+          items:
+            example: '[''*'']'
+            type: string
+          type: array
+          uniqueItems: true
+        active:
+          type: boolean
+        headers:
+          description: Optional custom headers to pass with each webhook invocation
+          items:
+            $ref: '#/components/schemas/_webhooks__id__data_attributes_headers'
+          type: array
+      required:
+      - active
+      - events
+      - url
+    _webhooks_data:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/_webhooks_data_attributes'
+        type:
+          enum:
+          - webhook
+          type: string
+      required:
+      - attributes
+      - type
+    inline_object_2:
+      properties:
+        data:
+          $ref: '#/components/schemas/_webhooks_data'
+      required:
+      - data
+      type: object
+    inline_response_200_6:
+      example:
+        data:
+        - relationships:
+            shipment:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: shipment
+            current_vessel:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: vessel
+            final_destination:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            most_recent_location:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: terminal
+          pod_terminal:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+          attributes:
+            seal_number: seal_number
+            final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
+            destination_timezone: destination_timezone
+            pod_timezone: pod_timezone
+            pickup_lfd: 2000-01-23T04:56:07.000+00:00
+            availability_known: true
+            pod_full_out_at: 2000-01-23T04:56:07.000+00:00
+            destination_unloaded_at: 2000-01-23T04:56:07.000+00:00
+            created_at: 2000-01-23T04:56:07.000+00:00
+            empty_terminated_at: 2000-01-23T04:56:07.000+00:00
+            equipment_type: dry
+            weight_in_lbs: weight_in_lbs
+            number: number
+            empty_returned_timezone: empty_returned_timezone
+            equipment_height: standard
+            fees_at_pod_terminal:
+            - amount: 6.027456183070403
+              type: exam
+            - amount: 6.027456183070403
+              type: exam
+            equipment_length: 0
+            pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
+            current_transportation_mode: vessel
+            holds_at_pod_terminal:
+            - name: customs
+              description: description
+              status: pending
+            - name: customs
+              description: description
+              status: pending
+            pod_discharged_at: 2000-01-23T04:56:07.000+00:00
+            available_for_pickup: true
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - relationships:
+            shipment:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: shipment
+            current_vessel:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: vessel
+            final_destination:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            most_recent_location:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: terminal
+          pod_terminal:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+          attributes:
+            seal_number: seal_number
+            final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
+            destination_timezone: destination_timezone
+            pod_timezone: pod_timezone
+            pickup_lfd: 2000-01-23T04:56:07.000+00:00
+            availability_known: true
+            pod_full_out_at: 2000-01-23T04:56:07.000+00:00
+            destination_unloaded_at: 2000-01-23T04:56:07.000+00:00
+            created_at: 2000-01-23T04:56:07.000+00:00
+            empty_terminated_at: 2000-01-23T04:56:07.000+00:00
+            equipment_type: dry
+            weight_in_lbs: weight_in_lbs
+            number: number
+            empty_returned_timezone: empty_returned_timezone
+            equipment_height: standard
+            fees_at_pod_terminal:
+            - amount: 6.027456183070403
+              type: exam
+            - amount: 6.027456183070403
+              type: exam
+            equipment_length: 0
+            pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
+            current_transportation_mode: vessel
+            holds_at_pod_terminal:
+            - name: customs
+              description: description
+              status: pending
+            - name: customs
+              description: description
+              status: pending
+            pod_discharged_at: 2000-01-23T04:56:07.000+00:00
+            available_for_pickup: true
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        meta:
+          total: 6
+          size: 0
+        links:
+          next: https://openapi-generator.tech
+          last: https://openapi-generator.tech
+          prev: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+          first: https://openapi-generator.tech
+        included:
+        - relationships:
+            port_of_lading:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            destination:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            pod_terminal:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+            containers:
+              data:
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+            port_of_discharge:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            customer:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: account
+          attributes:
+            port_of_discharge_locode: port_of_discharge_locode
+            pod_vessel_name: pod_vessel_name
+            shipping_line_scac: shipping_line_scac
+            destination_timezone: destination_timezone
+            pod_timezone: pod_timezone
+            pod_eta_at: 2000-01-23T04:56:07.000+00:00
+            pol_atd_at: 2000-01-23T04:56:07.000+00:00
+            port_of_lading_name: port_of_lading_name
+            pol_etd_at: 2000-01-23T04:56:07.000+00:00
+            created_at: https://openapi-generator.tech
+            pol_timezone: pol_timezone
+            destination_name: destination_name
+            destination_ata_at: 2000-01-23T04:56:07.000+00:00
+            tags:
+            - tags
+            - tags
+            port_of_discharge_name: port_of_discharge_name
+            port_of_lading_locode: port_of_lading_locode
+            bill_of_lading_number: bill_of_lading_number
+            pod_ata_at: 2000-01-23T04:56:07.000+00:00
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            destination_locode: destination_locode
+            pod_vessel_imo: pod_vessel_imo
+            pod_voyage_number: pod_voyage_number
+            destination_eta_at: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: shipment
+        - relationships:
+            port_of_lading:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            destination:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            pod_terminal:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+            containers:
+              data:
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+            port_of_discharge:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            customer:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: account
+          attributes:
+            port_of_discharge_locode: port_of_discharge_locode
+            pod_vessel_name: pod_vessel_name
+            shipping_line_scac: shipping_line_scac
+            destination_timezone: destination_timezone
+            pod_timezone: pod_timezone
+            pod_eta_at: 2000-01-23T04:56:07.000+00:00
+            pol_atd_at: 2000-01-23T04:56:07.000+00:00
+            port_of_lading_name: port_of_lading_name
+            pol_etd_at: 2000-01-23T04:56:07.000+00:00
+            created_at: https://openapi-generator.tech
+            pol_timezone: pol_timezone
+            destination_name: destination_name
+            destination_ata_at: 2000-01-23T04:56:07.000+00:00
+            tags:
+            - tags
+            - tags
+            port_of_discharge_name: port_of_discharge_name
+            port_of_lading_locode: port_of_lading_locode
+            bill_of_lading_number: bill_of_lading_number
+            pod_ata_at: 2000-01-23T04:56:07.000+00:00
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            destination_locode: destination_locode
+            pod_vessel_imo: pod_vessel_imo
+            pod_voyage_number: pod_voyage_number
+            destination_eta_at: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: shipment
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/container'
+          type: array
+        included:
+          items:
+            $ref: '#/components/schemas/shipment'
+          type: array
+        links:
+          $ref: '#/components/schemas/links'
+        meta:
+          $ref: '#/components/schemas/meta'
+    inline_response_200_7:
+      example:
+        data:
+          relationships:
+            shipment:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: shipment
+            current_vessel:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: vessel
+            final_destination:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            most_recent_location:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: terminal
+          pod_terminal:
+            data:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+          attributes:
+            seal_number: seal_number
+            final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
+            destination_timezone: destination_timezone
+            pod_timezone: pod_timezone
+            pickup_lfd: 2000-01-23T04:56:07.000+00:00
+            availability_known: true
+            pod_full_out_at: 2000-01-23T04:56:07.000+00:00
+            destination_unloaded_at: 2000-01-23T04:56:07.000+00:00
+            created_at: 2000-01-23T04:56:07.000+00:00
+            empty_terminated_at: 2000-01-23T04:56:07.000+00:00
+            equipment_type: dry
+            weight_in_lbs: weight_in_lbs
+            number: number
+            empty_returned_timezone: empty_returned_timezone
+            equipment_height: standard
+            fees_at_pod_terminal:
+            - amount: 6.027456183070403
+              type: exam
+            - amount: 6.027456183070403
+              type: exam
+            equipment_length: 0
+            pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
+            current_transportation_mode: vessel
+            holds_at_pod_terminal:
+            - name: customs
+              description: description
+              status: pending
+            - name: customs
+              description: description
+              status: pending
+            pod_discharged_at: 2000-01-23T04:56:07.000+00:00
+            available_for_pickup: true
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        included:
+        - relationships:
+            port_of_lading:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            destination:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            pod_terminal:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+            containers:
+              data:
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+            port_of_discharge:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            customer:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: account
+          attributes:
+            port_of_discharge_locode: port_of_discharge_locode
+            pod_vessel_name: pod_vessel_name
+            shipping_line_scac: shipping_line_scac
+            destination_timezone: destination_timezone
+            pod_timezone: pod_timezone
+            pod_eta_at: 2000-01-23T04:56:07.000+00:00
+            pol_atd_at: 2000-01-23T04:56:07.000+00:00
+            port_of_lading_name: port_of_lading_name
+            pol_etd_at: 2000-01-23T04:56:07.000+00:00
+            created_at: https://openapi-generator.tech
+            pol_timezone: pol_timezone
+            destination_name: destination_name
+            destination_ata_at: 2000-01-23T04:56:07.000+00:00
+            tags:
+            - tags
+            - tags
+            port_of_discharge_name: port_of_discharge_name
+            port_of_lading_locode: port_of_lading_locode
+            bill_of_lading_number: bill_of_lading_number
+            pod_ata_at: 2000-01-23T04:56:07.000+00:00
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            destination_locode: destination_locode
+            pod_vessel_imo: pod_vessel_imo
+            pod_voyage_number: pod_voyage_number
+            destination_eta_at: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: shipment
+        - relationships:
+            port_of_lading:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            destination:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            pod_terminal:
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: terminal
+            containers:
+              data:
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: container
+            port_of_discharge:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: port
+            customer:
+              data:
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: account
+          attributes:
+            port_of_discharge_locode: port_of_discharge_locode
+            pod_vessel_name: pod_vessel_name
+            shipping_line_scac: shipping_line_scac
+            destination_timezone: destination_timezone
+            pod_timezone: pod_timezone
+            pod_eta_at: 2000-01-23T04:56:07.000+00:00
+            pol_atd_at: 2000-01-23T04:56:07.000+00:00
+            port_of_lading_name: port_of_lading_name
+            pol_etd_at: 2000-01-23T04:56:07.000+00:00
+            created_at: https://openapi-generator.tech
+            pol_timezone: pol_timezone
+            destination_name: destination_name
+            destination_ata_at: 2000-01-23T04:56:07.000+00:00
+            tags:
+            - tags
+            - tags
+            port_of_discharge_name: port_of_discharge_name
+            port_of_lading_locode: port_of_lading_locode
+            bill_of_lading_number: bill_of_lading_number
+            pod_ata_at: 2000-01-23T04:56:07.000+00:00
+            ref_numbers:
+            - ref_numbers
+            - ref_numbers
+            destination_locode: destination_locode
+            pod_vessel_imo: pod_vessel_imo
+            pod_voyage_number: pod_voyage_number
+            destination_eta_at: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: shipment
+      properties:
+        data:
+          $ref: '#/components/schemas/container'
+        included:
+          items:
+            $ref: '#/components/schemas/shipment'
+          type: array
+    shipment_relationships_destination_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: port
+      properties:
+        type:
+          enum:
+          - port
+          - metro_area
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - id
+      - type
+    shipment_relationships_destination:
+      example:
+        data:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: port
+      properties:
+        data:
+          $ref: '#/components/schemas/shipment_relationships_destination_data'
+    shipment_relationships_port_of_lading_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: port
+      properties:
+        type:
+          enum:
+          - port
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - id
+      - type
+    shipment_relationships_port_of_lading:
+      example:
+        data:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: port
+      properties:
+        data:
+          $ref: '#/components/schemas/shipment_relationships_port_of_lading_data'
+    shipment_relationships_containers_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: container
+      properties:
+        type:
+          enum:
+          - container
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - id
+      - type
+    shipment_relationships_containers:
+      example:
+        data:
+        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: container
+        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: container
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/shipment_relationships_containers_data'
+          type: array
+    shipment_relationships_customer_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: account
+      properties:
+        type:
+          enum:
+          - account
+          type: string
+        id:
+          format: uuid
+          type: string
+    shipment_relationships_customer:
+      description: '`unreleased`'
+      example:
+        data:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: account
+      properties:
+        data:
+          $ref: '#/components/schemas/shipment_relationships_customer_data'
+    shipment_relationships_pod_terminal:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: terminal
+      properties:
+        type:
+          enum:
+          - terminal
+          type: string
+        id:
+          format: uuid
+          type: string
+    shipment_relationships:
+      example:
+        port_of_lading:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: port
+        destination:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: port
+        pod_terminal:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: terminal
+        containers:
+          data:
+          - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: container
+          - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: container
+        port_of_discharge:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: port
+        customer:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: account
+      properties:
+        destination:
+          $ref: '#/components/schemas/shipment_relationships_destination'
+        port_of_lading:
+          $ref: '#/components/schemas/shipment_relationships_port_of_lading'
+        containers:
+          $ref: '#/components/schemas/shipment_relationships_containers'
+        port_of_discharge:
+          $ref: '#/components/schemas/shipment_relationships_port_of_lading'
+        customer:
+          $ref: '#/components/schemas/shipment_relationships_customer'
+        pod_terminal:
+          $ref: '#/components/schemas/shipment_relationships_pod_terminal'
+    shipment_attributes:
+      example:
+        port_of_discharge_locode: port_of_discharge_locode
+        pod_vessel_name: pod_vessel_name
+        shipping_line_scac: shipping_line_scac
+        destination_timezone: destination_timezone
+        pod_timezone: pod_timezone
+        pod_eta_at: 2000-01-23T04:56:07.000+00:00
+        pol_atd_at: 2000-01-23T04:56:07.000+00:00
+        port_of_lading_name: port_of_lading_name
+        pol_etd_at: 2000-01-23T04:56:07.000+00:00
+        created_at: https://openapi-generator.tech
+        pol_timezone: pol_timezone
+        destination_name: destination_name
+        destination_ata_at: 2000-01-23T04:56:07.000+00:00
+        tags:
+        - tags
+        - tags
+        port_of_discharge_name: port_of_discharge_name
+        port_of_lading_locode: port_of_lading_locode
+        bill_of_lading_number: bill_of_lading_number
+        pod_ata_at: 2000-01-23T04:56:07.000+00:00
+        ref_numbers:
+        - ref_numbers
+        - ref_numbers
+        destination_locode: destination_locode
+        pod_vessel_imo: pod_vessel_imo
+        pod_voyage_number: pod_voyage_number
+        destination_eta_at: 2000-01-23T04:56:07.000+00:00
+      properties:
+        bill_of_lading_number:
+          type: string
+        ref_numbers:
+          items:
+            type: string
+          type: array
+        created_at:
+          format: uri
+          type: string
+        tags:
+          description: '`unreleased`'
+          items:
+            type: string
+          type: array
+        port_of_lading_locode:
+          description: UN/LOCODE
+          type: string
+        port_of_lading_name:
+          type: string
+        port_of_discharge_locode:
+          description: UN/LOCODE
+          type: string
+        port_of_discharge_name:
+          type: string
+        destination_locode:
+          description: UN/LOCODE
+          type: string
+        destination_name:
+          type: string
+        shipping_line_scac:
+          type: string
+        pod_vessel_name:
+          type: string
+        pod_vessel_imo:
+          type: string
+        pod_voyage_number:
+          type: string
+        pol_etd_at:
+          format: date-time
+          type: string
+        pol_atd_at:
+          format: date-time
+          type: string
+        pod_eta_at:
+          format: date-time
+          type: string
+        pod_ata_at:
+          format: date-time
+          type: string
+        destination_eta_at:
+          format: date-time
+          type: string
+        destination_ata_at:
+          format: date-time
+          type: string
+        pol_timezone:
+          description: IANA tz
+          type: string
+        pod_timezone:
+          description: IANA tz
+          type: string
+        destination_timezone:
+          description: IANA tz
+          type: string
+      required:
+      - bill_of_lading_number
+    container_attributes:
+      example:
+        seal_number: seal_number
+        final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
+        destination_timezone: destination_timezone
+        pod_timezone: pod_timezone
+        pickup_lfd: 2000-01-23T04:56:07.000+00:00
+        availability_known: true
+        pod_full_out_at: 2000-01-23T04:56:07.000+00:00
+        destination_unloaded_at: 2000-01-23T04:56:07.000+00:00
+        created_at: 2000-01-23T04:56:07.000+00:00
+        empty_terminated_at: 2000-01-23T04:56:07.000+00:00
+        equipment_type: dry
+        weight_in_lbs: weight_in_lbs
+        number: number
+        empty_returned_timezone: empty_returned_timezone
+        equipment_height: standard
+        fees_at_pod_terminal:
+        - amount: 6.027456183070403
+          type: exam
+        - amount: 6.027456183070403
+          type: exam
+        equipment_length: 0
+        pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
+        current_transportation_mode: vessel
+        holds_at_pod_terminal:
+        - name: customs
+          description: description
+          status: pending
+        - name: customs
+          description: description
+          status: pending
+        pod_discharged_at: 2000-01-23T04:56:07.000+00:00
+        available_for_pickup: true
+      properties:
+        number:
+          type: string
+        equipment_type:
+          enum:
+          - dry
+          - reefer
+          - open top
+          - flat rack
+          - bulk
+          - tank
+          type: string
+        equipment_length:
+          enum:
+          - 10
+          - 20
+          - 40
+          - 45
+          type: integer
+        equipment_height:
+          enum:
+          - standard
+          - high_cube
+          type: string
+        weight_in_lbs:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        seal_number:
+          type: string
+        pickup_lfd:
+          description: The last free day for pickup before deummurage accrues.
+          format: date-time
+          type: string
+        pickup_apopintment_at:
+          description: When available the pickup appointment time at the terminal
+            is returned.
+          format: date-time
+          type: string
+        availability_known:
+          description: Whether Terminal 49 is receiving availability status from the
+            terminal.
+          type: boolean
+        available_for_pickup:
+          description: If availability_known is true, then whether container is available
+            to be picked up at terminal.
+          type: boolean
+        current_transportation_mode:
+          description: '`unreleased`'
+          enum:
+          - vessel
+          - rail
+          - truck
+          - grounded
+          type: string
+        pod_discharged_at:
+          description: '`unreleased` Discharge time at the port of discharge'
+          format: date-time
+          type: string
+        pod_full_out_at:
+          description: Full Out time at port of discharge. Null for inland moves.
+          format: date-time
+          type: string
+        destination_unloaded_at:
+          description: '`unreleased` Arrival or unloading time at final destination
+            for inland moves.'
+          format: date-time
+          type: string
+        final_destination_full_out_at:
+          description: '`unreleased` Pickup time at final destination for inland moves.'
+          format: date-time
+          type: string
+        empty_terminated_at:
+          description: '`unreleased` Time empty container was returned.'
+          format: date-time
+          type: string
+        pod_timezone:
+          description: '`unreleased` IANA tz'
+          type: string
+        destination_timezone:
+          description: '`unreleaed` IANA tz'
+          type: string
+        empty_returned_timezone:
+          description: '`unreleased` IANA tz'
+          type: string
+        holds_at_pod_terminal:
+          items:
+            $ref: '#/components/schemas/terminal_hold'
+          type: array
+        fees_at_pod_terminal:
+          items:
+            $ref: '#/components/schemas/terminal_fee'
+          type: array
+    container_relationships_most_recent_location_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: terminal
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - terminal
+          - port
+          - metroArea
+          type: string
+    container_relationships_most_recent_location:
+      description: The current, or most recent land location.
+      example:
+        data:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: terminal
+      properties:
+        data:
+          $ref: '#/components/schemas/container_relationships_most_recent_location_data'
+    container_relationships_current_vessel_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: vessel
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - vessel
+          type: string
+    container_relationships_current_vessel:
+      description: The vessel the container is currently laden on.
+      example:
+        data:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: vessel
+      properties:
+        data:
+          $ref: '#/components/schemas/container_relationships_current_vessel_data'
+    container_relationships_shipment_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: shipment
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - shipment
+          type: string
+    container_relationships_shipment:
+      example:
+        data:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: shipment
+      properties:
+        data:
+          $ref: '#/components/schemas/container_relationships_shipment_data'
+    container_relationships_final_destination_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: port
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - port
+          - metro_area
+          type: string
+    container_relationships_final_destination:
+      description: '[PROPOSED]'
+      example:
+        data:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: port
+      properties:
+        data:
+          $ref: '#/components/schemas/container_relationships_final_destination_data'
+    container_relationships:
+      example:
+        shipment:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: shipment
+        current_vessel:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: vessel
+        final_destination:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: port
+        most_recent_location:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: terminal
+      properties:
+        most_recent_location:
+          $ref: '#/components/schemas/container_relationships_most_recent_location'
+        current_vessel:
+          $ref: '#/components/schemas/container_relationships_current_vessel'
+        shipment:
+          $ref: '#/components/schemas/container_relationships_shipment'
+        final_destination:
+          $ref: '#/components/schemas/container_relationships_final_destination'
+    container_pod_terminal_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: terminal
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - terminal
+          type: string
+    container_pod_terminal:
+      example:
+        data:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: terminal
+      properties:
+        data:
+          $ref: '#/components/schemas/container_pod_terminal_data'
+    port_attributes:
+      properties:
+        name:
+          type: string
+        country_code:
+          description: 2 digit country code
+          type: string
+        time_zone:
+          description: IANA tz
+          type: string
+        code:
+          description: UN/LOCODE
+          type: string
+    shipping_line_attributes:
+      properties:
+        scac:
+          type: string
+        name:
+          type: string
+        nickname:
+          type: string
+      required:
+      - name
+      - nickname
+      - scac
+    account_attributes:
+      properties:
+        company_name:
+          type: string
+      required:
+      - company_name
+    metro_area_attributes:
+      properties:
+        name:
+          type: string
+        country_code:
+          description: 2 digit country code
+          type: string
+        timezone:
+          description: IANA tz
+          type: string
+        locode:
+          description: UN/LOCODE
+          type: string
+    terminal_relationships_port_data:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - port
+          type: string
+    terminal_relationships_port:
+      properties:
+        data:
+          $ref: '#/components/schemas/terminal_relationships_port_data'
+    terminal_relationships:
+      properties:
+        port:
+          $ref: '#/components/schemas/terminal_relationships_port'
+      required:
+      - port
+    terminal_attributes:
+      properties:
+        name:
+          type: string
+        nickname:
+          type: string
+        firms_code:
+          description: CBP FIRMS Code or CBS Sublocation Code
+          type: string
+      required:
+      - name
+    rail_terminal_relationships_metro_area_data:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - metro_area
+          type: string
+    rail_terminal_relationships_metro_area:
+      properties:
+        data:
+          $ref: '#/components/schemas/rail_terminal_relationships_metro_area_data'
+    rail_terminal_relationships:
+      properties:
+        port:
+          $ref: '#/components/schemas/terminal_relationships_port'
+        metro_area:
+          $ref: '#/components/schemas/rail_terminal_relationships_metro_area'
+    tracking_request_attributes:
+      example:
+        is_retrying: true
+        request_number: ONEYSH9AME650500
+        request_type: bill_of_lading
+        scac: ONEY
+        retry_count: 0
+        ref_numbers:
+        - ref_numbers
+        - ref_numbers
+        created_at: 2000-01-23T04:56:07.000+00:00
+        failed_reason: shipping_line_unavailable
+        tags:
+        - tags
+        - tags
+        status: pending
+      properties:
+        request_number:
+          example: ONEYSH9AME650500
+          type: string
+        ref_numbers:
+          items:
+            type: string
+          type: array
+        tags:
+          items:
+            type: string
+          type: array
+        status:
+          enum:
+          - pending
+          - created
+          - failed
+          type: string
+        failed_reason:
+          description: If the tracking request has failed, or is currently failing,
+            the last reason we were unable to complete the request
+          enum:
+          - shipping_line_unavailable
+          - unrecognized_response
+          type: string
+        request_type:
+          enum:
+          - bill_of_lading
+          - booking_number
+          example: bill_of_lading
+          type: string
+        scac:
+          example: ONEY
+          maxLength: 4
+          minLength: 4
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        is_retrying:
+          type: boolean
+        retry_count:
+          description: How many times T49 has attempted to get the shipment from the
+            shipping line
+          type: integer
+      required:
+      - created_at
+      - request_number
+      - request_type
+      - scac
+      - status
+    tracking_request_relationships:
+      example:
+        tracked_object:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: shipment
+      properties:
+        tracked_object:
+          $ref: '#/components/schemas/container_relationships_shipment'
+    webhook_attributes:
+      example:
+        active: true
+        secret: secret
+        url: https://openapi-generator.tech
+        events:
+        - events
+        - events
+      properties:
+        url:
+          description: https end point
+          format: uri
+          type: string
+        active:
+          default: true
+          description: whether the webhook will be delivered when events are triggered
+          type: boolean
+        events:
+          items:
+            type: string
+          minItems: 1
+          type: array
+          uniqueItems: false
+        secret:
+          description: A random token that will sign all delivered webhooks
+          type: string
+      required:
+      - active
+      - events
+      - secret
+      - url
+    vessel_attributes:
+      properties:
+        name:
+          type: string
+        imo:
+          type: string
+        mmsi:
+          type: string
+    transport_event_attributes:
+      properties:
+        event:
+          enum:
+          - container.transport.vessel_loaded
+          - container.transport.vessel_arrived
+          - container.transport.vessel_departed
+          - container.transport.vessel_discharged
+          - container.transport.full_out
+          - container.transport.empty_in
+          type: string
+        voyage_number:
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        timezone:
+          description: IANA tz
+          type: string
+    transport_event_relationships_location:
+      properties:
+        data:
+          $ref: '#/components/schemas/container_relationships_final_destination_data'
+    transport_event_relationships_vessel_data:
+      properties:
+        id:
+          format: uuid
+          type: string
+        name:
+          enum:
+          - vessel
+          type: string
+    transport_event_relationships_vessel:
+      properties:
+        data:
+          $ref: '#/components/schemas/transport_event_relationships_vessel_data'
+    transport_event_relationships_terminal_data:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - terminal
+          - rail_terminal
+          type: string
+    transport_event_relationships_terminal:
+      properties:
+        data:
+          $ref: '#/components/schemas/transport_event_relationships_terminal_data'
+    transport_event_relationships_container_data:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - container
+          type: string
+    transport_event_relationships_container:
+      properties:
+        data:
+          $ref: '#/components/schemas/transport_event_relationships_container_data'
+    transport_event_relationships:
+      properties:
+        shipment:
+          $ref: '#/components/schemas/container_relationships_shipment'
+        location:
+          $ref: '#/components/schemas/transport_event_relationships_location'
+        vessel:
+          $ref: '#/components/schemas/transport_event_relationships_vessel'
+        terminal:
+          $ref: '#/components/schemas/transport_event_relationships_terminal'
+        container:
+          $ref: '#/components/schemas/transport_event_relationships_container'
+        ? ""
+        : type: string
+    estimated_event_attributes:
+      properties:
+        event:
+          enum:
+          - shipment.estimated.arrival
+          type: string
+        estimated_timestamp:
+          format: date-time
+          type: string
+        voyage_number:
+          type: string
+      required:
+      - estimated_timestamp
+      - event
+    estimated_event_relationships_shipment_data:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - shipment
+          type: string
+      required:
+      - id
+      - type
+    estimated_event_relationships_shipment:
+      properties:
+        data:
+          $ref: '#/components/schemas/estimated_event_relationships_shipment_data'
+      required:
+      - data
+    estimated_event_relationships_vessel:
+      properties:
+        data:
+          $ref: '#/components/schemas/container_relationships_current_vessel_data'
+    estimated_event_relationships:
+      properties:
+        shipment:
+          $ref: '#/components/schemas/estimated_event_relationships_shipment'
+        port:
+          $ref: '#/components/schemas/terminal_relationships_port'
+        vessel:
+          $ref: '#/components/schemas/estimated_event_relationships_vessel'
+      required:
+      - shipment
+    webhook_notification_attributes:
+      properties:
+        event:
+          type: string
+        delivery_status:
+          default: pending
+          description: Whether the notification has been delivered to the webhook
+            endpoint
+          enum:
+          - pending
+          - succeeded
+          - failed
+          type: string
+        created_at:
+          type: string
+      required:
+      - created_at
+      - delivery_status
+      - event
+    webhook_notification_relationships_webhook_data:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - webhook
+          type: string
+    webhook_notification_relationships_webhook:
+      properties:
+        data:
+          $ref: '#/components/schemas/webhook_notification_relationships_webhook_data'
+    webhook_notification_relationships_reference_object_data:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - tracking_request
+          - estimated_event
+          - transport_event
+          - container_updated_event
+          type: string
+    webhook_notification_relationships_reference_object:
+      properties:
+        data:
+          $ref: '#/components/schemas/webhook_notification_relationships_reference_object_data'
+    webhook_notification_relationships:
+      properties:
+        webhook:
+          $ref: '#/components/schemas/webhook_notification_relationships_webhook'
+        reference_object:
+          $ref: '#/components/schemas/webhook_notification_relationships_reference_object'
+      required:
+      - webhook
+    container_updated_event_attributes:
+      properties:
+        changeset:
+          description: "A hash of all the changed attributes with the values being\
+            \ an array of the before and after. E.g. \n`{\"pickup_lfd\": [null, \"\
+            2020-05-20\"]}`\n\nThe current attributes that can be alerted on are:\n\
+            - `available_for_pickup`\n- `pickup_lfd`\n- `fees_at_pod_terminal`\n-\
+            \ `holds_at_pod_terminal`"
+          type: object
+        timestamp:
+          format: date-time
+          type: string
+        timezone:
+          description: 'IANA TZ '
+          type: string
+      required:
+      - changeset
+      - timestamp
+    container_updated_event_relationships_container_data:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - container
+          type: string
+      required:
+      - id
+      - type
+    container_updated_event_relationships_container:
+      properties:
+        data:
+          $ref: '#/components/schemas/container_updated_event_relationships_container_data'
+      required:
+      - data
+    container_updated_event_relationships_terminal_data:
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - terminal
+          type: string
+      required:
+      - id
+      - type
+    container_updated_event_relationships_terminal:
+      properties:
+        data:
+          $ref: '#/components/schemas/container_updated_event_relationships_terminal_data'
+      required:
+      - data
+    container_updated_event_relationships:
+      properties:
+        container:
+          $ref: '#/components/schemas/container_updated_event_relationships_container'
+        terminal:
+          $ref: '#/components/schemas/container_updated_event_relationships_terminal'
+      required:
+      - container
+      - terminal
+    raw_event_attributes:
+      properties:
+        event:
+          description: Normalized string representing the event
+          enum:
+          - empty_out
+          - full_in
+          - positioned_in
+          - positioned_out
+          - vessel_loaded
+          - vessel_departed
+          - transshipment_arrived
+          - transshipment_discharged
+          - transshipment_loaded
+          - transshipment_departed
+          - rail_arrived
+          - rail_loaded
+          - rail_unloaded
+          - rail_departed
+          - vessel_arrived
+          - vessel_discharged
+          - arrived_at_destination
+          - delivered
+          - full_out
+          - empty_in
+          - vgm_received
+          - carrier_release
+          - customs_release
+          type: string
+        original_event:
+          description: The event name as returned by the carrier
+          type: string
+        actual_on:
+          description: 'The date of the event at the event location when no time information
+            is available. '
+          format: date
+          type: string
+        estimated_on:
+          description: 'The estimated date of the event at the event location when
+            no time information is available. '
+          format: date
+          type: string
+        actual_at:
+          description: The datetime the event transpired in UTC
+          format: date-time
+          type: string
+        estimated_at:
+          description: The estimated datetime the event will occur in UTC
+          format: date-time
+          type: string
+        timezone:
+          description: IANA TZ where the event occured
+          type: string
+        created_at:
+          description: When the raw_event was created in UTC
+          format: date-time
+          type: string
+        location_name:
+          description: The city or facility name of the event location
+          type: string
+        location_locode:
+          description: UNLOCODE of the event location
+          type: string
+        vessel_name:
+          description: The name of the vessel where applicable
+          type: string
+        vessel_imo:
+          description: The IMO of the vessel where applicable
+          type: string
+        index:
+          description: The order of the event. Thishelpful when only dates (i.e. actual_on)
+            are available.
+          type: integer
+        voyage_number:
+          type: string
+    raw_event_relationships:
+      properties:
+        location:
+          $ref: '#/components/schemas/transport_event_relationships_location'
+        vessel:
+          $ref: '#/components/schemas/estimated_event_relationships_vessel'
+  securitySchemes:
+    Authorization_Header:
+      description: "`Token YOUR_API_TOKEN`\n\nThe APIs require authentication to be\
+        \ done using header-based API Key and Secret Authentication. \n\nAPI key and\
+        \ secret aare sent in the `Authorization` header.\n\nYou send your API key\
+        \ and secret in the following way:\n\n`Authorization: Token YOUR_API_TOKEN`"
+      in: header
+      name: authorization
+      type: apiKey
+x-tagGroups:
+- name: End Points
+  tags:
+  - Shipments
+  - Containers
+  - Tracking Requests
+  - Webhooks
+  - Webhook Notifications

@@ -1,0 +1,1035 @@
+{
+	"info": {
+		"_postman_id": "7d39ab3e-b2fe-4919-a46d-7778bc7a95a2",
+		"name": "Terminal49 API",
+		"description": "# Introduction\n\nThe Terminal 49 API offers a convenient way to programatically track your shipments from origin to destination.\n\nHere are just a few of the data points we return and possible use-cases. \n\n\nData | Example Use Case\n-----|-------------------\n Destination ETA | Surface ETA changes to your relevant teams as they're reported\n Last Free Day and terminal statusÂ¹ | Track containers approaching LFD and prioritize dispatching\n Fees and holds at destination terminal | Clear your cargo to keep you containers moving\n Actual departure and arrival times | Report journey times by route to compare your ocean carriers performance\n\n_1.  At container ports in the US_\n## How it works\nAll you need to provide are your BOL numbers and SCACs. Terminal 49 will lookup the shipment with the carrier and populate shipment details including containers. \n\nOnce the shipment is setup Terminal 49 periodically checks with the carrier and the destination terminal. If any of the details of your shipment or containers change (for example - if the ETA changes) we will post the shipment to the the webhook you provide so you are always kept up-to-date.\n\n## Supported Shipping Lines and Terminals\nPresently, the Terminal49 API supports shipments and container tracking across the following carriers:\n- American President Lines  (APL) \\[APLU]\n- Australia National Line (ANL) \\[ANNU]\n- China Ocean Shipping Company (COSCO) \\[COSU]\n- CMA CGM \\[CMDU]\n- Evergreen \\[EGLV]\n- Hamburg SÃ¼d \\[SUDU]\n- Hapag-Lloyd \\[HLCU]\n- Hyundai Merchant Marine (HMM) \\[HDMU]\n- Maersk \\[MAEU]\n- Mediterranean Shipping Company (MSC) \\[MSCU]\n- Ocean Network Express (ONE) \\[ONEY]\n- Orient Overseas Container Line (OOCL) \\[OOLU]\n- Pacific International Lines (PIL) \\[PCIU]\n- Safmarine \\[SAFM]\n- Yangming Marine Transport (YangMing) \\[YMLU]\n\n[CSV of support carriers with roadmap](\"https://www.terminal49.com/api/docs/assets/data/Terminal49_Shiping_Line_Support.csv\")\n\n[CSV of supported US terminals](\"https://www.terminal49.com/api/docs/assets/data/Terminal49_Terminal_Support.csv\")\n\nIf you would you like us to support a shipping line or terminals that is not listed above please reach out to us. \n\n\n### Integrated Ports\nPresently, the Terminal 49 api integrates with terminals at the following ports:\n- Baltimore\n- Boston\n- Florida\n- Houston\n- Jacksonville\n- Long Beach\n- Los Angeles\n- Miami\n- Mobile\n- New Jersey\n- New Orleans\n- New York\n- Oakland\n- Philadelphia\n- Port Everglades\n- Savannah\n- Seattle\n- Tacoma\n- Tampa\n- Virginia\n\n# Getting-Started\n\n## Tracking flow\n\nTracking a new shipment with Terminal 49 is an asynchronous flow. Submit your tracking request to us and we will return a tracking request id so you can see the status of your request.\n\nWe recommend your register a webhook URL with us that we will call once we have processed the request.\n\nWhen we successfully lookup the BOL with the carrier we will create a shipment, and send the event `tracking_request.succeeded` to your webhook endpoint with the associated record. \n\nIf we encounter a problem we'll send the event `tracking_request.failed`.\n\n![Tracking Request Diagram](https://www.terminal49.com/api/docs/assets/images/create-shipment-flow.png  \"Tracking Request Diagram\")\n\n\nIf you don't want to use web hooks you can poll the `GET /tracking_request/{id}` endpoint to see the status of your request.\n\n## Authentication\n\nTo get your API token to Terminal 49 and go to your [account API settings](https://app.terminal49.com/settings/api)\n\nThe token should be sent with each API request in the Authentication header:\n\n```\nAuthentication: Token YOUR_API_TOKEN\n```\n\n# Webhooks\n\nYou may subscribe to events through webhooks to be alerted as to when events are triggered. See the [/webhooks endpoint documentation](#tag/Webhooks) for more information on setting up webhooks. \n\nWhen an event is triggered we will attempt to post to the URL you provided with the webhook.\n\nThe body will be in the following format: \n```json\n{\n  \"data\": {\n    \"id\": \"2250f31c-70d5-4d94-9013-82ced3544a60\",\n    \"type\": \"event\",\n    \"attributes\": {\n      \"event_type\": \"tracking_request.succeeded\",\n      \"created_at\": \"2020-03-27T20:24:36Z\"\n    },\n    \"relationships\": {\n      \"object\": {\n        \"id\": \"4a4d1dd3-6f1b-4b7b-88c5-c743a94db283\",\n        \"type\": \"tracking_request\"\n\n      }\n    },\n    \"included\": [\n      {\n        \"id\": \"4a4d1dd3-6f1b-4b7b-88c5-c743a94db283\",\n        \"type\": \"tracking_request\"\n        \"attributes\": {\n          \"bill_of_lading\": \"12345678\",\n          \"ref_numbers\": [\"my-ref-49\"]\n          \"tags\": [],\n          \"status\": \"succeeded\",\n          \"failed_reason\": null\n        },\n        \"relationships\": {\n          \"shipment\": {\n            \"id\": \"9c6bdb5b-d1fd-45f5-ab07-e46b5b8d617e\",\n            \"type\": \"shipment\"\n          }\n        }\n      },\n      {\n        \"id\": \"9c6bdb5b-d1fd-45f5-ab07-e46b5b8d617e\",\n        \"type\": \"shipment\",\n        \"attributes\": {\n          \"bill_of_lading_number\": \"12345678\",\n          \"ref_numbers\": [\"my-ref-49\"],\n          \"created_at\": \"2020-03-27T20:24:36Z\",\n          \"tags\": [ ],\n          \"port_of_lading_locode\": \"INVTZ\",\n          \"port_of_lading_name\": \"Visakhapatnam, IN\",\n          \"port_of_discharge_locode\": \"USNYC\",\n          \"port_of_discharge_name\": \"New York / New Jersey, NY\",\n          \"destination_locode\": \"USDET\",\n          \"destination_name\": \"Detroit, MI\",\n          \"shipping_line_scac\": \"HLCU\",\n          \"pod_vessel_name\": \"CMA CGM ALMAVIVA\",\n          \"pod_voyage_number\": \"0108\",\n          \"pol_etd_at\": null,\n          \"pol_atd_at\": \"2020-02-15T21:53Z\",\n          \"pol_timezone\": \"Asia/Calcutta\",\n          \"pod_eta_at\": \"2020-04-18T08:00Z\",\n          \"pod_ata_at\": null,\n          \"pod_timezone\": \"America/New_York\",\n          \"destination_eta_at\": \"2020-04-26T17:00Z\",\n          \"destination_ata_at\": null,\n          \"destination_timezone\": \"America/Detroit\"\n        },\n        \"relationships\": {\n          \"containers\": {\n            \"data\": [\n              {\n                \"id\": \"c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa\",\n                \"type\": \"container\"\n              }\n            ]\n          }\n        }\n      },\n      {\n        \"id\": \"c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa\",\n        \"type\": \"container\",\n        \"attributes\": {\n          \"number\": \"UACU4743531\",\n          \"equipment_type\": \"reefer\",\n          \"length\": 40,\n          \"height\": \"high_cube\",\n          \"weight\": 35075,\n          \"weight_unit\": \"kigs\",\n          \"created_at\": \"2020-03-27T20:24:36Z\",\n          \"seal_number\": null,\n          \"pickup_lfd\": null,\n          \"availability_known\": false,\n          \"available_for_pickup\": null,\n          \"current_transportation_mode\": \"vessel\",\n          \"pod_discharged_at\": null,\n          \"pod_picked_up_at\": null,\n          \"destination_unloaded_at\": null,\n          \"destination_picked_up_at\": null,\n          \"empty_returned_at\": null,\n          \"pod_timezone\": \"America/Los_Angeles\",\n          \"destination_timezone\": \"America/Detroit\",\n          \"empty_returned_timezone\": null\n        }\n      }\n    ]\n  }\n}\n```\n\n# Events\n\nEach event represents some change to a model which you may be notified of. At present there are 3 events:\n\n- tracking_request.succeeded\n- tracking_request.failed\n- shipment.updated\n\nSee the[/events endpoint documentation](#tag/Events) for more information\n\n# Roadmap\n\nBelow is the tentative schedule for the API. \n\n### Beta Release 1 - April 2020\n- `/tracking_requests` endpoint\n- `/shipments` endpoint\n- `/webhooks` endpoint\n- Webhook events:\n  - `shipment.eta_changed`\n  - `shipment.vessel_arrived`\n  - `tracking_request.succeeded` \n  - `tracking_request.failed` \n\n### Beta Release 2\n- `/containers` endpoint.\n- Webhook events:\n  - `container.created`\n  - `container.lfd_added`\n  - `container.available_for_pickup`\n  - `container.full_out`\n  - `container.empty_in`\n\n### Beta Release 3\n- Webhook events:\n  - `container.hold_added`\n  - `container.hold_released`\n  - `container.fee_added`\n  - `container.fee_paid`\n  - `container.unavailable_for_pickup`\n  - `container.yard_position_changed`\n  - `container.moved_offdock`\n\n### Beta Release 4\n- Webhook events:\n  - `shipment.etd_changed`\n  - `shipment.vessel_departed`\n  - `shipment.transshipment_arrived`\n  - `shipment.transhipment_departed`\n  - `container.empty_out`\n  - `container.full_in`\n  - `container.vessel_loaded`\n  - `container.transshipment_discharged`\n  - `container.transhipment_loaded`\n  - `container.vessel_discharged`\n\n\n\n\n\n\n\n\nContact Support:\n Name: Terminal49\n Email: support@terminal49.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "shipments",
+			"item": [
+				{
+					"name": "List shipments",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"description": "The APIs require authentication to be done using header-based API Key and Secret Authentication. \nAPI key and secret aare sent in the `Authorization` header.\n\nYou send your API key and secret in the following way:\n\n\n```\nAuthorization: Token YOUR_API_TOKEN\n```"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/shipments?filter[port_of_discharge]=<array>&filter[arrival_date_from]=<string>&filter[arrival_date_to]=<string>&filter[port_of_lading]=<array>&page[number]=<integer>&page[size]=<integer>&sort=<string>&q=<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"shipments"
+							],
+							"query": [
+								{
+									"key": "filter[port_of_discharge]",
+									"value": "<array>",
+									"description": "`unreleased` "
+								},
+								{
+									"key": "filter[arrival_date_from]",
+									"value": "<string>",
+									"description": "`unreleased` Shipments arriving (or arrived) after date (inclusive)"
+								},
+								{
+									"key": "filter[arrival_date_to]",
+									"value": "<string>",
+									"description": "`unreleased` Shipments arriving (or arrived) before date (inclusive)"
+								},
+								{
+									"key": "filter[port_of_lading]",
+									"value": "<array>",
+									"description": "`unreleased` Array of UN/LOCODEs"
+								},
+								{
+									"key": "page[number]",
+									"value": "<integer>",
+									"description": "`unreleased` "
+								},
+								{
+									"key": "page[size]",
+									"value": "<integer>",
+									"description": "`unreleased` "
+								},
+								{
+									"key": "sort",
+									"value": "<string>",
+									"description": "`unreleased` "
+								},
+								{
+									"key": "q",
+									"value": "<string>",
+									"description": "`unreleased` Search shipments by master bill of lading, reference number, or container number."
+								}
+							]
+						},
+						"description": "Returns a list of your shipments. The shipments are returned sorted by creation date, with the most recent shipments appearing first.\n\nThis api will return all shipments associated with the account. Shipments created via the `tracking_request` API aswell as the ones added via the dashboard will be retuned via this endpoint. "
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/shipments?filter[port_of_discharge]=<array>&filter[arrival_date_from]=<string>&filter[arrival_date_to]=<string>&filter[port_of_lading]=<array>&page[number]=<integer>&page[size]=<integer>&sort=<string>&q=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shipments"
+									],
+									"query": [
+										{
+											"key": "filter[port_of_discharge]",
+											"value": "<array>"
+										},
+										{
+											"key": "filter[arrival_date_from]",
+											"value": "<string>"
+										},
+										{
+											"key": "filter[arrival_date_to]",
+											"value": "<string>"
+										},
+										{
+											"key": "filter[port_of_lading]",
+											"value": "<array>"
+										},
+										{
+											"key": "page[number]",
+											"value": "<integer>"
+										},
+										{
+											"key": "page[size]",
+											"value": "<integer>"
+										},
+										{
+											"key": "sort",
+											"value": "<string>"
+										},
+										{
+											"key": "q",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"data\": {\n  \"id\": \"512ae32c-a604-44f8-9c15-2ca9cd3d2ae8\",\n  \"type\": \"shipment\",\n  \"attributes\": {\n   \"bill_of_lading_number\": \"6140575020\",\n   \"ref_numbers\": [\n    \"my-ref-49\",\n    \"PO#18412\"\n   ],\n   \"created_at\": \"2020-02-20T13:37:12Z\",\n   \"tags\": [],\n   \"port_of_lading_locode\": \"INVTZ\",\n   \"port_of_lading_name\": \"Visakhapatnam, IN\",\n   \"port_of_discharge_locode\": \"USNYC\",\n   \"port_of_discharge_name\": \"New York / New Jersey, NY\",\n   \"destination_locode\": \"USDET\",\n   \"destination_name\": \"Detroit, MI\",\n   \"shipping_line_scac\": \"HLCU\",\n   \"pod_vessel_name\": \"CMA CGM ALMAVIVA\",\n   \"pod_voyage_number\": \"0108\",\n   \"pol_etd_at\": null,\n   \"pol_atd_at\": \"2020-02-15T21:53Z\",\n   \"pol_timezone\": \"Asia/Calcutta\",\n   \"pod_eta_at\": \"2020-03-18T08:00Z\",\n   \"pod_ata_at\": null,\n   \"pod_timezone\": \"America/New_York\",\n   \"destination_eta_at\": \"2020-03-26T17:00Z\",\n   \"destination_ata_at\": null,\n   \"destination_timezone\": \"America/Detroit\",\n   \"pod_vessel_imo\": \"9450648\"\n  },\n  \"relationships\": {\n   \"containers\": {\n    \"data\": [\n     {\n      \"id\": \"c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa\",\n      \"type\": \"container\"\n     }\n    ]\n   },\n   \"port_of_lading\": {\n    \"data\": {\n     \"id\": \"bde5465a-1160-4fde-a026-74df9c362f65\",\n     \"type\": \"port\"\n    }\n   },\n   \"port_of_discharge\": {\n    \"data\": {\n     \"id\": \"f7cb530a-9e60-412c-a5bc-205a2f34ba54\",\n     \"type\": \"port\"\n    }\n   },\n   \"destination\": {\n    \"data\": {\n     \"id\": \"c9ae2b6b-5088-4e07-ba09-2872121e4fa2\",\n     \"type\": \"metro_area\"\n    }\n   },\n   \"customer\": {\n    \"data\": {\n     \"id\": \"ff76b51a-371e-45ec-86d1-9d03ccae566a\",\n     \"type\": \"account\"\n    }\n   }\n  }\n },\n \"included\": [\n  {\n   \"id\": \"c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa\",\n   \"type\": \"container\",\n   \"attributes\": {\n    \"number\": \"UACU4743531\",\n    \"equipment_type\": \"reefer\",\n    \"length\": 40,\n    \"height\": \"high_cube\",\n    \"weight\": 35075,\n    \"weight_unit\": \"kigs\",\n    \"created_at\": \"2020-02-20T08:19:52Z\",\n    \"seal_number\": null,\n    \"pickup_lfd\": null,\n    \"availability_known\": false,\n    \"available_for_pickup\": null,\n    \"current_transportation_mode\": \"vessel\",\n    \"pod_discharged_at\": null,\n    \"pod_picked_up_at\": null,\n    \"destination_unloaded_at\": null,\n    \"destination_picked_up_at\": null,\n    \"empty_returned_at\": null,\n    \"pod_timezone\": \"America/Los_Angeles\",\n    \"destination_timezone\": \"America/Detroit\",\n    \"empty_returned_timezone\": null\n   },\n   \"relationships\": {\n    \"most_recent_location\": {\n     \"data\": {\n      \"id\": \"dd179094-a1d4-4129-842d-b952e43df4b7\",\n      \"type\": \"port\"\n     }\n    },\n    \"shipment\": {\n     \"data\": {\n      \"id\": \"512ae32c-a604-44f8-9c15-2ca9cd3d2ae8\",\n      \"type\": \"shipment\"\n     }\n    },\n    \"current_vessel\": {\n     \"data\": {\n      \"id\": \"252a5450-2893-4207-b5c4-81ce3152ce84\",\n      \"type\": \"vessel\"\n     }\n    }\n   }\n  },\n  {\n   \"id\": \"bde5465a-1160-4fde-a026-74df9c362f65\",\n   \"type\": \"port\",\n   \"attributes\": {\n    \"name\": \"Visakhapatnam\",\n    \"locode\": \"INVTZ\",\n    \"country_code\": \"IN\",\n    \"timezone\": \"Asia/Calcutta\"\n   }\n  },\n  {\n   \"id\": \"dd179094-a1d4-4129-842d-b952e43df4b7\",\n   \"type\": \"port\",\n   \"attributes\": {\n    \"name\": \"Damietta\",\n    \"locode\": \"EGDAM\",\n    \"country_code\": \"EG\",\n    \"time_zone\": \"Africa/Cairo\"\n   }\n  },\n  {\n   \"id\": \"f7cb530a-9e60-412c-a5bc-205a2f34ba54\",\n   \"type\": \"port\",\n   \"attributes\": {\n    \"name\": \"New York / New Jersey\",\n    \"locode\": \"USNYC\",\n    \"country_code\": \"US\",\n    \"timezone\": \"America/New_York\"\n   }\n  },\n  {\n   \"id\": \"c9ae2b6b-5088-4e07-ba09-2872121e4fa2\",\n   \"type\": \"metro_area\",\n   \"attributes\": {\n    \"name\": \"Detroit\",\n    \"locode\": \"USDET\",\n    \"country_code\": \"US\",\n    \"state_abbr\": \"MI\",\n    \"timezone\": \"America/Detroit\"\n   }\n  },\n  {\n   \"id\": \"ff76b51a-371e-45ec-86d1-9d03ccae566a\",\n   \"type\": \"account\",\n   \"attributes\": {\n    \"name\": \"A-Z Imports\"\n   }\n  },\n  {\n   \"id\": \"252a5450-2893-4207-b5c4-81ce3152ce84\",\n   \"type\": \"vessel\",\n   \"attributes\": {\n    \"name\": \"CMA CGM ALMAVIVA\",\n    \"imo\": \"9450648\",\n    \"mmsi\": \"228339600\"\n   }\n  }\n ]\n}"
+						},
+						{
+							"name": "Unprocessable Entity",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/shipments?filter[port_of_discharge]=<array>&filter[arrival_date_from]=<string>&filter[arrival_date_to]=<string>&filter[port_of_lading]=<array>&page[number]=<integer>&page[size]=<integer>&sort=<string>&q=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shipments"
+									],
+									"query": [
+										{
+											"key": "filter[port_of_discharge]",
+											"value": "<array>"
+										},
+										{
+											"key": "filter[arrival_date_from]",
+											"value": "<string>"
+										},
+										{
+											"key": "filter[arrival_date_to]",
+											"value": "<string>"
+										},
+										{
+											"key": "filter[port_of_lading]",
+											"value": "<array>"
+										},
+										{
+											"key": "page[number]",
+											"value": "<integer>"
+										},
+										{
+											"key": "page[size]",
+											"value": "<integer>"
+										},
+										{
+											"key": "sort",
+											"value": "<string>"
+										},
+										{
+											"key": "q",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"error\": [\n  {\n   \"title\": \"Invalid arrival_date_from\",\n   \"detail\": \"filter['arrival_from'] must be in the format 'YYYY-MM-DD' and a valid date\"\n  },\n  {\n   \"title\": \"Invalid arrival_date_to\",\n   \"detail\": \"filter['arrival_from'] must be in the format 'YYYY-MM-DD' and a valid date\"\n  },\n  {\n   \"title\": \"Invalid port_of_lading\",\n   \"detail\": \"port_of_discharge must be an array of 5 character UN/LOCODEs\"\n  },\n  {\n   \"title\": \"Invalid port_of_discharge\",\n   \"detail\": \"port_of_discharge must be an array of 5 character UN/LOCODEs\"\n  }\n ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get a shipment",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"description": "The APIs require authentication to be done using header-based API Key and Secret Authentication. \nAPI key and secret aare sent in the `Authorization` header.\n\nYou send your API key and secret in the following way:\n\n\n```\nAuthorization: Token YOUR_API_TOKEN\n```"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/shipments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"shipments",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "e2eef501-5e07-41ae-83f7-f842dce2b488",
+									"key": "id",
+									"value": "<string>",
+									"type": "string",
+									"description": "(Required) Shipment Id"
+								}
+							]
+						},
+						"description": "Retrieves the details of an existing shipment. You need only supply the unique shipment `id` that was returned upon `tracking_request` creation."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/shipments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shipments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"data\": {\n  \"id\": \"512ae32c-a604-44f8-9c15-2ca9cd3d2ae8\",\n  \"type\": \"shipment\",\n  \"attributes\": {\n   \"bill_of_lading_number\": \"6140575020\",\n   \"ref_numbers\": [\n    \"my-ref-49\",\n    \"PO#18412\"\n   ],\n   \"created_at\": \"2020-02-20T13:37:12Z\",\n   \"tags\": [],\n   \"port_of_lading_locode\": \"INVTZ\",\n   \"port_of_lading_name\": \"Visakhapatnam, IN\",\n   \"port_of_discharge_locode\": \"USNYC\",\n   \"port_of_discharge_name\": \"New York / New Jersey, NY\",\n   \"destination_locode\": \"USDET\",\n   \"destination_name\": \"Detroit, MI\",\n   \"shipping_line_scac\": \"HLCU\",\n   \"pod_vessel_name\": \"CMA CGM ALMAVIVA\",\n   \"pod_vessel_imo\": \"9450648\",\n   \"pod_voyage_number\": \"0108\",\n   \"pol_etd_at\": null,\n   \"pol_atd_at\": \"2020-02-15T21:53Z\",\n   \"pol_timezone\": \"Asia/Calcutta\",\n   \"pod_eta_at\": \"2020-03-18T08:00Z\",\n   \"pod_ata_at\": null,\n   \"pod_timezone\": \"America/New_York\",\n   \"destination_eta_at\": \"2020-03-26T17:00Z\",\n   \"destination_ata_at\": null,\n   \"destination_timezone\": \"America/Detroit\"\n  },\n  \"relationships\": {\n   \"containers\": {\n    \"data\": [\n     {\n      \"id\": \"c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa\",\n      \"type\": \"container\"\n     }\n    ]\n   },\n   \"port_of_lading\": {\n    \"data\": {\n     \"id\": \"bde5465a-1160-4fde-a026-74df9c362f65\",\n     \"type\": \"port\"\n    }\n   },\n   \"port_of_discharge\": {\n    \"data\": {\n     \"id\": \"f7cb530a-9e60-412c-a5bc-205a2f34ba54\",\n     \"type\": \"port\"\n    }\n   },\n   \"destination\": {\n    \"data\": {\n     \"id\": \"c9ae2b6b-5088-4e07-ba09-2872121e4fa2\",\n     \"type\": \"metro_area\"\n    }\n   },\n   \"customer\": {\n    \"data\": {\n     \"id\": \"ff76b51a-371e-45ec-86d1-9d03ccae566a\",\n     \"type\": \"account\"\n    }\n   }\n  }\n },\n \"included\": [\n  {\n   \"id\": \"c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa\",\n   \"type\": \"container\",\n   \"attributes\": {\n    \"number\": \"UACU4743531\",\n    \"equipment_type\": \"reefer\",\n    \"length\": 40,\n    \"height\": \"high_cube\",\n    \"weight\": 35075,\n    \"weight_unit\": \"kigs\",\n    \"created_at\": \"2020-02-20T08:19:52Z\",\n    \"seal_number\": null,\n    \"pickup_lfd\": null,\n    \"availability_known\": false,\n    \"available_for_pickup\": null,\n    \"current_transportation_mode\": \"vessel\",\n    \"pod_discharged_at\": null,\n    \"pod_picked_up_at\": null,\n    \"destination_unloaded_at\": null,\n    \"destination_picked_up_at\": null,\n    \"empty_returned_at\": null,\n    \"pod_timezone\": \"America/Los_Angeles\",\n    \"destination_timezone\": \"America/Detroit\",\n    \"empty_returned_timezone\": null\n   },\n   \"relationships\": {\n    \"most_recent_location\": {\n     \"data\": {\n      \"id\": \"dd179094-a1d4-4129-842d-b952e43df4b7\",\n      \"type\": \"port\"\n     }\n    },\n    \"shipment\": {\n     \"data\": {\n      \"id\": \"512ae32c-a604-44f8-9c15-2ca9cd3d2ae8\",\n      \"type\": \"shipment\"\n     }\n    },\n    \"current_vessel\": {\n     \"data\": {\n      \"id\": \"252a5450-2893-4207-b5c4-81ce3152ce84\",\n      \"type\": \"vessel\"\n     }\n    }\n   }\n  },\n  {\n   \"id\": \"bde5465a-1160-4fde-a026-74df9c362f65\",\n   \"type\": \"port\",\n   \"attributes\": {\n    \"name\": \"Visakhapatnam\",\n    \"locode\": \"INVTZ\",\n    \"country_code\": \"IN\",\n    \"timezone\": \"Asia/Calcutta\"\n   }\n  },\n  {\n   \"id\": \"dd179094-a1d4-4129-842d-b952e43df4b7\",\n   \"type\": \"port\",\n   \"attributes\": {\n    \"name\": \"Damietta\",\n    \"locode\": \"EGDAM\",\n    \"country_code\": \"EG\",\n    \"time_zone\": \"Africa/Cairo\"\n   }\n  },\n  {\n   \"id\": \"f7cb530a-9e60-412c-a5bc-205a2f34ba54\",\n   \"type\": \"port\",\n   \"attributes\": {\n    \"name\": \"New York / New Jersey\",\n    \"locode\": \"USNYC\",\n    \"country_code\": \"US\",\n    \"timezone\": \"America/New_York\"\n   }\n  },\n  {\n   \"id\": \"c9ae2b6b-5088-4e07-ba09-2872121e4fa2\",\n   \"type\": \"metro_area\",\n   \"attributes\": {\n    \"name\": \"Detroit\",\n    \"locode\": \"USDET\",\n    \"country_code\": \"US\",\n    \"state_abbr\": \"MI\",\n    \"timezone\": \"America/Detroit\"\n   }\n  },\n  {\n   \"id\": \"ff76b51a-371e-45ec-86d1-9d03ccae566a\",\n   \"type\": \"account\",\n   \"attributes\": {\n    \"name\": \"A-Z Imports\"\n   }\n  },\n  {\n   \"id\": \"252a5450-2893-4207-b5c4-81ce3152ce84\",\n   \"type\": \"vessel\",\n   \"attributes\": {\n    \"name\": \"CMA CGM ALMAVIVA\",\n    \"imo\": \"9450648\",\n    \"mmsi\": \"228339600\"\n   }\n  }\n ]\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/shipments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shipments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"data\": {\n  \"id\": \"512ae32c-a604-44f8-9c15-2ca9cd3d2ae8\",\n  \"type\": \"shipment\",\n  \"attributes\": {\n   \"bill_of_lading_number\": \"6140575020\",\n   \"ref_numbers\": [\n    \"my-ref-49\",\n    \"PO#18412\"\n   ],\n   \"created_at\": \"2020-02-20T13:37:12Z\",\n   \"tags\": [],\n   \"port_of_lading_locode\": \"INVTZ\",\n   \"port_of_lading_name\": \"Visakhapatnam, IN\",\n   \"port_of_discharge_locode\": \"USNYC\",\n   \"port_of_discharge_name\": \"New York / New Jersey, NY\",\n   \"destination_locode\": \"USDET\",\n   \"destination_name\": \"Detroit, MI\",\n   \"shipping_line_scac\": \"HLCU\",\n   \"pod_vessel_name\": \"CMA CGM ALMAVIVA\",\n   \"pod_voyage_number\": \"0108\",\n   \"pol_etd_at\": null,\n   \"pol_atd_at\": \"2020-02-15T21:53Z\",\n   \"pol_timezone\": \"Asia/Calcutta\",\n   \"pod_eta_at\": \"2020-03-18T08:00Z\",\n   \"pod_ata_at\": null,\n   \"pod_timezone\": \"America/New_York\",\n   \"destination_eta_at\": \"2020-03-26T17:00Z\",\n   \"destination_ata_at\": null,\n   \"destination_timezone\": \"America/Detroit\"\n  },\n  \"relationships\": {\n   \"containers\": {\n    \"data\": [\n     {\n      \"id\": \"c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa\",\n      \"type\": \"container\"\n     }\n    ]\n   },\n   \"port_of_lading\": {\n    \"data\": {\n     \"id\": \"bde5465a-1160-4fde-a026-74df9c362f65\",\n     \"type\": \"port\"\n    }\n   },\n   \"port_of_discharge\": {\n    \"data\": {\n     \"id\": \"f7cb530a-9e60-412c-a5bc-205a2f34ba54\",\n     \"type\": \"port\"\n    }\n   },\n   \"destination\": {\n    \"data\": {\n     \"id\": \"c9ae2b6b-5088-4e07-ba09-2872121e4fa2\",\n     \"type\": \"metro_area\"\n    }\n   },\n   \"customer\": {\n    \"data\": {\n     \"id\": \"ff76b51a-371e-45ec-86d1-9d03ccae566a\",\n     \"type\": \"account\"\n    }\n   }\n  }\n },\n \"included\": [\n  {\n   \"id\": \"c99a81c0-ff69-4bdf-aa5f-8e33a787f5fa\",\n   \"type\": \"container\",\n   \"attributes\": {\n    \"number\": \"UACU4743531\",\n    \"equipment_type\": \"reefer\",\n    \"length\": 40,\n    \"height\": \"high_cube\",\n    \"weight\": 35075,\n    \"weight_unit\": \"kigs\",\n    \"created_at\": \"2020-02-20T08:19:52Z\",\n    \"seal_number\": null,\n    \"pickup_lfd\": null,\n    \"availability_known\": false,\n    \"available_for_pickup\": null,\n    \"current_transportation_mode\": \"vessel\",\n    \"pod_discharged_at\": null,\n    \"pod_picked_up_at\": null,\n    \"destination_unloaded_at\": null,\n    \"destination_picked_up_at\": null,\n    \"empty_returned_at\": null,\n    \"pod_timezone\": \"America/Los_Angeles\",\n    \"destination_timezone\": \"America/Detroit\",\n    \"empty_returned_timezone\": null\n   },\n   \"relationships\": {\n    \"most_recent_location\": {\n     \"data\": {\n      \"id\": \"dd179094-a1d4-4129-842d-b952e43df4b7\",\n      \"type\": \"port\"\n     }\n    },\n    \"shipment\": {\n     \"data\": {\n      \"id\": \"512ae32c-a604-44f8-9c15-2ca9cd3d2ae8\",\n      \"type\": \"shipment\"\n     }\n    },\n    \"current_vessel\": {\n     \"data\": {\n      \"id\": \"252a5450-2893-4207-b5c4-81ce3152ce84\",\n      \"type\": \"vessel\"\n     }\n    }\n   }\n  },\n  {\n   \"id\": \"bde5465a-1160-4fde-a026-74df9c362f65\",\n   \"type\": \"port\",\n   \"attributes\": {\n    \"name\": \"Visakhapatnam\",\n    \"locode\": \"INVTZ\",\n    \"country_code\": \"IN\",\n    \"timezone\": \"Asia/Calcutta\"\n   }\n  },\n  {\n   \"id\": \"dd179094-a1d4-4129-842d-b952e43df4b7\",\n   \"type\": \"port\",\n   \"attributes\": {\n    \"name\": \"Damietta\",\n    \"locode\": \"EGDAM\",\n    \"country_code\": \"EG\",\n    \"time_zone\": \"Africa/Cairo\"\n   }\n  },\n  {\n   \"id\": \"f7cb530a-9e60-412c-a5bc-205a2f34ba54\",\n   \"type\": \"port\",\n   \"attributes\": {\n    \"name\": \"New York / New Jersey\",\n    \"locode\": \"USNYC\",\n    \"country_code\": \"US\",\n    \"timezone\": \"America/New_York\"\n   }\n  },\n  {\n   \"id\": \"c9ae2b6b-5088-4e07-ba09-2872121e4fa2\",\n   \"type\": \"metro_area\",\n   \"attributes\": {\n    \"name\": \"Detroit\",\n    \"locode\": \"USDET\",\n    \"country_code\": \"US\",\n    \"state_abbr\": \"MI\",\n    \"timezone\": \"America/Detroit\"\n   }\n  },\n  {\n   \"id\": \"ff76b51a-371e-45ec-86d1-9d03ccae566a\",\n   \"type\": \"account\",\n   \"attributes\": {\n    \"name\": \"A-Z Imports\"\n   }\n  },\n  {\n   \"id\": \"252a5450-2893-4207-b5c4-81ce3152ce84\",\n   \"type\": \"vessel\",\n   \"attributes\": {\n    \"name\": \"CMA CGM ALMAVIVA\",\n    \"imo\": \"9450648\",\n    \"mmsi\": \"228339600\"\n   }\n  }\n ]\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "tracking requests",
+			"item": [
+				{
+					"name": "Create a tracking request",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"description": "The APIs require authentication to be done using header-based API Key and Secret Authentication. \nAPI key and secret aare sent in the `Authorization` header.\n\nYou send your API key and secret in the following way:\n\n\n```\nAuthorization: Token YOUR_API_TOKEN\n```"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"type\": \"<string>\",\n        \"attributes\": {\n            \"request_type\": \"<string>\",\n            \"request_number\": \"<string>\",\n            \"scac\": \"<string>\"\n        }\n    }\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tracking_requests",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tracking_requests"
+							]
+						},
+						"description": "To track an ocean shipment, you create a new tracking request. \nTwo attributes are required to track a shipment. A `bill of lading/booking number` and a shipping line `SCAC`. \n\nOnce a tracking request is created we will attempt to fetch the shipment details and it's related containers from the shipping line. If the attempt is successful we will create in new shipment object including any related container objects. We will send a `tracking_Request.succeeded` webhook notification to your webhooks.  \n\nIf the attempt to fetch fails then we will send a `tracking_Request.failed` webhook notification to your `webhooks`.  \n\nA `tracking_Request.succeeded` or `tracking_Request.failed` webhook notificaiton will only be sent  if you have  atleast one active webhook. "
+					},
+					"response": [
+						{
+							"name": "Unprocessable Entity",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": {\n        \"attributes\": {\n            \"request_type\": \"bill_of_lading\",\n            \"request_number\": \"MEDUFR030802\",\n            \"scac\": \"MSCU\"\n        },\n        \"type\": \"tracking_request\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tracking_requests",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tracking_requests"
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"errors\": [\n  {\n   \"status\": \"422\",\n   \"source\": {\n    \"pointer\": \"/data/attributes/scac\"\n   },\n   \"title\": \"Unprocessable Entity\",\n   \"detail\": \"Scac can't be blank\",\n   \"code\": \"blank\"\n  },\n  {\n   \"status\": \"422\",\n   \"source\": {\n    \"pointer\": \"/data/attributes/scac\"\n   },\n   \"title\": \"Unprocessable Entity\",\n   \"detail\": \"Scac 'XXXX' is not recognized\",\n   \"code\": \"blank\"\n  },\n  {\n   \"status\": \"422\",\n   \"source\": {\n    \"pointer\": \"/data/attributes/scac\"\n   },\n   \"title\": \"Unprocessable Entity\",\n   \"detail\": \"Scac 'UALC' is not supported. We do not currently integrate with Universal Africa Lines\",\n   \"code\": \"blank\"\n  },\n  {\n   \"status\": \"422\",\n   \"source\": {\n    \"pointer\": \"/data/attributes/request_number\"\n   },\n   \"title\": \"Unprocessable Entity\",\n   \"detail\": \"Request number can't be blank\",\n   \"code\": \"blank\"\n  }\n ]\n}"
+						},
+						{
+							"name": "Tracking Request Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": {\n        \"attributes\": {\n            \"request_type\": \"bill_of_lading\",\n            \"request_number\": \"MEDUFR030802\",\n            \"scac\": \"MSCU\"\n        },\n        \"type\": \"tracking_request\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tracking_requests",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tracking_requests"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"data\": {\n  \"id\": \"ba4cb904-827f-4038-8e31-1e92b3356218\",\n  \"type\": \"tracking_request\",\n  \"attributes\": {\n   \"request_number\": \"MEDUFR030802\",\n   \"request_type\": \"bill_of_lading\",\n   \"scac\": \"MSCU\",\n   \"ref_numbers\": null,\n   \"created_at\": \"2020-04-04T16:13:35-07:00\",\n   \"status\": \"pending\",\n   \"failed_reason\": null\n  },\n  \"relationships\": {\n   \"tracked_object\": {\n    \"data\": null\n   }\n  },\n  \"links\": {\n   \"self\": \"/v2/tracking_requests/ba4cb904-827f-4038-8e31-1e92b3356218\"\n  }\n }\n}"
+						}
+					]
+				},
+				{
+					"name": "List tracking requests",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"description": "The APIs require authentication to be done using header-based API Key and Secret Authentication. \nAPI key and secret aare sent in the `Authorization` header.\n\nYou send your API key and secret in the following way:\n\n\n```\nAuthorization: Token YOUR_API_TOKEN\n```"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/tracking_requests",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tracking_requests"
+							]
+						},
+						"description": "Returns a list of your tracking requests. The trackig requests are returned sorted by creation date, with the most recent tracking request appearing first."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/tracking_requests",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tracking_requests"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"data\": [\n  {\n   \"id\": \"<uuid>\",\n   \"type\": \"<string>\",\n   \"attributes\": {\n    \"request_number\": \"ONEYSH9AME650500\",\n    \"request_type\": \"bill_of_lading\",\n    \"scac\": \"ONEY\",\n    \"ref_numbers\": [\n     \"<string>\",\n     \"<string>\"\n    ],\n    \"tags\": [\n     \"<string>\",\n     \"<string>\"\n    ],\n    \"status\": \"<string>\",\n    \"failed_reason\": \"<string>\"\n   },\n   \"relationships\": {\n    \"customer\": {\n     \"data\": {\n      \"id\": \"<uuid>\",\n      \"type\": \"<string>\"\n     }\n    },\n    \"shipment\": {\n     \"data\": {\n      \"id\": \"<uuid>\",\n      \"type\": \"<string>\"\n     }\n    },\n    \"shipping_line\": {\n     \"data\": {\n      \"id\": \"<uuid>\",\n      \"type\": \"<string>\"\n     }\n    }\n   }\n  },\n  {\n   \"id\": \"<uuid>\",\n   \"type\": \"<string>\",\n   \"attributes\": {\n    \"request_number\": \"ONEYSH9AME650500\",\n    \"request_type\": \"bill_of_lading\",\n    \"scac\": \"ONEY\",\n    \"ref_numbers\": [\n     \"<string>\",\n     \"<string>\"\n    ],\n    \"tags\": [\n     \"<string>\",\n     \"<string>\"\n    ],\n    \"status\": \"<string>\",\n    \"failed_reason\": \"<string>\"\n   },\n   \"relationships\": {\n    \"customer\": {\n     \"data\": {\n      \"id\": \"<uuid>\",\n      \"type\": \"<string>\"\n     }\n    },\n    \"shipment\": {\n     \"data\": {\n      \"id\": \"<uuid>\",\n      \"type\": \"<string>\"\n     }\n    },\n    \"shipping_line\": {\n     \"data\": {\n      \"id\": \"<uuid>\",\n      \"type\": \"<string>\"\n     }\n    }\n   }\n  }\n ],\n \"links\": {\n  \"last\": \"<uri>\",\n  \"next\": \"<uri>\",\n  \"prev\": \"<uri>\",\n  \"first\": \"<uri>\",\n  \"self\": \"<uri>\"\n },\n \"meta\": {\n  \"size\": \"<integer>\",\n  \"total\": \"<integer>\"\n },\n \"included\": [\n  {\n   \"id\": \"<uuid>\",\n   \"type\": \"<string>\",\n   \"attributes\": {\n    \"company_name\": \"<string>\"\n   }\n  },\n  {\n   \"id\": \"<uuid>\",\n   \"type\": \"<string>\",\n   \"attributes\": {\n    \"company_name\": \"<string>\"\n   }\n  }\n ]\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/tracking_requests",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tracking_requests"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"errors\": \"<string,array>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get a single tracking request",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"description": "The APIs require authentication to be done using header-based API Key and Secret Authentication. \nAPI key and secret aare sent in the `Authorization` header.\n\nYou send your API key and secret in the following way:\n\n\n```\nAuthorization: Token YOUR_API_TOKEN\n```"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/tracking_requests/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tracking_requests",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "eed340f1-b2af-4751-8b03-8aad99e9cd9a",
+									"key": "id",
+									"value": "<string>",
+									"type": "string",
+									"description": "(Required) Tracking Request ID"
+								}
+							]
+						},
+						"description": "Get the details and status of an existing tracking request. "
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/tracking_requests/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tracking_requests",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"data\": {\n  \"id\": \"ba4cb904-827f-4038-8e31-1e92b3356218\",\n  \"type\": \"tracking_request\",\n  \"attributes\": {\n   \"request_number\": \"MEDUFR030802\",\n   \"request_type\": \"bill_of_lading\",\n   \"scac\": \"MSCU\",\n   \"ref_numbers\": null,\n   \"created_at\": \"2020-04-04T16:13:35-07:00\",\n   \"status\": \"created\",\n   \"failed_reason\": null\n  },\n  \"relationships\": {\n   \"tracked_object\": {\n    \"data\": {\n     \"id\": \"eb6f218a-0b4a-47f9-8ef9-759aa5e0ea83\",\n     \"type\": \"shipment\"\n    }\n   }\n  },\n  \"links\": {\n   \"self\": \"/v2/tracking_requests/ba4cb904-827f-4038-8e31-1e92b3356218\"\n  }\n },\n \"included\": [\n  {\n   \"id\": \"eb6f218a-0b4a-47f9-8ef9-759aa5e0ea83\",\n   \"type\": \"shipment\",\n   \"attributes\": {\n    \"created_at\": \"2020-04-04T16:13:37-07:00\",\n    \"bill_of_lading_number\": \"MEDUFR030802\",\n    \"ref_numbers\": [\n     null\n    ],\n    \"shipping_line_scac\": \"MSCU\",\n    \"shipping_line_name\": \"Mediterranean Shipping Company\",\n    \"port_of_lading_locode\": \"FRFOS\",\n    \"port_of_lading_name\": \"Fos-Sur-Mer\",\n    \"port_of_discharge_locode\": \"USOAK\",\n    \"port_of_discharge_name\": \"Oakland\",\n    \"pod_vessel_name\": \"MSC ALGECIRAS\",\n    \"pod_vessel_imo\": \"9605243\",\n    \"pod_voyage_number\": \"920A\",\n    \"destination_locode\": \"USOAK\",\n    \"destination_name\": \"Oakland\",\n    \"destination_timezone\": \"America/Los_Angeles\",\n    \"destination_ata_at\": \"2019-06-21T18:46:00-07:00\",\n    \"destination_eta_at\": null,\n    \"pol_etd_at\": null,\n    \"pol_atd_at\": \"2019-05-24T03:00:00-07:00\",\n    \"pol_timezone\": \"Europe/Paris\",\n    \"pod_eta_at\": null,\n    \"pod_ata_at\": \"2019-06-21T18:46:00-07:00\",\n    \"pod_timezone\": \"America/Los_Angeles\"\n   },\n   \"relationships\": {\n    \"port_of_lading\": {\n     \"data\": {\n      \"id\": \"6d8c6c29-72a6-49ad-87b7-fd045f202212\",\n      \"type\": \"port\"\n     }\n    },\n    \"port_of_discharge\": {\n     \"data\": {\n      \"id\": \"42d1ba3a-f4b8-431d-a6fe-49fd748a59e7\",\n      \"type\": \"port\"\n     }\n    },\n    \"pod_terminal\": {\n     \"data\": null\n    },\n    \"destination\": {\n     \"data\": {\n      \"id\": \"42d1ba3a-f4b8-431d-a6fe-49fd748a59e7\",\n      \"type\": \"port\"\n     }\n    },\n    \"containers\": {\n     \"data\": [\n      {\n       \"id\": \"11c1fa10-52a5-48e2-82f4-5523756b3d0f\",\n       \"type\": \"container\"\n      }\n     ]\n    }\n   },\n   \"links\": {\n    \"self\": \"/v2/shipments/eb6f218a-0b4a-47f9-8ef9-759aa5e0ea83\"\n   }\n  }\n ]\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/tracking_requests/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tracking_requests",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"errors\": [\n  {\n   \"title\": \"<string>\",\n   \"detail\": \"<string>\",\n   \"status\": \"<string>\",\n   \"code\": \"<string>\",\n   \"source\": \"<string>\"\n  },\n  {\n   \"title\": \"<string>\",\n   \"detail\": \"<string>\",\n   \"status\": \"<string>\",\n   \"code\": \"<string>\",\n   \"source\": \"<string>\"\n  }\n ]\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "webhooks",
+			"item": [
+				{
+					"name": "List webhooks",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"description": "The APIs require authentication to be done using header-based API Key and Secret Authentication. \nAPI key and secret aare sent in the `Authorization` header.\n\nYou send your API key and secret in the following way:\n\n\n```\nAuthorization: Token YOUR_API_TOKEN\n```"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/webhooks",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"webhooks"
+							]
+						},
+						"description": "Get a list of all the webhooks"
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/webhooks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"webhooks"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"data\": [\n  {\n   \"id\": \"<uuid>\",\n   \"type\": \"<string>\",\n   \"attributes\": {\n    \"url\": \"<uri>\",\n    \"active\": true,\n    \"events\": [\n     \"<string>\",\n     \"<string>\"\n    ]\n   }\n  },\n  {\n   \"id\": \"<uuid>\",\n   \"type\": \"<string>\",\n   \"attributes\": {\n    \"url\": \"<uri>\",\n    \"active\": true,\n    \"events\": [\n     \"<string>\",\n     \"<string>\"\n    ]\n   }\n  }\n ]\n}"
+						},
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/webhooks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"webhooks"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"data\": [\n  {\n   \"id\": \"<uuid>\",\n   \"type\": \"<string>\",\n   \"attributes\": {\n    \"url\": \"<uri>\",\n    \"active\": true,\n    \"events\": [\n     \"<string>\",\n     \"<string>\"\n    ]\n   }\n  },\n  {\n   \"id\": \"<uuid>\",\n   \"type\": \"<string>\",\n   \"attributes\": {\n    \"url\": \"<uri>\",\n    \"active\": true,\n    \"events\": [\n     \"<string>\",\n     \"<string>\"\n    ]\n   }\n  }\n ],\n \"meta\": {\n  \"size\": \"<integer>\",\n  \"total\": \"<integer>\"\n },\n \"links\": {\n  \"last\": \"<uri>\",\n  \"next\": \"<uri>\",\n  \"prev\": \"<uri>\",\n  \"first\": \"<uri>\",\n  \"self\": \"<uri>\"\n }\n}"
+						}
+					]
+				},
+				{
+					"name": "Create a webhook",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"description": "The APIs require authentication to be done using header-based API Key and Secret Authentication. \nAPI key and secret aare sent in the `Authorization` header.\n\nYou send your API key and secret in the following way:\n\n\n```\nAuthorization: Token YOUR_API_TOKEN\n```"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/webhooks",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"webhooks"
+							]
+						},
+						"description": "Create a webhook"
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/webhooks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"webhooks"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unprocessable Entity",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/webhooks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"webhooks"
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"errors\": [\n  {\n   \"title\": \"<string>\",\n   \"detail\": \"<string>\",\n   \"status\": \"<string>\",\n   \"code\": \"<string>\",\n   \"source\": \"<string>\"\n  },\n  {\n   \"title\": \"<string>\",\n   \"detail\": \"<string>\",\n   \"status\": \"<string>\",\n   \"code\": \"<string>\",\n   \"source\": \"<string>\"\n  }\n ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get single webhook",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"description": "The APIs require authentication to be done using header-based API Key and Secret Authentication. \nAPI key and secret aare sent in the `Authorization` header.\n\nYou send your API key and secret in the following way:\n\n\n```\nAuthorization: Token YOUR_API_TOKEN\n```"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/webhooks/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"webhooks",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "c4bc8206-0b57-4e28-a16d-28f13040c237",
+									"key": "id",
+									"value": "<string>",
+									"type": "string",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Get the details of a single webhook"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/webhooks/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"webhooks",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"data\": {\n  \"id\": \"<uuid>\",\n  \"type\": \"<string>\",\n  \"attributes\": {\n   \"url\": \"<uri>\",\n   \"active\": true,\n   \"events\": [\n    \"<string>\",\n    \"<string>\"\n   ]\n  }\n }\n}"
+						}
+					]
+				},
+				{
+					"name": "Edit a webhook",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"description": "The APIs require authentication to be done using header-based API Key and Secret Authentication. \nAPI key and secret aare sent in the `Authorization` header.\n\nYou send your API key and secret in the following way:\n\n\n```\nAuthorization: Token YOUR_API_TOKEN\n```"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/webhooks/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"webhooks",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "a8f8b6ce-0a61-41da-8e9a-0013d0a40dc0",
+									"key": "id",
+									"value": "<string>",
+									"type": "string",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Update a single webhook"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/webhooks/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"webhooks",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"data\": {\n  \"value\": \"reference ./terminal49.v1.json#/components/schemas/hook not found in the OpenAPI spec\"\n }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete a webhook",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"description": "The APIs require authentication to be done using header-based API Key and Secret Authentication. \nAPI key and secret aare sent in the `Authorization` header.\n\nYou send your API key and secret in the following way:\n\n\n```\nAuthorization: Token YOUR_API_TOKEN\n```"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/webhooks/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"webhooks",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "36d3d59f-e856-4268-b44f-79956a7575a0",
+									"key": "id",
+									"value": "<string>",
+									"type": "string",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Delete a webhook"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/webhooks/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"webhooks",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "Token {{API_TOKEN}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "cb96dac8-3e6f-4b78-abe7-c39c00af3973",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "40866830-60d0-4dd2-bfa1-c3ad19f2a12e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "0eb2d23f-70e7-4e31-921e-4f6457fcf2b5",
+			"key": "baseUrl",
+			"value": "https://api.terminal49.com/v2"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

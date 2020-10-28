@@ -1,0 +1,9 @@
+#
+# Git normalization
+#
+
+
+.gitattributes export-ignore  
+.gitignore export-ignore
+
+*.go diff=golang
