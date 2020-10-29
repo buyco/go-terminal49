@@ -596,23 +596,6 @@ paths:
       operationId: post-track
       requestBody:
         $ref: '#/components/requestBodies/inline_object'
-        content:
-          application/json:
-            examples:
-              'Example: MSC BL':
-                value:
-                  data:
-                    attributes:
-                      request_type: bill_of_lading
-                      request_number: MEDUFR030802
-                      scac: MSCU
-                    type: tracking_request
-            schema:
-              properties:
-                data:
-                  $ref: '#/components/schemas/_tracking_requests_data'
-              type: object
-        description: Create a shipment tracking request
       responses:
         "201":
           content:
@@ -831,15 +814,6 @@ paths:
         style: simple
       requestBody:
         $ref: '#/components/requestBodies/inline_object_1'
-        content:
-          application/json:
-            schema:
-              properties:
-                data:
-                  $ref: '#/components/schemas/_webhooks__id__data'
-              required:
-              - data
-              type: object
       responses:
         "200":
           content:
@@ -873,25 +847,6 @@ paths:
       operationId: post-webhooks
       requestBody:
         $ref: '#/components/requestBodies/inline_object_2'
-        content:
-          application/json:
-            examples:
-              Test Webhook via webhook.site:
-                value:
-                  data:
-                    type: webhook
-                    attributes:
-                      url: https://webhook.site/
-                      active: true
-                      events:
-                      - '*'
-            schema:
-              properties:
-                data:
-                  $ref: '#/components/schemas/_webhooks_data'
-              required:
-              - data
-              type: object
       responses:
         "201":
           content:
@@ -1491,15 +1446,18 @@ components:
       title: container_updated_event
       type: object
     raw_event:
-      description: "Raw Events represent the milestones from the shipping line for\
-        \ a given container.\n\n### About raw_event datetimes\n\nThe events may include\
-        \ estimated future events. The event is a future event if an `estimated_`\
-        \ timestamp is not null. \n\nThe datetime properties `actual_on`, `estimated_on`,\
-        \ `actual_at`, and `estimated_at` are all mutually exclusive. \n\nWhen the\
-        \ `time_zone` property is present the datetimes are UTC timestamps, which\
-        \ can be converted to the local time by parsing the provided `time_zone`.\n\
-        \nWhen the `time_zone` property is absent, the datetimes represent local times\
-        \ which serialized as UTC timestamps for consistency. "
+      description: |-
+        Raw Events represent the milestones from the shipping line for a given container.
+
+        ### About raw_event datetimes
+
+        The events may include estimated future events. The event is a future event if an `estimated_` timestamp is not null.
+
+        The datetime properties `actual_on`, `estimated_on`, `actual_at`, and `estimated_at` are all mutually exclusive.
+
+        When the `time_zone` property is present the datetimes are UTC timestamps, which can be converted to the local time by parsing the provided `time_zone`.
+
+        When the `time_zone` property is absent, the datetimes represent local times which serialized as UTC timestamps for consistency.
       properties:
         id:
           type: string
@@ -3406,11 +3364,15 @@ components:
     container_updated_event_attributes:
       properties:
         changeset:
-          description: "A hash of all the changed attributes with the values being\
-            \ an array of the before and after. E.g. \n`{\"pickup_lfd\": [null, \"\
-            2020-05-20\"]}`\n\nThe current attributes that can be alerted on are:\n\
-            - `available_for_pickup`\n- `pickup_lfd`\n- `fees_at_pod_terminal`\n-\
-            \ `holds_at_pod_terminal`"
+          description: |-
+            A hash of all the changed attributes with the values being an array of the before and after. E.g.
+            `{"pickup_lfd": [null, "2020-05-20"]}`
+
+            The current attributes that can be alerted on are:
+            - `available_for_pickup`
+            - `pickup_lfd`
+            - `fees_at_pod_terminal`
+            - `holds_at_pod_terminal`
           type: object
         timestamp:
           format: date-time

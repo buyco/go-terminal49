@@ -12,5 +12,5 @@ package terminal49
 // InlineResponse201 struct for InlineResponse201
 type InlineResponse201 struct {
 	Data TrackingRequest `json:"data,omitempty"`
-	Included []AnyOfaccountshippingLine `json:"included,omitempty"`
+	Included []interface{} `json:"included,omitempty"`
 }

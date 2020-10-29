@@ -14,5 +14,5 @@ type InlineResponse2002 struct {
 	Data []TrackingRequest `json:"data,omitempty"`
 	Links Links `json:"links,omitempty"`
 	Meta Meta `json:"meta,omitempty"`
-	Included []AnyOfaccountshippingLineobject `json:"included,omitempty"`
+	Included []interface{} `json:"included,omitempty"`
 }

@@ -12,5 +12,5 @@ package terminal49
 // InlineResponse2001 struct for InlineResponse2001
 type InlineResponse2001 struct {
 	Data Shipment `json:"data,omitempty"`
-	Included []AnyOfcontainerportterminal `json:"included,omitempty"`
+	Included []interface{} `json:"included,omitempty"`
 }

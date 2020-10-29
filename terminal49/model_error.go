@@ -13,7 +13,7 @@ package terminal49
 type ModelError struct {
 	Detail string `json:"detail,omitempty"`
 	Title string `json:"title"`
-	Source string `json:"source,omitempty"`
+	Source interface{} `json:"source,omitempty"`
 	Code string `json:"code,omitempty"`
 	Status string `json:"status,omitempty"`
 }

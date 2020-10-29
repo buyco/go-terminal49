@@ -14,7 +14,7 @@ import (
 )
 // ContainerUpdatedEventAttributes struct for ContainerUpdatedEventAttributes
 type ContainerUpdatedEventAttributes struct {
-	// A hash of all the changed attributes with the values being an array of the before and after. E.g.  `{\"pickup_lfd\": [null, \"2020-05-20\"]}`  The current attributes that can be alerted on are: - `available_for_pickup` - `pickup_lfd` - `fees_at_pod_terminal` - `holds_at_pod_terminal`
+	// A hash of all the changed attributes with the values being an array of the before and after. E.g. `{\"pickup_lfd\": [null, \"2020-05-20\"]}`  The current attributes that can be alerted on are: - `available_for_pickup` - `pickup_lfd` - `fees_at_pod_terminal` - `holds_at_pod_terminal`
 	Changeset map[string]interface{} `json:"changeset"`
 	Timestamp time.Time `json:"timestamp"`
 	// IANA TZ 

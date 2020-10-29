@@ -9,7 +9,7 @@
  */
 
 package terminal49
-// RawEvent Raw Events represent the milestones from the shipping line for a given container.  ### About raw_event datetimes  The events may include estimated future events. The event is a future event if an `estimated_` timestamp is not null.   The datetime properties `actual_on`, `estimated_on`, `actual_at`, and `estimated_at` are all mutually exclusive.   When the `time_zone` property is present the datetimes are UTC timestamps, which can be converted to the local time by parsing the provided `time_zone`.  When the `time_zone` property is absent, the datetimes represent local times which serialized as UTC timestamps for consistency. 
+// RawEvent Raw Events represent the milestones from the shipping line for a given container.  ### About raw_event datetimes  The events may include estimated future events. The event is a future event if an `estimated_` timestamp is not null.  The datetime properties `actual_on`, `estimated_on`, `actual_at`, and `estimated_at` are all mutually exclusive.  When the `time_zone` property is present the datetimes are UTC timestamps, which can be converted to the local time by parsing the provided `time_zone`.  When the `time_zone` property is absent, the datetimes represent local times which serialized as UTC timestamps for consistency.
 type RawEvent struct {
 	Id string `json:"id,omitempty"`
 	Type string `json:"type,omitempty"`
