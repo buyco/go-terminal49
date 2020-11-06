@@ -11,8 +11,6 @@
 package terminal49
 // InlineResponse2006 struct for InlineResponse2006
 type InlineResponse2006 struct {
-	Data []Container `json:"data,omitempty"`
-	Included []Shipment `json:"included,omitempty"`
-	Links Links `json:"links,omitempty"`
-	Meta Meta `json:"meta,omitempty"`
+	Data WebhookNotification `json:"data,omitempty"`
+	Included []interface{} `json:"included,omitempty"`
 }

@@ -34,7 +34,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Header](../README.md#Authorization_Header)
+[authorization](../README.md#authorization)
 
 ### HTTP request headers
 
@@ -64,7 +64,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-[Authorization_Header](../README.md#Authorization_Header)
+[authorization](../README.md#authorization)
 
 ### HTTP request headers
 
@@ -98,7 +98,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Header](../README.md#Authorization_Header)
+[authorization](../README.md#authorization)
 
 ### HTTP request headers
 
@@ -143,7 +143,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Header](../README.md#Authorization_Header)
+[authorization](../README.md#authorization)
 
 ### HTTP request headers
 
@@ -157,7 +157,7 @@ Name | Type | Description  | Notes
 
 ## PostWebhooks
 
-> Webhook PostWebhooks(ctx, optional)
+> InlineResponse2004 PostWebhooks(ctx, optional)
 
 Create a webhook
 
@@ -182,11 +182,11 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Webhook**](webhook.md)
+[**InlineResponse2004**](inline_response_200_4.md)
 
 ### Authorization
 
-[Authorization_Header](../README.md#Authorization_Header)
+[authorization](../README.md#authorization)
 
 ### HTTP request headers
 

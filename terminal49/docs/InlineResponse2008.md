@@ -1,11 +1,13 @@
-# WebhooksIdData
+# InlineResponse2008
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Attributes** | [**WebhooksIdDataAttributes**](_webhooks__id__data_attributes.md) |  | 
-**Type** | **string** |  | 
+**Data** | [**[]Container**](container.md) |  | [optional] 
+**Included** | [**[]Shipment**](shipment.md) |  | [optional] 
+**Links** | [**Links**](links.md) |  | [optional] 
+**Meta** | [**Meta**](meta.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

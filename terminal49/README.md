@@ -35,11 +35,15 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *ContainersApi* | [**GetContainers**](docs/ContainersApi.md#getcontainers) | **Get** /containers | List containers
 *ContainersApi* | [**GetContainersId**](docs/ContainersApi.md#getcontainersid) | **Get** /containers/{id} | Get a container
+*ContainersApi* | [**GetContainersIdRawEvents**](docs/ContainersApi.md#getcontainersidrawevents) | **Get** /containers/{id}/raw_events | Get a container&#39;s raw events
+*ContainersApi* | [**GetContainersIdTransportEvents**](docs/ContainersApi.md#getcontainersidtransportevents) | **Get** /containers/{id}/transport_events | Get a container&#39;s transport events
 *ShipmentsApi* | [**GetShipmentId**](docs/ShipmentsApi.md#getshipmentid) | **Get** /shipments/{id} | Get a shipment
 *ShipmentsApi* | [**GetShipments**](docs/ShipmentsApi.md#getshipments) | **Get** /shipments | List shipments
 *TrackingRequestsApi* | [**GetTrackRequestById**](docs/TrackingRequestsApi.md#gettrackrequestbyid) | **Get** /tracking_requests/{id} | Get a single tracking request
 *TrackingRequestsApi* | [**GetTrackingRequests**](docs/TrackingRequestsApi.md#gettrackingrequests) | **Get** /tracking_requests | List tracking requests
 *TrackingRequestsApi* | [**PostTrack**](docs/TrackingRequestsApi.md#posttrack) | **Post** /tracking_requests | Create a tracking request
+*WebhookNotificationsApi* | [**GetWebhookNotificationId**](docs/WebhookNotificationsApi.md#getwebhooknotificationid) | **Get** /webhook_notification/{id} | Get a single webhook notification
+*WebhookNotificationsApi* | [**GetWebhookNotifications**](docs/WebhookNotificationsApi.md#getwebhooknotifications) | **Get** /webhook_notifications | List webhook notifications
 *WebhooksApi* | [**DeleteWebhooksId**](docs/WebhooksApi.md#deletewebhooksid) | **Delete** /webhooks/{id} | Delete a webhook
 *WebhooksApi* | [**GetWebhooks**](docs/WebhooksApi.md#getwebhooks) | **Get** /webhooks | List webhooks
 *WebhooksApi* | [**GetWebhooksId**](docs/WebhooksApi.md#getwebhooksid) | **Get** /webhooks/{id} | Get single webhook
@@ -71,6 +75,7 @@ Class | Method | HTTP request | Description
  - [ContainerUpdatedEventRelationshipsContainerData](docs/ContainerUpdatedEventRelationshipsContainerData.md)
  - [ContainerUpdatedEventRelationshipsTerminal](docs/ContainerUpdatedEventRelationshipsTerminal.md)
  - [ContainerUpdatedEventRelationshipsTerminalData](docs/ContainerUpdatedEventRelationshipsTerminalData.md)
+ - [ErrorSource](docs/ErrorSource.md)
  - [EstimatedEvent](docs/EstimatedEvent.md)
  - [EstimatedEventAttributes](docs/EstimatedEventAttributes.md)
  - [EstimatedEventRelationships](docs/EstimatedEventRelationships.md)
@@ -82,12 +87,16 @@ Class | Method | HTTP request | Description
  - [InlineObject2](docs/InlineObject2.md)
  - [InlineResponse200](docs/InlineResponse200.md)
  - [InlineResponse2001](docs/InlineResponse2001.md)
+ - [InlineResponse20010](docs/InlineResponse20010.md)
+ - [InlineResponse20011](docs/InlineResponse20011.md)
  - [InlineResponse2002](docs/InlineResponse2002.md)
  - [InlineResponse2003](docs/InlineResponse2003.md)
  - [InlineResponse2004](docs/InlineResponse2004.md)
  - [InlineResponse2005](docs/InlineResponse2005.md)
  - [InlineResponse2006](docs/InlineResponse2006.md)
  - [InlineResponse2007](docs/InlineResponse2007.md)
+ - [InlineResponse2008](docs/InlineResponse2008.md)
+ - [InlineResponse2009](docs/InlineResponse2009.md)
  - [InlineResponse201](docs/InlineResponse201.md)
  - [InlineResponse422](docs/InlineResponse422.md)
  - [Links](docs/Links.md)
@@ -153,16 +162,14 @@ Class | Method | HTTP request | Description
  - [WebhookNotificationRelationshipsWebhookData](docs/WebhookNotificationRelationshipsWebhookData.md)
  - [WebhooksData](docs/WebhooksData.md)
  - [WebhooksDataAttributes](docs/WebhooksDataAttributes.md)
- - [WebhooksIdData](docs/WebhooksIdData.md)
- - [WebhooksIdDataAttributes](docs/WebhooksIdDataAttributes.md)
- - [WebhooksIdDataAttributesHeaders](docs/WebhooksIdDataAttributesHeaders.md)
+ - [WebhooksDataAttributesHeaders](docs/WebhooksDataAttributesHeaders.md)
 
 
 ## Documentation For Authorization
 
 
 
-## Authorization_Header
+## authorization
 
 - **Type**: API key
 

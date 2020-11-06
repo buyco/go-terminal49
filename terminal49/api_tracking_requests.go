@@ -78,7 +78,7 @@ func (a *TrackingRequestsApiService) GetTrackRequestById(ctx _context.Context, i
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["authorization"] = key
+			localVarHeaderParams["Authorization Header"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -204,7 +204,7 @@ func (a *TrackingRequestsApiService) GetTrackingRequests(ctx _context.Context, l
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["authorization"] = key
+			localVarHeaderParams["Authorization Header"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -316,7 +316,7 @@ func (a *TrackingRequestsApiService) PostTrack(ctx _context.Context, localVarOpt
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["authorization"] = key
+			localVarHeaderParams["Authorization Header"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)

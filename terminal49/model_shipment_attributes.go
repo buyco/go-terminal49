@@ -16,7 +16,7 @@ import (
 type ShipmentAttributes struct {
 	BillOfLadingNumber string `json:"bill_of_lading_number"`
 	RefNumbers []string `json:"ref_numbers,omitempty"`
-	CreatedAt string `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 	// `unreleased`
 	Tags []string `json:"tags,omitempty"`
 	// UN/LOCODE
@@ -32,12 +32,12 @@ type ShipmentAttributes struct {
 	PodVesselName string `json:"pod_vessel_name,omitempty"`
 	PodVesselImo string `json:"pod_vessel_imo,omitempty"`
 	PodVoyageNumber string `json:"pod_voyage_number,omitempty"`
-	PolEtdAt time.Time `json:"pol_etd_at,omitempty"`
+	PolEtdAt *time.Time `json:"pol_etd_at,omitempty"`
 	PolAtdAt time.Time `json:"pol_atd_at,omitempty"`
 	PodEtaAt time.Time `json:"pod_eta_at,omitempty"`
-	PodAtaAt time.Time `json:"pod_ata_at,omitempty"`
-	DestinationEtaAt time.Time `json:"destination_eta_at,omitempty"`
-	DestinationAtaAt time.Time `json:"destination_ata_at,omitempty"`
+	PodAtaAt *time.Time `json:"pod_ata_at,omitempty"`
+	DestinationEtaAt *time.Time `json:"destination_eta_at,omitempty"`
+	DestinationAtaAt *time.Time `json:"destination_ata_at,omitempty"`
 	// IANA tz
 	PolTimezone string `json:"pol_timezone,omitempty"`
 	// IANA tz

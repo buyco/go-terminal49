@@ -4,10 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Data** | [**[]Container**](container.md) |  | [optional] 
-**Included** | [**[]Shipment**](shipment.md) |  | [optional] 
-**Links** | [**Links**](links.md) |  | [optional] 
-**Meta** | [**Meta**](meta.md) |  | [optional] 
+**Data** | [**WebhookNotification**](webhook_notification.md) |  | [optional] 
+**Included** | [**[]AnyOfwebhooktrackingRequesttransportEventestimatedEventcontainerUpdatedEvent**](anyOf&lt;webhook,tracking_request,transport_event,estimated_event,container_updated_event&gt;.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

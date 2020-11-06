@@ -1,12 +1,11 @@
-# WebhooksData
+# WebhooksDataAttributesHeaders
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Attributes** | [**WebhooksDataAttributes**](_webhooks_data_attributes.md) |  | 
-**Type** | **string** |  | 
-**Id** | **string** |  | 
+**Name** | **string** | The name of the header. (Please not this will be auto-capitalized)  | [optional] 
+**Value** | **string** | The value to pass for the header  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

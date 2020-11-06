@@ -9,9 +9,10 @@
  */
 
 package terminal49
-// WebhooksData struct for WebhooksData
-type WebhooksData struct {
-	Attributes WebhooksDataAttributes `json:"attributes"`
-	Type string `json:"type"`
-	Id string `json:"id"`
+// InlineResponse2008 struct for InlineResponse2008
+type InlineResponse2008 struct {
+	Data []Container `json:"data,omitempty"`
+	Included []Shipment `json:"included,omitempty"`
+	Links Links `json:"links,omitempty"`
+	Meta Meta `json:"meta,omitempty"`
 }

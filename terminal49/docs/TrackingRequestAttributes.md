@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **RefNumbers** | **[]string** |  | [optional] 
 **Tags** | **[]string** |  | [optional] 
 **Status** | **string** |  | 
-**FailedReason** | **string** | If the tracking request has failed, or is currently failing, the last reason we were unable to complete the request | [optional] 
+**FailedReason** | Pointer to **string** | If the tracking request has failed, or is currently failing, the last reason we were unable to complete the request | [optional] 
 **RequestType** | **string** |  | 
 **Scac** | **string** |  | 
 **CreatedAt** | [**time.Time**](time.Time.md) |  | 

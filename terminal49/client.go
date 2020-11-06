@@ -55,6 +55,8 @@ type APIClient struct {
 
 	TrackingRequestsApi *TrackingRequestsApiService
 
+	WebhookNotificationsApi *WebhookNotificationsApiService
+
 	WebhooksApi *WebhooksApiService
 }
 
@@ -77,6 +79,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ContainersApi = (*ContainersApiService)(&c.common)
 	c.ShipmentsApi = (*ShipmentsApiService)(&c.common)
 	c.TrackingRequestsApi = (*TrackingRequestsApiService)(&c.common)
+	c.WebhookNotificationsApi = (*WebhookNotificationsApiService)(&c.common)
 	c.WebhooksApi = (*WebhooksApiService)(&c.common)
 
 	return c

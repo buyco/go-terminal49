@@ -16,7 +16,6 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -24,28 +23,27 @@ var (
 	_ _context.Context
 )
 
-// ShipmentsApiService ShipmentsApi service
-type ShipmentsApiService service
+// WebhookNotificationsApiService WebhookNotificationsApi service
+type WebhookNotificationsApiService service
 
 /*
-GetShipmentId Get a shipment
-Retrieves the details of an existing shipment. You need only supply the unique shipment &#x60;id&#x60; that was returned upon &#x60;tracking_request&#x60; creation.
+GetWebhookNotificationId Get a single webhook notification
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param id Shipment Id
-@return InlineResponse2001
+ * @param id
+@return InlineResponse2006
 */
-func (a *ShipmentsApiService) GetShipmentId(ctx _context.Context, id string) (InlineResponse2001, *_nethttp.Response, error) {
+func (a *WebhookNotificationsApiService) GetWebhookNotificationId(ctx _context.Context, id string) (InlineResponse2006, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  InlineResponse2001
+		localVarReturnValue  InlineResponse2006
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/shipments/{id}"
+	localVarPath := a.client.cfg.BasePath + "/webhook_notification/{id}"
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(id, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -102,15 +100,6 @@ func (a *ShipmentsApiService) GetShipmentId(ctx _context.Context, id string) (In
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v InlineResponse422
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -126,48 +115,28 @@ func (a *ShipmentsApiService) GetShipmentId(ctx _context.Context, id string) (In
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetShipmentsOpts Optional parameters for the method 'GetShipments'
-type GetShipmentsOpts struct {
-    PageNumber optional.Int32
-    PageSize optional.Int32
-    Q optional.String
-}
-
 /*
-GetShipments List shipments
-Returns a list of your shipments. The shipments are returned sorted by creation date, with the most recent shipments appearing first.  This api will return all shipments associated with the account. Shipments created via the &#x60;tracking_request&#x60; API aswell as the ones added via the dashboard will be retuned via this endpoint. 
+GetWebhookNotifications List webhook notifications
+&#x60;unreleased&#x60;&lt;br&gt;  Return the list of  webhook notifications. This can be useful for reconciling your data if your endpoint has been down. 
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *GetShipmentsOpts - Optional Parameters:
- * @param "PageNumber" (optional.Int32) - 
- * @param "PageSize" (optional.Int32) - 
- * @param "Q" (optional.String) -   Search shipments by master bill of lading, reference number, or container number.
-@return InlineResponse200
+@return InlineResponse2007
 */
-func (a *ShipmentsApiService) GetShipments(ctx _context.Context, localVarOptionals *GetShipmentsOpts) (InlineResponse200, *_nethttp.Response, error) {
+func (a *WebhookNotificationsApiService) GetWebhookNotifications(ctx _context.Context) (InlineResponse2007, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  InlineResponse200
+		localVarReturnValue  InlineResponse2007
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/shipments"
+	localVarPath := a.client.cfg.BasePath + "/webhook_notifications"
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.PageNumber.IsSet() {
-		localVarQueryParams.Add("page[number]", parameterToString(localVarOptionals.PageNumber.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
-		localVarQueryParams.Add("page[size]", parameterToString(localVarOptionals.PageSize.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.Q.IsSet() {
-		localVarQueryParams.Add("q", parameterToString(localVarOptionals.Q.Value(), ""))
-	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -217,15 +186,6 @@ func (a *ShipmentsApiService) GetShipments(ctx _context.Context, localVarOptiona
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 422 {
-			var v InlineResponse422
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

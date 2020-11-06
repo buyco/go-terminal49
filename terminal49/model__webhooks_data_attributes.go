@@ -17,5 +17,5 @@ type WebhooksDataAttributes struct {
 	Events []string `json:"events"`
 	Active bool `json:"active"`
 	// Optional custom headers to pass with each webhook invocation
-	Headers []WebhooksIdDataAttributesHeaders `json:"headers,omitempty"`
+	Headers []WebhooksDataAttributesHeaders `json:"headers,omitempty"`
 }

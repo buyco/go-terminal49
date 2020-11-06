@@ -76,7 +76,7 @@ func (a *WebhooksApiService) DeleteWebhooksId(ctx _context.Context, id string) (
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["authorization"] = key
+			localVarHeaderParams["Authorization Header"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -154,7 +154,7 @@ func (a *WebhooksApiService) GetWebhooks(ctx _context.Context) (InlineResponse20
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["authorization"] = key
+			localVarHeaderParams["Authorization Header"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -244,7 +244,7 @@ func (a *WebhooksApiService) GetWebhooksId(ctx _context.Context, id string) (Inl
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["authorization"] = key
+			localVarHeaderParams["Authorization Header"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -350,7 +350,7 @@ func (a *WebhooksApiService) PatchWebhooksId(ctx _context.Context, id string, lo
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["authorization"] = key
+			localVarHeaderParams["Authorization Header"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -400,16 +400,16 @@ You can configure a webhook via the API to be notified about events that happen 
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *PostWebhooksOpts - Optional Parameters:
  * @param "InlineObject2" (optional.Interface of InlineObject2) - 
-@return Webhook
+@return InlineResponse2004
 */
-func (a *WebhooksApiService) PostWebhooks(ctx _context.Context, localVarOptionals *PostWebhooksOpts) (Webhook, *_nethttp.Response, error) {
+func (a *WebhooksApiService) PostWebhooks(ctx _context.Context, localVarOptionals *PostWebhooksOpts) (InlineResponse2004, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Webhook
+		localVarReturnValue  InlineResponse2004
 	)
 
 	// create path and map variables
@@ -453,7 +453,7 @@ func (a *WebhooksApiService) PostWebhooks(ctx _context.Context, localVarOptional
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["authorization"] = key
+			localVarHeaderParams["Authorization Header"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)

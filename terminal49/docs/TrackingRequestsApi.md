@@ -32,7 +32,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Header](../README.md#Authorization_Header)
+[authorization](../README.md#authorization)
 
 ### HTTP request headers
 
@@ -79,7 +79,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Header](../README.md#Authorization_Header)
+[authorization](../README.md#authorization)
 
 ### HTTP request headers
 
@@ -122,7 +122,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Header](../README.md#Authorization_Header)
+[authorization](../README.md#authorization)
 
 ### HTTP request headers
 

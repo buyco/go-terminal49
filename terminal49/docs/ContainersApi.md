@@ -6,12 +6,14 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetContainers**](ContainersApi.md#GetContainers) | **Get** /containers | List containers
 [**GetContainersId**](ContainersApi.md#GetContainersId) | **Get** /containers/{id} | Get a container
+[**GetContainersIdRawEvents**](ContainersApi.md#GetContainersIdRawEvents) | **Get** /containers/{id}/raw_events | Get a container&#39;s raw events
+[**GetContainersIdTransportEvents**](ContainersApi.md#GetContainersIdTransportEvents) | **Get** /containers/{id}/transport_events | Get a container&#39;s transport events
 
 
 
 ## GetContainers
 
-> InlineResponse2006 GetContainers(ctx, optional)
+> InlineResponse2008 GetContainers(ctx, optional)
 
 List containers
 
@@ -37,11 +39,11 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2006**](inline_response_200_6.md)
+[**InlineResponse2008**](inline_response_200_8.md)
 
 ### Authorization
 
-[Authorization_Header](../README.md#Authorization_Header)
+[authorization](../README.md#authorization)
 
 ### HTTP request headers
 
@@ -55,7 +57,7 @@ Name | Type | Description  | Notes
 
 ## GetContainersId
 
-> InlineResponse2007 GetContainersId(ctx, id)
+> InlineResponse2009 GetContainersId(ctx, id)
 
 Get a container
 
@@ -71,11 +73,79 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2007**](inline_response_200_7.md)
+[**InlineResponse2009**](inline_response_200_9.md)
 
 ### Authorization
 
-[Authorization_Header](../README.md#Authorization_Header)
+[authorization](../README.md#authorization)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetContainersIdRawEvents
+
+> InlineResponse20010 GetContainersIdRawEvents(ctx, id)
+
+Get a container's raw events
+
+Returns the carrier raw_events for a container
+
+### Required Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string**|  | 
+
+### Return type
+
+[**InlineResponse20010**](inline_response_200_10.md)
+
+### Authorization
+
+[authorization](../README.md#authorization)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetContainersIdTransportEvents
+
+> InlineResponse20011 GetContainersIdTransportEvents(ctx, id)
+
+Get a container's transport events
+
+The canonical transport events for the container.  These are a verified subset of the raw events may also be sent as push notifications. 
+
+### Required Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string**|  | 
+
+### Return type
+
+[**InlineResponse20011**](inline_response_200_11.md)
+
+### Authorization
+
+[authorization](../README.md#authorization)
 
 ### HTTP request headers
 

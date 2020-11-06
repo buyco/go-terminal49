@@ -11,5 +11,5 @@
 package terminal49
 // InlineObject1 struct for InlineObject1
 type InlineObject1 struct {
-	Data WebhooksIdData `json:"data"`
+	Data string `json:"data"`
 }

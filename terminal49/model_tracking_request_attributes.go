@@ -19,7 +19,7 @@ type TrackingRequestAttributes struct {
 	Tags []string `json:"tags,omitempty"`
 	Status string `json:"status"`
 	// If the tracking request has failed, or is currently failing, the last reason we were unable to complete the request
-	FailedReason string `json:"failed_reason,omitempty"`
+	FailedReason *string `json:"failed_reason,omitempty"`
 	RequestType string `json:"request_type"`
 	Scac string `json:"scac"`
 	CreatedAt time.Time `json:"created_at"`

@@ -9,9 +9,7 @@
  */
 
 package terminal49
-// WebhooksData struct for WebhooksData
-type WebhooksData struct {
-	Attributes WebhooksDataAttributes `json:"attributes"`
-	Type string `json:"type"`
-	Id string `json:"id"`
+// ErrorSource struct for ErrorSource
+type ErrorSource struct {
+	Pointer string `json:"pointer,omitempty"`
 }

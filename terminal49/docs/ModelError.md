@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Detail** | **string** |  | [optional] 
 **Title** | **string** |  | 
-**Source** | **string** |  | [optional] 
+**Source** | [**ErrorSource**](error_source.md) |  | [optional] 
 **Code** | **string** |  | [optional] 
 **Status** | **string** |  | [optional] 
 
