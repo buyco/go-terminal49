@@ -9,13 +9,13 @@
  */
 
 package terminal49
-// WebhooksDataAttributes struct for WebhooksDataAttributes
-type WebhooksDataAttributes struct {
+// WebhooksIdDataAttributes struct for WebhooksIdDataAttributes
+type WebhooksIdDataAttributes struct {
 	// The URL of the webhook endpoint.
-	Url string `json:"url"`
+	Url string `json:"url,omitempty"`
 	// The list of events to enable for this endpoint. You may specify `['*']` to enable all events.
-	Events []string `json:"events"`
-	Active bool `json:"active"`
+	Events []string `json:"events,omitempty"`
+	Active bool `json:"active,omitempty"`
 	// Optional custom headers to pass with each webhook invocation
 	Headers []WebhooksIdDataAttributesHeaders `json:"headers,omitempty"`
 }

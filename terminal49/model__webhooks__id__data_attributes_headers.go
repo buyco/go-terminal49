@@ -9,8 +9,8 @@
  */
 
 package terminal49
-// WebhooksDataAttributesHeaders struct for WebhooksDataAttributesHeaders
-type WebhooksDataAttributesHeaders struct {
+// WebhooksIdDataAttributesHeaders struct for WebhooksIdDataAttributesHeaders
+type WebhooksIdDataAttributesHeaders struct {
 	// The name of the header. (Please not this will be auto-capitalized) 
 	Name string `json:"name,omitempty"`
 	// The value to pass for the header 

@@ -840,48 +840,7 @@ paths:
             schema:
               properties:
                 data:
-                  properties:
-                    attributes:
-                      properties:
-                        url:
-                          description: The URL of the webhook endpoint.
-                          example: https://webhook.site/#!/39084fbb-d887-42e8-be08-b9183ad02362
-                          format: uri
-                          type: string
-                        events:
-                          description: The list of events to enable for this endpoint.
-                            You may specify `['*']` to enable all events.
-                          items:
-                            example: '[''*'']'
-                            type: string
-                          type: array
-                          uniqueItems: true
-                        active:
-                          type: boolean
-                        headers:
-                          description: Optional custom headers to pass with each webhook
-                            invocation
-                          items:
-                            properties:
-                              name:
-                                description: 'The name of the header. (Please not
-                                  this will be auto-capitalized) '
-                                type: string
-                              value:
-                                description: |
-                                  The value to pass for the header
-                                type: string
-                            type: object
-                          type: array
-                      type: object
-                    type:
-                      enum:
-                      - webhook
-                      type: string
-                  required:
-                  - attributes
-                  - type
-                  type: string
+                  $ref: '#/components/schemas/_webhooks__id__data'
               required:
               - data
               type: object
@@ -2590,50 +2549,52 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/webhook'
+    _webhooks__id__data_attributes_headers:
+      properties:
+        name:
+          description: 'The name of the header. (Please not this will be auto-capitalized) '
+          type: string
+        value:
+          description: |
+            The value to pass for the header
+          type: string
+    _webhooks__id__data_attributes:
+      properties:
+        url:
+          description: The URL of the webhook endpoint.
+          example: https://webhook.site/#!/39084fbb-d887-42e8-be08-b9183ad02362
+          format: uri
+          type: string
+        events:
+          description: The list of events to enable for this endpoint. You may specify
+            `['*']` to enable all events.
+          items:
+            example: '[''*'']'
+            type: string
+          type: array
+          uniqueItems: true
+        active:
+          type: boolean
+        headers:
+          description: Optional custom headers to pass with each webhook invocation
+          items:
+            $ref: '#/components/schemas/_webhooks__id__data_attributes_headers'
+          type: array
+    _webhooks__id__data:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/_webhooks__id__data_attributes'
+        type:
+          enum:
+          - webhook
+          type: string
+      required:
+      - attributes
+      - type
     inline_object_1:
       properties:
         data:
-          properties:
-            attributes:
-              properties:
-                url:
-                  description: The URL of the webhook endpoint.
-                  example: https://webhook.site/#!/39084fbb-d887-42e8-be08-b9183ad02362
-                  format: uri
-                  type: string
-                events:
-                  description: The list of events to enable for this endpoint. You
-                    may specify `['*']` to enable all events.
-                  items:
-                    example: '[''*'']'
-                    type: string
-                  type: array
-                  uniqueItems: true
-                active:
-                  type: boolean
-                headers:
-                  description: Optional custom headers to pass with each webhook invocation
-                  items:
-                    properties:
-                      name:
-                        description: 'The name of the header. (Please not this will
-                          be auto-capitalized) '
-                        type: string
-                      value:
-                        description: |
-                          The value to pass for the header
-                        type: string
-                    type: object
-                  type: array
-              type: object
-            type:
-              enum:
-              - webhook
-              type: string
-          required:
-          - attributes
-          - type
-          type: string
+          $ref: '#/components/schemas/_webhooks__id__data'
       required:
       - data
       type: object
@@ -2676,15 +2637,6 @@ components:
           $ref: '#/components/schemas/meta'
         links:
           $ref: '#/components/schemas/links'
-    _webhooks_data_attributes_headers:
-      properties:
-        name:
-          description: 'The name of the header. (Please not this will be auto-capitalized) '
-          type: string
-        value:
-          description: |
-            The value to pass for the header
-          type: string
     _webhooks_data_attributes:
       properties:
         url:
@@ -2705,7 +2657,7 @@ components:
         headers:
           description: Optional custom headers to pass with each webhook invocation
           items:
-            $ref: '#/components/schemas/_webhooks_data_attributes_headers'
+            $ref: '#/components/schemas/_webhooks__id__data_attributes_headers'
           type: array
       required:
       - active

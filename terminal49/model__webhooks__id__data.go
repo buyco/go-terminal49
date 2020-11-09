@@ -9,7 +9,8 @@
  */
 
 package terminal49
-// InlineObject1 struct for InlineObject1
-type InlineObject1 struct {
-	Data WebhooksIdData `json:"data"`
+// WebhooksIdData struct for WebhooksIdData
+type WebhooksIdData struct {
+	Attributes WebhooksIdDataAttributes `json:"attributes"`
+	Type string `json:"type"`
 }

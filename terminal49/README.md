@@ -162,7 +162,9 @@ Class | Method | HTTP request | Description
  - [WebhookNotificationRelationshipsWebhookData](docs/WebhookNotificationRelationshipsWebhookData.md)
  - [WebhooksData](docs/WebhooksData.md)
  - [WebhooksDataAttributes](docs/WebhooksDataAttributes.md)
- - [WebhooksDataAttributesHeaders](docs/WebhooksDataAttributesHeaders.md)
+ - [WebhooksIdData](docs/WebhooksIdData.md)
+ - [WebhooksIdDataAttributes](docs/WebhooksIdDataAttributes.md)
+ - [WebhooksIdDataAttributesHeaders](docs/WebhooksIdDataAttributesHeaders.md)
 
 
 ## Documentation For Authorization
