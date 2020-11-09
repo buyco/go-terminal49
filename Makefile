@@ -14,7 +14,7 @@ generate:
 	${MAKE} go-sdk
 
 fetch-openapi:
-	${WGET} -O ${PWD}/api_files/terminal49.v1.json https://raw.githubusercontent.com/Terminal49/t49-api-documentation/fix-oas-conformance-errors/docs/reference/terminal49/terminal49.v1.json
+	${WGET} -O ${PWD}/api_files/terminal49.v1.json https://raw.githubusercontent.com/Terminal49/t49-api-documentation/master/docs/reference/terminal49/terminal49.v1.json
 
 go-sdk:
 	${DOCKER_BUILD} ${GO_CLIENT}
