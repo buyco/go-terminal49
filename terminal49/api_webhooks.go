@@ -76,7 +76,7 @@ func (a *WebhooksApiService) DeleteWebhooksId(ctx _context.Context, id string) (
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -154,7 +154,7 @@ func (a *WebhooksApiService) GetWebhooks(ctx _context.Context) (InlineResponse20
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -244,7 +244,7 @@ func (a *WebhooksApiService) GetWebhooksId(ctx _context.Context, id string) (Inl
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -350,7 +350,7 @@ func (a *WebhooksApiService) PatchWebhooksId(ctx _context.Context, id string, lo
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -453,7 +453,7 @@ func (a *WebhooksApiService) PostWebhooks(ctx _context.Context, localVarOptional
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)

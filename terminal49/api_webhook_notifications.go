@@ -76,7 +76,7 @@ func (a *WebhookNotificationsApiService) GetWebhookNotificationId(ctx _context.C
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -163,7 +163,7 @@ func (a *WebhookNotificationsApiService) GetWebhookNotifications(ctx _context.Co
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)

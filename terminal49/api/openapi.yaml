@@ -4502,7 +4502,7 @@ components:
         \ secret aare sent in the `Authorization` header.\n\nYou send your API key\
         \ and secret in the following way:\n\n`Authorization: Token YOUR_API_TOKEN`"
       in: header
-      name: Authorization Header
+      name: Authorization
       type: apiKey
 x-tagGroups:
 - name: End Points

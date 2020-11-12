@@ -90,7 +90,7 @@ func (a *ContainersApiService) GetContainers(ctx _context.Context, localVarOptio
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -180,7 +180,7 @@ func (a *ContainersApiService) GetContainersId(ctx _context.Context, id string) 
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -270,7 +270,7 @@ func (a *ContainersApiService) GetContainersIdRawEvents(ctx _context.Context, id
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -360,7 +360,7 @@ func (a *ContainersApiService) GetContainersIdTransportEvents(ctx _context.Conte
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)

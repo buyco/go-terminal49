@@ -78,7 +78,7 @@ func (a *ShipmentsApiService) GetShipmentId(ctx _context.Context, id string) (In
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -194,7 +194,7 @@ func (a *ShipmentsApiService) GetShipments(ctx _context.Context, localVarOptiona
 			} else {
 				key = auth.Key
 			}
-			localVarHeaderParams["Authorization Header"] = key
+			localVarHeaderParams["Authorization"] = key
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
