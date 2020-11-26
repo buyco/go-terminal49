@@ -9,7 +9,8 @@
  */
 
 package terminal49
-// ContainerRelationshipsCurrentVessel The vessel the container is currently laden on.
-type ContainerRelationshipsCurrentVessel struct {
-	Data ContainerRelationshipsCurrentVesselData `json:"data,omitempty"`
+// EstimatedEventRelationshipsVesselData struct for EstimatedEventRelationshipsVesselData
+type EstimatedEventRelationshipsVesselData struct {
+	Id string `json:"id,omitempty"`
+	Type string `json:"type,omitempty"`
 }

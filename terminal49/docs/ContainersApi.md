@@ -36,6 +36,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pageNumber** | **optional.Int32**|  | [default to 1]
  **pageSize** | **optional.Int32**|  | [default to 30]
+ **include** | **optional.String**| Comma delimited list of relations to include | 
 
 ### Return type
 
@@ -57,7 +58,7 @@ Name | Type | Description  | Notes
 
 ## GetContainersId
 
-> InlineResponse2009 GetContainersId(ctx, id)
+> InlineResponse2009 GetContainersId(ctx, id, optional)
 
 Get a container
 
@@ -70,6 +71,17 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **id** | **string**|  | 
+ **optional** | ***GetContainersIdOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a GetContainersIdOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **include** | **optional.String**| Comma delimited list of relations to include | 
 
 ### Return type
 
@@ -125,7 +137,7 @@ Name | Type | Description  | Notes
 
 ## GetContainersIdTransportEvents
 
-> InlineResponse20011 GetContainersIdTransportEvents(ctx, id)
+> InlineResponse20011 GetContainersIdTransportEvents(ctx, id, optional)
 
 Get a container's transport events
 
@@ -138,6 +150,17 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **id** | **string**|  | 
+ **optional** | ***GetContainersIdTransportEventsOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a GetContainersIdTransportEventsOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **include** | **optional.String**| Comma delimited list of relations to include | 
 
 ### Return type
 

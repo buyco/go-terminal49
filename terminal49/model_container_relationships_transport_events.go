@@ -9,8 +9,7 @@
  */
 
 package terminal49
-// ContainerRelationshipsCurrentVesselData struct for ContainerRelationshipsCurrentVesselData
-type ContainerRelationshipsCurrentVesselData struct {
-	Id string `json:"id,omitempty"`
-	Type string `json:"type,omitempty"`
+// ContainerRelationshipsTransportEvents The current, or most recent land location.
+type ContainerRelationshipsTransportEvents struct {
+	Data []ContainerRelationshipsTransportEventsData `json:"data,omitempty"`
 }

@@ -9,7 +9,8 @@
  */
 
 package terminal49
-// ContainerPodTerminal struct for ContainerPodTerminal
-type ContainerPodTerminal struct {
-	Data ContainerPodTerminalData `json:"data,omitempty"`
+// TransportEventRelationshipsLocationData struct for TransportEventRelationshipsLocationData
+type TransportEventRelationshipsLocationData struct {
+	Id string `json:"id,omitempty"`
+	Type string `json:"type,omitempty"`
 }

@@ -12,5 +12,5 @@ package terminal49
 // InlineResponse2009 struct for InlineResponse2009
 type InlineResponse2009 struct {
 	Data Container `json:"data,omitempty"`
-	Included []Shipment `json:"included,omitempty"`
+	Included []interface{} `json:"included,omitempty"`
 }

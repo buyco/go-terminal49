@@ -27,14 +27,21 @@ var (
 // TrackingRequestsApiService TrackingRequestsApi service
 type TrackingRequestsApiService service
 
+// GetTrackRequestByIdOpts Optional parameters for the method 'GetTrackRequestById'
+type GetTrackRequestByIdOpts struct {
+    Include optional.String
+}
+
 /*
 GetTrackRequestById Get a single tracking request
 Get the details and status of an existing tracking request. 
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id Tracking Request ID
+ * @param optional nil or *GetTrackRequestByIdOpts - Optional Parameters:
+ * @param "Include" (optional.String) -  Comma delimited list of relations to include. 'tracked_object' is included by default.
 @return InlineResponse2003
 */
-func (a *TrackingRequestsApiService) GetTrackRequestById(ctx _context.Context, id string) (InlineResponse2003, *_nethttp.Response, error) {
+func (a *TrackingRequestsApiService) GetTrackRequestById(ctx _context.Context, id string, localVarOptionals *GetTrackRequestByIdOpts) (InlineResponse2003, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -52,6 +59,9 @@ func (a *TrackingRequestsApiService) GetTrackRequestById(ctx _context.Context, i
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
+		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -133,6 +143,9 @@ type GetTrackingRequestsOpts struct {
     FilterScac optional.String
     FilterCreatedAtStart optional.Time
     FilterCreatedAtEnd optional.Time
+    Include optional.String
+    PageNumber optional.Int32
+    PageSize optional.Int32
 }
 
 /*
@@ -145,6 +158,9 @@ Returns a list of your tracking requests. The trackig requests are returned sort
  * @param "FilterScac" (optional.String) -  filter by shipping line `scac`
  * @param "FilterCreatedAtStart" (optional.Time) -  filter by tracking_requests `created_at` after a certain ISO8601 timestamp
  * @param "FilterCreatedAtEnd" (optional.Time) -  filter by tracking_requests `created_at` before a certain ISO8601 timestamp
+ * @param "Include" (optional.String) -  Comma delimited list of relations to include. 'tracked_object' is included by default.
+ * @param "PageNumber" (optional.Int32) - 
+ * @param "PageSize" (optional.Int32) - 
 @return InlineResponse2002
 */
 func (a *TrackingRequestsApiService) GetTrackingRequests(ctx _context.Context, localVarOptionals *GetTrackingRequestsOpts) (InlineResponse2002, *_nethttp.Response, error) {
@@ -177,6 +193,15 @@ func (a *TrackingRequestsApiService) GetTrackingRequests(ctx _context.Context, l
 	}
 	if localVarOptionals != nil && localVarOptionals.FilterCreatedAtEnd.IsSet() {
 		localVarQueryParams.Add("filter[created_at][end]", parameterToString(localVarOptionals.FilterCreatedAtEnd.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
+		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.PageNumber.IsSet() {
+		localVarQueryParams.Add("page[number]", parameterToString(localVarOptionals.PageNumber.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
+		localVarQueryParams.Add("page[size]", parameterToString(localVarOptionals.PageSize.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

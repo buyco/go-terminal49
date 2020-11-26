@@ -27,14 +27,21 @@ var (
 // ShipmentsApiService ShipmentsApi service
 type ShipmentsApiService service
 
+// GetShipmentIdOpts Optional parameters for the method 'GetShipmentId'
+type GetShipmentIdOpts struct {
+    Include optional.String
+}
+
 /*
 GetShipmentId Get a shipment
 Retrieves the details of an existing shipment. You need only supply the unique shipment &#x60;id&#x60; that was returned upon &#x60;tracking_request&#x60; creation.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id Shipment Id
+ * @param optional nil or *GetShipmentIdOpts - Optional Parameters:
+ * @param "Include" (optional.String) -  Comma delimited list of relations to include
 @return InlineResponse2001
 */
-func (a *ShipmentsApiService) GetShipmentId(ctx _context.Context, id string) (InlineResponse2001, *_nethttp.Response, error) {
+func (a *ShipmentsApiService) GetShipmentId(ctx _context.Context, id string, localVarOptionals *GetShipmentIdOpts) (InlineResponse2001, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -52,6 +59,9 @@ func (a *ShipmentsApiService) GetShipmentId(ctx _context.Context, id string) (In
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
+		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -131,6 +141,7 @@ type GetShipmentsOpts struct {
     PageNumber optional.Int32
     PageSize optional.Int32
     Q optional.String
+    Include optional.String
 }
 
 /*
@@ -141,6 +152,7 @@ Returns a list of your shipments. The shipments are returned sorted by creation 
  * @param "PageNumber" (optional.Int32) - 
  * @param "PageSize" (optional.Int32) - 
  * @param "Q" (optional.String) -   Search shipments by master bill of lading, reference number, or container number.
+ * @param "Include" (optional.String) -  Comma delimited list of relations to include
 @return InlineResponse200
 */
 func (a *ShipmentsApiService) GetShipments(ctx _context.Context, localVarOptionals *GetShipmentsOpts) (InlineResponse200, *_nethttp.Response, error) {
@@ -167,6 +179,9 @@ func (a *ShipmentsApiService) GetShipments(ctx _context.Context, localVarOptiona
 	}
 	if localVarOptionals != nil && localVarOptionals.Q.IsSet() {
 		localVarQueryParams.Add("q", parameterToString(localVarOptionals.Q.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
+		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

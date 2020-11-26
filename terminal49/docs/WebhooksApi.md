@@ -48,7 +48,7 @@ Name | Type | Description  | Notes
 
 ## GetWebhooks
 
-> InlineResponse2005 GetWebhooks(ctx, )
+> InlineResponse2005 GetWebhooks(ctx, optional)
 
 List webhooks
 
@@ -56,7 +56,21 @@ Get a list of all the webhooks
 
 ### Required Parameters
 
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***GetWebhooksOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a GetWebhooksOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **pageNumber** | **optional.Int32**|  | 
+ **pageSize** | **optional.Int32**|  | 
 
 ### Return type
 

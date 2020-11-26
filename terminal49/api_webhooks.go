@@ -106,13 +106,22 @@ func (a *WebhooksApiService) DeleteWebhooksId(ctx _context.Context, id string) (
 	return localVarHTTPResponse, nil
 }
 
+// GetWebhooksOpts Optional parameters for the method 'GetWebhooks'
+type GetWebhooksOpts struct {
+    PageNumber optional.Int32
+    PageSize optional.Int32
+}
+
 /*
 GetWebhooks List webhooks
 Get a list of all the webhooks
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param optional nil or *GetWebhooksOpts - Optional Parameters:
+ * @param "PageNumber" (optional.Int32) - 
+ * @param "PageSize" (optional.Int32) - 
 @return InlineResponse2005
 */
-func (a *WebhooksApiService) GetWebhooks(ctx _context.Context) (InlineResponse2005, *_nethttp.Response, error) {
+func (a *WebhooksApiService) GetWebhooks(ctx _context.Context, localVarOptionals *GetWebhooksOpts) (InlineResponse2005, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -128,6 +137,12 @@ func (a *WebhooksApiService) GetWebhooks(ctx _context.Context) (InlineResponse20
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.PageNumber.IsSet() {
+		localVarQueryParams.Add("page[number]", parameterToString(localVarOptionals.PageNumber.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
+		localVarQueryParams.Add("page[size]", parameterToString(localVarOptionals.PageSize.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 

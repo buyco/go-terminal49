@@ -9,7 +9,8 @@
  */
 
 package terminal49
-// ContainerRelationshipsMostRecentLocation The current, or most recent land location.
-type ContainerRelationshipsMostRecentLocation struct {
-	Data ContainerRelationshipsMostRecentLocationData `json:"data,omitempty"`
+// ContainerRelationshipsTransportEventsData struct for ContainerRelationshipsTransportEventsData
+type ContainerRelationshipsTransportEventsData struct {
+	Id string `json:"id,omitempty"`
+	Type string `json:"type,omitempty"`
 }

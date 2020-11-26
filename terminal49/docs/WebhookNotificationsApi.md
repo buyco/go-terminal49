@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## GetWebhookNotificationId
 
-> InlineResponse2006 GetWebhookNotificationId(ctx, id)
+> InlineResponse2006 GetWebhookNotificationId(ctx, id, optional)
 
 Get a single webhook notification
 
@@ -22,6 +22,17 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **id** | **string**|  | 
+ **optional** | ***GetWebhookNotificationIdOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a GetWebhookNotificationIdOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **include** | **optional.String**| Comma delimited list of relations to include. | 
 
 ### Return type
 
@@ -43,15 +54,30 @@ Name | Type | Description  | Notes
 
 ## GetWebhookNotifications
 
-> InlineResponse2007 GetWebhookNotifications(ctx, )
+> InlineResponse2007 GetWebhookNotifications(ctx, optional)
 
 List webhook notifications
 
-`unreleased`<br>  Return the list of  webhook notifications. This can be useful for reconciling your data if your endpoint has been down. 
+Return the list of  webhook notifications. This can be useful for reconciling your data if your endpoint has been down. 
 
 ### Required Parameters
 
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***GetWebhookNotificationsOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a GetWebhookNotificationsOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **pageNumber** | **optional.Int32**|  | 
+ **pageSize** | **optional.Int32**|  | 
+ **include** | **optional.String**| Comma delimited list of relations to include. | 
 
 ### Return type
 

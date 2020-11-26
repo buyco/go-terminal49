@@ -18,7 +18,7 @@ type ContainerAttributes struct {
 	EquipmentType string `json:"equipment_type,omitempty"`
 	EquipmentLength int32 `json:"equipment_length,omitempty"`
 	EquipmentHeight string `json:"equipment_height,omitempty"`
-	WeightInLbs string `json:"weight_in_lbs,omitempty"`
+	WeightInLbs float32 `json:"weight_in_lbs,omitempty"`
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	SealNumber *string `json:"seal_number,omitempty"`
 	// The last free day for pickup before deummurage accrues.

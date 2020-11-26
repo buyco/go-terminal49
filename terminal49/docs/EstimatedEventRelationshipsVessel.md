@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Data** | [**ContainerRelationshipsCurrentVesselData**](container_relationships_current_vessel_data.md) |  | [optional] 
+**Data** | [**EstimatedEventRelationshipsVesselData**](estimated_event_relationships_vessel_data.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -9,8 +9,7 @@
  */
 
 package terminal49
-// ContainerRelationshipsFinalDestinationData struct for ContainerRelationshipsFinalDestinationData
-type ContainerRelationshipsFinalDestinationData struct {
-	Id string `json:"id,omitempty"`
-	Type string `json:"type,omitempty"`
+// ContainerRelationshipsPodTerminal struct for ContainerRelationshipsPodTerminal
+type ContainerRelationshipsPodTerminal struct {
+	Data ContainerRelationshipsPodTerminalData `json:"data,omitempty"`
 }

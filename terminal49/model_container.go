@@ -14,5 +14,4 @@ type Container struct {
 	Id string `json:"id"`
 	Attributes ContainerAttributes `json:"attributes,omitempty"`
 	Relationships ContainerRelationships `json:"relationships,omitempty"`
-	PodTerminal ContainerPodTerminal `json:"pod_terminal,omitempty"`
 }

@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## GetTrackRequestById
 
-> InlineResponse2003 GetTrackRequestById(ctx, id)
+> InlineResponse2003 GetTrackRequestById(ctx, id, optional)
 
 Get a single tracking request
 
@@ -25,6 +25,17 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **id** | **string**| Tracking Request ID | 
+ **optional** | ***GetTrackRequestByIdOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a GetTrackRequestByIdOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **include** | **optional.String**| Comma delimited list of relations to include. &#39;tracked_object&#39; is included by default. | 
 
 ### Return type
 
@@ -72,6 +83,9 @@ Name | Type | Description  | Notes
  **filterScac** | **optional.String**| filter by shipping line &#x60;scac&#x60; | 
  **filterCreatedAtStart** | **optional.Time**| filter by tracking_requests &#x60;created_at&#x60; after a certain ISO8601 timestamp | 
  **filterCreatedAtEnd** | **optional.Time**| filter by tracking_requests &#x60;created_at&#x60; before a certain ISO8601 timestamp | 
+ **include** | **optional.String**| Comma delimited list of relations to include. &#39;tracked_object&#39; is included by default. | 
+ **pageNumber** | **optional.Int32**|  | 
+ **pageSize** | **optional.Int32**|  | 
 
 ### Return type
 

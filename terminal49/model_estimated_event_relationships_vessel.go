@@ -11,5 +11,5 @@
 package terminal49
 // EstimatedEventRelationshipsVessel struct for EstimatedEventRelationshipsVessel
 type EstimatedEventRelationshipsVessel struct {
-	Data ContainerRelationshipsCurrentVesselData `json:"data,omitempty"`
+	Data EstimatedEventRelationshipsVesselData `json:"data,omitempty"`
 }

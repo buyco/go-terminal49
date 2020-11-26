@@ -11,8 +11,7 @@
 package terminal49
 // ContainerRelationships struct for ContainerRelationships
 type ContainerRelationships struct {
-	MostRecentLocation ContainerRelationshipsMostRecentLocation `json:"most_recent_location,omitempty"`
-	CurrentVessel ContainerRelationshipsCurrentVessel `json:"current_vessel,omitempty"`
+	TransportEvents ContainerRelationshipsTransportEvents `json:"transport_events,omitempty"`
 	Shipment ContainerRelationshipsShipment `json:"shipment,omitempty"`
-	FinalDestination ContainerRelationshipsFinalDestination `json:"final_destination,omitempty"`
+	PodTerminal ContainerRelationshipsPodTerminal `json:"pod_terminal,omitempty"`
 }

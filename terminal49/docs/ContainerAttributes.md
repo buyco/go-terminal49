@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **EquipmentType** | **string** |  | [optional] 
 **EquipmentLength** | **int32** |  | [optional] 
 **EquipmentHeight** | **string** |  | [optional] 
-**WeightInLbs** | **string** |  | [optional] 
+**WeightInLbs** | **float32** |  | [optional] 
 **CreatedAt** | [**time.Time**](time.Time.md) |  | [optional] 
 **SealNumber** | Pointer to **string** |  | [optional] 
 **PickupLfd** | Pointer to [**time.Time**](time.Time.md) | The last free day for pickup before deummurage accrues. | [optional] 

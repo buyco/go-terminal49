@@ -11,5 +11,5 @@
 package terminal49
 // TransportEventRelationshipsLocation struct for TransportEventRelationshipsLocation
 type TransportEventRelationshipsLocation struct {
-	Data ContainerRelationshipsFinalDestinationData `json:"data,omitempty"`
+	Data TransportEventRelationshipsLocationData `json:"data,omitempty"`
 }

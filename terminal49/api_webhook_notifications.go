@@ -16,6 +16,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,13 +27,20 @@ var (
 // WebhookNotificationsApiService WebhookNotificationsApi service
 type WebhookNotificationsApiService service
 
+// GetWebhookNotificationIdOpts Optional parameters for the method 'GetWebhookNotificationId'
+type GetWebhookNotificationIdOpts struct {
+    Include optional.String
+}
+
 /*
 GetWebhookNotificationId Get a single webhook notification
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id
+ * @param optional nil or *GetWebhookNotificationIdOpts - Optional Parameters:
+ * @param "Include" (optional.String) -  Comma delimited list of relations to include.
 @return InlineResponse2006
 */
-func (a *WebhookNotificationsApiService) GetWebhookNotificationId(ctx _context.Context, id string) (InlineResponse2006, *_nethttp.Response, error) {
+func (a *WebhookNotificationsApiService) GetWebhookNotificationId(ctx _context.Context, id string, localVarOptionals *GetWebhookNotificationIdOpts) (InlineResponse2006, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -50,6 +58,9 @@ func (a *WebhookNotificationsApiService) GetWebhookNotificationId(ctx _context.C
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
+		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -115,13 +126,24 @@ func (a *WebhookNotificationsApiService) GetWebhookNotificationId(ctx _context.C
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+// GetWebhookNotificationsOpts Optional parameters for the method 'GetWebhookNotifications'
+type GetWebhookNotificationsOpts struct {
+    PageNumber optional.Int32
+    PageSize optional.Int32
+    Include optional.String
+}
+
 /*
 GetWebhookNotifications List webhook notifications
-&#x60;unreleased&#x60;&lt;br&gt;  Return the list of  webhook notifications. This can be useful for reconciling your data if your endpoint has been down. 
+Return the list of  webhook notifications. This can be useful for reconciling your data if your endpoint has been down. 
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param optional nil or *GetWebhookNotificationsOpts - Optional Parameters:
+ * @param "PageNumber" (optional.Int32) - 
+ * @param "PageSize" (optional.Int32) - 
+ * @param "Include" (optional.String) -  Comma delimited list of relations to include.
 @return InlineResponse2007
 */
-func (a *WebhookNotificationsApiService) GetWebhookNotifications(ctx _context.Context) (InlineResponse2007, *_nethttp.Response, error) {
+func (a *WebhookNotificationsApiService) GetWebhookNotifications(ctx _context.Context, localVarOptionals *GetWebhookNotificationsOpts) (InlineResponse2007, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -137,6 +159,15 @@ func (a *WebhookNotificationsApiService) GetWebhookNotifications(ctx _context.Co
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.PageNumber.IsSet() {
+		localVarQueryParams.Add("page[number]", parameterToString(localVarOptionals.PageNumber.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
+		localVarQueryParams.Add("page[size]", parameterToString(localVarOptionals.PageSize.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
+		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 

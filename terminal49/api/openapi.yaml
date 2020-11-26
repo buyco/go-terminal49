@@ -59,6 +59,14 @@ paths:
         schema:
           type: string
         style: form
+      - description: Comma delimited list of relations to include
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -232,6 +240,14 @@ paths:
         schema:
           type: string
         style: simple
+      - description: Comma delimited list of relations to include
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -564,6 +580,29 @@ paths:
           format: date-time
           type: string
         style: form
+      - description: Comma delimited list of relations to include. 'tracked_object'
+          is included by default.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page[number]
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: page[size]
+        required: false
+        schema:
+          type: integer
+        style: form
       responses:
         "200":
           content:
@@ -594,6 +633,7 @@ paths:
         \ or `tracking_Request.failed` webhook notificaiton will only be sent  if\
         \ you have  atleast one active webhook. "
       operationId: post-track
+      parameters: []
       requestBody:
         $ref: '#/components/requestBodies/inline_object'
         content:
@@ -696,6 +736,15 @@ paths:
         schema:
           type: string
         style: simple
+      - description: Comma delimited list of relations to include. 'tracked_object'
+          is included by default.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -858,6 +907,21 @@ paths:
     get:
       description: Get a list of all the webhooks
       operationId: get-webhooks
+      parameters:
+      - explode: true
+        in: query
+        name: page[number]
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: page[size]
+        required: false
+        schema:
+          type: integer
+        style: form
       responses:
         "200":
           content:
@@ -934,6 +998,14 @@ paths:
         schema:
           type: string
         style: simple
+      - description: Comma delimited list of relations to include.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -1380,9 +1452,32 @@ paths:
       - Webhook Notifications
   /webhook_notifications:
     get:
-      description: "`unreleased`<br>\n\nReturn the list of  webhook notifications.\
-        \ This can be useful for reconciling your data if your endpoint has been down. "
+      description: 'Return the list of  webhook notifications. This can be useful
+        for reconciling your data if your endpoint has been down. '
       operationId: get-webhook-notifications
+      parameters:
+      - explode: true
+        in: query
+        name: page[number]
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: page[size]
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Comma delimited list of relations to include.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -1417,6 +1512,14 @@ paths:
           default: 30
           type: integer
         style: form
+      - description: Comma delimited list of relations to include
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -1440,6 +1543,14 @@ paths:
         schema:
           type: string
         style: simple
+      - description: Comma delimited list of relations to include
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -1482,6 +1593,14 @@ paths:
         in: path
         name: id
         required: true
+        schema:
+          type: string
+        style: simple
+      - description: Comma delimited list of relations to include
+        explode: false
+        in: header
+        name: include
+        required: false
         schema:
           type: string
         style: simple
@@ -1633,22 +1752,16 @@ components:
             data:
               id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
               type: shipment
-          current_vessel:
-            data:
-              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: vessel
-          final_destination:
-            data:
-              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: port
-          most_recent_location:
+          pod_terminal:
             data:
               id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
               type: terminal
-        pod_terminal:
-          data:
-            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            type: terminal
+          transport_events:
+            data:
+            - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: transport_event
+            - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              type: transport_event
         attributes:
           seal_number: seal_number
           final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
@@ -1661,14 +1774,14 @@ components:
           created_at: 2000-01-23T04:56:07.000+00:00
           empty_terminated_at: 2000-01-23T04:56:07.000+00:00
           equipment_type: dry
-          weight_in_lbs: weight_in_lbs
+          weight_in_lbs: 6.027456183070403
           number: number
           empty_returned_timezone: empty_returned_timezone
           equipment_height: standard
           fees_at_pod_terminal:
-          - amount: 6.027456183070403
+          - amount: 1.4658129805029452
             type: exam
-          - amount: 6.027456183070403
+          - amount: 1.4658129805029452
             type: exam
           equipment_length: 0
           pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
@@ -1691,8 +1804,6 @@ components:
           $ref: '#/components/schemas/container_attributes'
         relationships:
           $ref: '#/components/schemas/container_relationships'
-        pod_terminal:
-          $ref: '#/components/schemas/container_pod_terminal'
       required:
       - id
       title: Container model
@@ -2026,7 +2137,7 @@ components:
       type: object
     terminal_fee:
       example:
-        amount: 6.027456183070403
+        amount: 1.4658129805029452
         type: exam
       properties:
         type:
@@ -2788,22 +2899,16 @@ components:
               data:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 type: shipment
-            current_vessel:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: vessel
-            final_destination:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: port
-            most_recent_location:
+            pod_terminal:
               data:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 type: terminal
-          pod_terminal:
-            data:
-              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: terminal
+            transport_events:
+              data:
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: transport_event
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: transport_event
           attributes:
             seal_number: seal_number
             final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
@@ -2816,14 +2921,14 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             empty_terminated_at: 2000-01-23T04:56:07.000+00:00
             equipment_type: dry
-            weight_in_lbs: weight_in_lbs
+            weight_in_lbs: 6.027456183070403
             number: number
             empty_returned_timezone: empty_returned_timezone
             equipment_height: standard
             fees_at_pod_terminal:
-            - amount: 6.027456183070403
+            - amount: 1.4658129805029452
               type: exam
-            - amount: 6.027456183070403
+            - amount: 1.4658129805029452
               type: exam
             equipment_length: 0
             pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
@@ -2843,22 +2948,16 @@ components:
               data:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 type: shipment
-            current_vessel:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: vessel
-            final_destination:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: port
-            most_recent_location:
+            pod_terminal:
               data:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 type: terminal
-          pod_terminal:
-            data:
-              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: terminal
+            transport_events:
+              data:
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: transport_event
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: transport_event
           attributes:
             seal_number: seal_number
             final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
@@ -2871,14 +2970,14 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             empty_terminated_at: 2000-01-23T04:56:07.000+00:00
             equipment_type: dry
-            weight_in_lbs: weight_in_lbs
+            weight_in_lbs: 6.027456183070403
             number: number
             empty_returned_timezone: empty_returned_timezone
             equipment_height: standard
             fees_at_pod_terminal:
-            - amount: 6.027456183070403
+            - amount: 1.4658129805029452
               type: exam
-            - amount: 6.027456183070403
+            - amount: 1.4658129805029452
               type: exam
             equipment_length: 0
             pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
@@ -3036,22 +3135,16 @@ components:
               data:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 type: shipment
-            current_vessel:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: vessel
-            final_destination:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: port
-            most_recent_location:
+            pod_terminal:
               data:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 type: terminal
-          pod_terminal:
-            data:
-              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: terminal
+            transport_events:
+              data:
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: transport_event
+              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                type: transport_event
           attributes:
             seal_number: seal_number
             final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
@@ -3064,14 +3157,14 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             empty_terminated_at: 2000-01-23T04:56:07.000+00:00
             equipment_type: dry
-            weight_in_lbs: weight_in_lbs
+            weight_in_lbs: 6.027456183070403
             number: number
             empty_returned_timezone: empty_returned_timezone
             equipment_height: standard
             fees_at_pod_terminal:
-            - amount: 6.027456183070403
+            - amount: 1.4658129805029452
               type: exam
-            - amount: 6.027456183070403
+            - amount: 1.4658129805029452
               type: exam
             equipment_length: 0
             pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
@@ -3087,124 +3180,17 @@ components:
             available_for_pickup: true
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         included:
-        - relationships:
-            port_of_lading:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: port
-            destination:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: port
-            pod_terminal:
-              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: terminal
-            containers:
-              data:
-              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: container
-              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: container
-            port_of_discharge:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: port
-            customer:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: account
-          attributes:
-            port_of_discharge_locode: port_of_discharge_locode
-            pod_vessel_name: pod_vessel_name
-            shipping_line_scac: shipping_line_scac
-            destination_timezone: destination_timezone
-            pod_timezone: pod_timezone
-            pod_eta_at: 2000-01-23T04:56:07.000+00:00
-            pol_atd_at: 2000-01-23T04:56:07.000+00:00
-            port_of_lading_name: port_of_lading_name
-            pol_etd_at: 2000-01-23T04:56:07.000+00:00
-            created_at: 2000-01-23T04:56:07.000+00:00
-            pol_timezone: pol_timezone
-            destination_name: destination_name
-            destination_ata_at: 2000-01-23T04:56:07.000+00:00
-            tags:
-            - tags
-            - tags
-            port_of_discharge_name: port_of_discharge_name
-            port_of_lading_locode: port_of_lading_locode
-            bill_of_lading_number: bill_of_lading_number
-            pod_ata_at: 2000-01-23T04:56:07.000+00:00
-            ref_numbers:
-            - ref_numbers
-            - ref_numbers
-            destination_locode: destination_locode
-            pod_vessel_imo: pod_vessel_imo
-            pod_voyage_number: pod_voyage_number
-            destination_eta_at: 2000-01-23T04:56:07.000+00:00
-          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          type: shipment
-        - relationships:
-            port_of_lading:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: port
-            destination:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: port
-            pod_terminal:
-              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: terminal
-            containers:
-              data:
-              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: container
-              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: container
-            port_of_discharge:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: port
-            customer:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: account
-          attributes:
-            port_of_discharge_locode: port_of_discharge_locode
-            pod_vessel_name: pod_vessel_name
-            shipping_line_scac: shipping_line_scac
-            destination_timezone: destination_timezone
-            pod_timezone: pod_timezone
-            pod_eta_at: 2000-01-23T04:56:07.000+00:00
-            pol_atd_at: 2000-01-23T04:56:07.000+00:00
-            port_of_lading_name: port_of_lading_name
-            pol_etd_at: 2000-01-23T04:56:07.000+00:00
-            created_at: 2000-01-23T04:56:07.000+00:00
-            pol_timezone: pol_timezone
-            destination_name: destination_name
-            destination_ata_at: 2000-01-23T04:56:07.000+00:00
-            tags:
-            - tags
-            - tags
-            port_of_discharge_name: port_of_discharge_name
-            port_of_lading_locode: port_of_lading_locode
-            bill_of_lading_number: bill_of_lading_number
-            pod_ata_at: 2000-01-23T04:56:07.000+00:00
-            ref_numbers:
-            - ref_numbers
-            - ref_numbers
-            destination_locode: destination_locode
-            pod_vessel_imo: pod_vessel_imo
-            pod_voyage_number: pod_voyage_number
-            destination_eta_at: 2000-01-23T04:56:07.000+00:00
-          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          type: shipment
+        - ""
+        - ""
       properties:
         data:
           $ref: '#/components/schemas/container'
         included:
           items:
-            $ref: '#/components/schemas/shipment'
+            anyOf:
+            - $ref: '#/components/schemas/shipment'
+            - $ref: '#/components/schemas/terminal'
+            - $ref: '#/components/schemas/transport_event'
           type: array
     inline_response_200_10:
       example:
@@ -3594,14 +3580,14 @@ components:
         created_at: 2000-01-23T04:56:07.000+00:00
         empty_terminated_at: 2000-01-23T04:56:07.000+00:00
         equipment_type: dry
-        weight_in_lbs: weight_in_lbs
+        weight_in_lbs: 6.027456183070403
         number: number
         empty_returned_timezone: empty_returned_timezone
         equipment_height: standard
         fees_at_pod_terminal:
-        - amount: 6.027456183070403
+        - amount: 1.4658129805029452
           type: exam
-        - amount: 6.027456183070403
+        - amount: 1.4658129805029452
           type: exam
         equipment_length: 0
         pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
@@ -3640,7 +3626,7 @@ components:
           - high_cube
           type: string
         weight_in_lbs:
-          type: string
+          type: number
         created_at:
           format: date-time
           type: string
@@ -3718,50 +3704,31 @@ components:
           items:
             $ref: '#/components/schemas/terminal_fee'
           type: array
-    container_relationships_most_recent_location_data:
+    container_relationships_transport_events_data:
       example:
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        type: terminal
+        type: transport_event
       properties:
         id:
           format: uuid
           type: string
         type:
           enum:
-          - terminal
-          - port
-          - metroArea
+          - transport_event
           type: string
-    container_relationships_most_recent_location:
+    container_relationships_transport_events:
       description: The current, or most recent land location.
       example:
         data:
-          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          type: terminal
+        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: transport_event
+        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: transport_event
       properties:
         data:
-          $ref: '#/components/schemas/container_relationships_most_recent_location_data'
-    container_relationships_current_vessel_data:
-      example:
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        type: vessel
-      properties:
-        id:
-          format: uuid
-          type: string
-        type:
-          enum:
-          - vessel
-          type: string
-    container_relationships_current_vessel:
-      description: The vessel the container is currently laden on.
-      example:
-        data:
-          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          type: vessel
-      properties:
-        data:
-          $ref: '#/components/schemas/container_relationships_current_vessel_data'
+          items:
+            $ref: '#/components/schemas/container_relationships_transport_events_data'
+          type: array
     container_relationships_shipment_data:
       example:
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -3782,56 +3749,7 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/container_relationships_shipment_data'
-    container_relationships_final_destination_data:
-      example:
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        type: port
-      properties:
-        id:
-          format: uuid
-          type: string
-        type:
-          enum:
-          - port
-          - metro_area
-          type: string
-    container_relationships_final_destination:
-      description: '[PROPOSED]'
-      example:
-        data:
-          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          type: port
-      properties:
-        data:
-          $ref: '#/components/schemas/container_relationships_final_destination_data'
-    container_relationships:
-      example:
-        shipment:
-          data:
-            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            type: shipment
-        current_vessel:
-          data:
-            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            type: vessel
-        final_destination:
-          data:
-            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            type: port
-        most_recent_location:
-          data:
-            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            type: terminal
-      properties:
-        most_recent_location:
-          $ref: '#/components/schemas/container_relationships_most_recent_location'
-        current_vessel:
-          $ref: '#/components/schemas/container_relationships_current_vessel'
-        shipment:
-          $ref: '#/components/schemas/container_relationships_shipment'
-        final_destination:
-          $ref: '#/components/schemas/container_relationships_final_destination'
-    container_pod_terminal_data:
+    container_relationships_pod_terminal_data:
       example:
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         type: terminal
@@ -3843,14 +3761,37 @@ components:
           enum:
           - terminal
           type: string
-    container_pod_terminal:
+    container_relationships_pod_terminal:
       example:
         data:
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           type: terminal
       properties:
         data:
-          $ref: '#/components/schemas/container_pod_terminal_data'
+          $ref: '#/components/schemas/container_relationships_pod_terminal_data'
+    container_relationships:
+      example:
+        shipment:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: shipment
+        pod_terminal:
+          data:
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: terminal
+        transport_events:
+          data:
+          - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: transport_event
+          - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            type: transport_event
+      properties:
+        transport_events:
+          $ref: '#/components/schemas/container_relationships_transport_events'
+        shipment:
+          $ref: '#/components/schemas/container_relationships_shipment'
+        pod_terminal:
+          $ref: '#/components/schemas/container_relationships_pod_terminal'
     port_attributes:
       properties:
         name:
@@ -4088,6 +4029,19 @@ components:
         timezone:
           description: IANA tz
           type: string
+    transport_event_relationships_location_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: port
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - port
+          - metro_area
+          type: string
     transport_event_relationships_location:
       example:
         data:
@@ -4095,7 +4049,7 @@ components:
           type: port
       properties:
         data:
-          $ref: '#/components/schemas/container_relationships_final_destination_data'
+          $ref: '#/components/schemas/transport_event_relationships_location_data'
     transport_event_relationships_vessel_data:
       example:
         name: vessel
@@ -4226,6 +4180,18 @@ components:
           $ref: '#/components/schemas/estimated_event_relationships_shipment_data'
       required:
       - data
+    estimated_event_relationships_vessel_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: vessel
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - vessel
+          type: string
     estimated_event_relationships_vessel:
       example:
         data:
@@ -4233,7 +4199,7 @@ components:
           type: vessel
       properties:
         data:
-          $ref: '#/components/schemas/container_relationships_current_vessel_data'
+          $ref: '#/components/schemas/estimated_event_relationships_vessel_data'
     estimated_event_relationships:
       properties:
         shipment:

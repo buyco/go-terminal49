@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## GetShipmentId
 
-> InlineResponse2001 GetShipmentId(ctx, id)
+> InlineResponse2001 GetShipmentId(ctx, id, optional)
 
 Get a shipment
 
@@ -24,6 +24,17 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **id** | **string**| Shipment Id | 
+ **optional** | ***GetShipmentIdOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a GetShipmentIdOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **include** | **optional.String**| Comma delimited list of relations to include | 
 
 ### Return type
 
@@ -69,6 +80,7 @@ Name | Type | Description  | Notes
  **pageNumber** | **optional.Int32**|  | [default to 1]
  **pageSize** | **optional.Int32**|  | [default to 30]
  **q** | **optional.String**|  Search shipments by master bill of lading, reference number, or container number. | 
+ **include** | **optional.String**| Comma delimited list of relations to include | 
 
 ### Return type
 

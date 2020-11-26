@@ -31,6 +31,7 @@ type ContainersApiService service
 type GetContainersOpts struct {
     PageNumber optional.Int32
     PageSize optional.Int32
+    Include optional.String
 }
 
 /*
@@ -40,6 +41,7 @@ Returns a list of container. The containers are returned sorted by creation date
  * @param optional nil or *GetContainersOpts - Optional Parameters:
  * @param "PageNumber" (optional.Int32) - 
  * @param "PageSize" (optional.Int32) - 
+ * @param "Include" (optional.String) -  Comma delimited list of relations to include
 @return InlineResponse2008
 */
 func (a *ContainersApiService) GetContainers(ctx _context.Context, localVarOptionals *GetContainersOpts) (InlineResponse2008, *_nethttp.Response, error) {
@@ -63,6 +65,9 @@ func (a *ContainersApiService) GetContainers(ctx _context.Context, localVarOptio
 	}
 	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
 		localVarQueryParams.Add("page[size]", parameterToString(localVarOptionals.PageSize.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
+		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -129,14 +134,21 @@ func (a *ContainersApiService) GetContainers(ctx _context.Context, localVarOptio
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+// GetContainersIdOpts Optional parameters for the method 'GetContainersId'
+type GetContainersIdOpts struct {
+    Include optional.String
+}
+
 /*
 GetContainersId Get a container
 Retrieves the details of a container.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id
+ * @param optional nil or *GetContainersIdOpts - Optional Parameters:
+ * @param "Include" (optional.String) -  Comma delimited list of relations to include
 @return InlineResponse2009
 */
-func (a *ContainersApiService) GetContainersId(ctx _context.Context, id string) (InlineResponse2009, *_nethttp.Response, error) {
+func (a *ContainersApiService) GetContainersId(ctx _context.Context, id string, localVarOptionals *GetContainersIdOpts) (InlineResponse2009, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -154,6 +166,9 @@ func (a *ContainersApiService) GetContainersId(ctx _context.Context, id string) 
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
+		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -309,14 +324,21 @@ func (a *ContainersApiService) GetContainersIdRawEvents(ctx _context.Context, id
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+// GetContainersIdTransportEventsOpts Optional parameters for the method 'GetContainersIdTransportEvents'
+type GetContainersIdTransportEventsOpts struct {
+    Include optional.String
+}
+
 /*
 GetContainersIdTransportEvents Get a container's transport events
 The canonical transport events for the container.  These are a verified subset of the raw events may also be sent as push notifications. 
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id
+ * @param optional nil or *GetContainersIdTransportEventsOpts - Optional Parameters:
+ * @param "Include" (optional.String) -  Comma delimited list of relations to include
 @return InlineResponse20011
 */
-func (a *ContainersApiService) GetContainersIdTransportEvents(ctx _context.Context, id string) (InlineResponse20011, *_nethttp.Response, error) {
+func (a *ContainersApiService) GetContainersIdTransportEvents(ctx _context.Context, id string, localVarOptionals *GetContainersIdTransportEventsOpts) (InlineResponse20011, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -350,6 +372,9 @@ func (a *ContainersApiService) GetContainersIdTransportEvents(ctx _context.Conte
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
+		localVarHeaderParams["include"] = parameterToString(localVarOptionals.Include.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
