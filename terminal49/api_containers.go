@@ -374,7 +374,7 @@ func (a *ContainersApiService) GetContainersIdTransportEvents(ctx _context.Conte
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
-		localVarHeaderParams["include"] = parameterToString(localVarOptionals.Include.Value(), "")
+		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
 	}
 	if ctx != nil {
 		// API Key Authentication
