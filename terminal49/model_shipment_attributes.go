@@ -29,6 +29,7 @@ type ShipmentAttributes struct {
 	DestinationLocode string `json:"destination_locode,omitempty"`
 	DestinationName string `json:"destination_name,omitempty"`
 	ShippingLineScac string `json:"shipping_line_scac,omitempty"`
+	ShippingLineName string `json:"shipping_line_name,omitempty"`
 	PodVesselName string `json:"pod_vessel_name,omitempty"`
 	PodVesselImo string `json:"pod_vessel_imo,omitempty"`
 	PodVoyageNumber string `json:"pod_voyage_number,omitempty"`

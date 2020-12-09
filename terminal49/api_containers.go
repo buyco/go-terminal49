@@ -356,6 +356,9 @@ func (a *ContainersApiService) GetContainersIdTransportEvents(ctx _context.Conte
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
+		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -372,9 +375,6 @@ func (a *ContainersApiService) GetContainersIdTransportEvents(ctx _context.Conte
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if localVarOptionals != nil && localVarOptionals.Include.IsSet() {
-		localVarQueryParams.Add("include", parameterToString(localVarOptionals.Include.Value(), ""))
 	}
 	if ctx != nil {
 		// API Key Authentication

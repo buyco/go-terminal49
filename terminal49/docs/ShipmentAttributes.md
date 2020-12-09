@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **DestinationLocode** | **string** | UN/LOCODE | [optional] 
 **DestinationName** | **string** |  | [optional] 
 **ShippingLineScac** | **string** |  | [optional] 
+**ShippingLineName** | **string** |  | [optional] 
 **PodVesselName** | **string** |  | [optional] 
 **PodVesselImo** | **string** |  | [optional] 
 **PodVoyageNumber** | **string** |  | [optional] 

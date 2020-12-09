@@ -16,5 +16,4 @@ type TransportEventRelationships struct {
 	Vessel TransportEventRelationshipsVessel `json:"vessel,omitempty"`
 	Terminal TransportEventRelationshipsTerminal `json:"terminal,omitempty"`
 	Container TransportEventRelationshipsContainer `json:"container,omitempty"`
-	 string `json:",omitempty"`
 }

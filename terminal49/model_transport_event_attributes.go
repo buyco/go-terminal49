@@ -19,4 +19,6 @@ type TransportEventAttributes struct {
 	Timestamp time.Time `json:"timestamp,omitempty"`
 	// IANA tz
 	Timezone string `json:"timezone,omitempty"`
+	// UNLOCODE of the event location
+	LocationLocode string `json:"location_locode,omitempty"`
 }

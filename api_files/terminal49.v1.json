@@ -2632,6 +2632,40 @@
                       "items": {
                         "$ref": "#/components/schemas/transport_event"
                       }
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/shipment"
+                          },
+                          {
+                            "$ref": "#/components/schemas/container"
+                          },
+                          {
+                            "$ref": "#/components/schemas/port"
+                          },
+                          {
+                            "$ref": "#/components/schemas/metro_area"
+                          },
+                          {
+                            "$ref": "#/components/schemas/terminal"
+                          },
+                          {
+                            "$ref": "#/components/schemas/rail_terminal"
+                          },
+                          {
+                            "$ref": "#/components/schemas/vessel"
+                          }
+                        ]
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/links"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/meta"
                     }
                   }
                 }
@@ -2646,7 +2680,7 @@
             "schema": {
               "type": "string"
             },
-            "in": "header",
+            "in": "query",
             "name": "include",
             "description": "Comma delimited list of relations to include"
           }
@@ -2864,6 +2898,9 @@
                 "type": "string"
               },
               "shipping_line_scac": {
+                "type": "string"
+              },
+              "shipping_line_name": {
                 "type": "string"
               },
               "pod_vessel_name": {
@@ -3756,6 +3793,10 @@
               "timezone": {
                 "type": "string",
                 "description": "IANA tz"
+              },
+              "location_locode": {
+                "type": "string",
+                "description": "UNLOCODE of the event location"
               }
             }
           },
@@ -3863,9 +3904,6 @@
                     }
                   }
                 }
-              },
-              "": {
-                "type": "string"
               }
             }
           }

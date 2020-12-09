@@ -1597,13 +1597,13 @@ paths:
           type: string
         style: simple
       - description: Comma delimited list of relations to include
-        explode: false
-        in: header
+        explode: true
+        in: query
         name: include
         required: false
         schema:
           type: string
-        style: simple
+        style: form
       responses:
         "200":
           content:
@@ -1671,6 +1671,7 @@ components:
           port_of_lading_name: port_of_lading_name
           pol_etd_at: 2000-01-23T04:56:07.000+00:00
           created_at: 2000-01-23T04:56:07.000+00:00
+          shipping_line_name: shipping_line_name
           pol_timezone: pol_timezone
           destination_name: destination_name
           destination_ata_at: 2000-01-23T04:56:07.000+00:00
@@ -2015,8 +2016,6 @@ components:
             data:
               id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
               type: container
-          ? ""
-          : ""
           shipment:
             data:
               id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -2034,6 +2033,7 @@ components:
               id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
               type: terminal
         attributes:
+          location_locode: location_locode
           timezone: timezone
           voyage_number: voyage_number
           event: container.transport.vessel_loaded
@@ -2259,6 +2259,7 @@ components:
             port_of_lading_name: port_of_lading_name
             pol_etd_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
+            shipping_line_name: shipping_line_name
             pol_timezone: pol_timezone
             destination_name: destination_name
             destination_ata_at: 2000-01-23T04:56:07.000+00:00
@@ -2315,6 +2316,7 @@ components:
             port_of_lading_name: port_of_lading_name
             pol_etd_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
+            shipping_line_name: shipping_line_name
             pol_timezone: pol_timezone
             destination_name: destination_name
             destination_ata_at: 2000-01-23T04:56:07.000+00:00
@@ -2408,6 +2410,7 @@ components:
             port_of_lading_name: port_of_lading_name
             pol_etd_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
+            shipping_line_name: shipping_line_name
             pol_timezone: pol_timezone
             destination_name: destination_name
             destination_ata_at: 2000-01-23T04:56:07.000+00:00
@@ -3039,6 +3042,7 @@ components:
             port_of_lading_name: port_of_lading_name
             pol_etd_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
+            shipping_line_name: shipping_line_name
             pol_timezone: pol_timezone
             destination_name: destination_name
             destination_ata_at: 2000-01-23T04:56:07.000+00:00
@@ -3095,6 +3099,7 @@ components:
             port_of_lading_name: port_of_lading_name
             pol_etd_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
+            shipping_line_name: shipping_line_name
             pol_timezone: pol_timezone
             destination_name: destination_name
             destination_ata_at: 2000-01-23T04:56:07.000+00:00
@@ -3260,8 +3265,6 @@ components:
               data:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 type: container
-            ? ""
-            : ""
             shipment:
               data:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -3279,6 +3282,7 @@ components:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 type: terminal
           attributes:
+            location_locode: location_locode
             timezone: timezone
             voyage_number: voyage_number
             event: container.transport.vessel_loaded
@@ -3290,8 +3294,6 @@ components:
               data:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 type: container
-            ? ""
-            : ""
             shipment:
               data:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -3309,17 +3311,45 @@ components:
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 type: terminal
           attributes:
+            location_locode: location_locode
             timezone: timezone
             voyage_number: voyage_number
             event: container.transport.vessel_loaded
             timestamp: 2000-01-23T04:56:07.000+00:00
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           type: transport_event
+        meta:
+          total: 6
+          size: 0
+        links:
+          next: https://openapi-generator.tech
+          last: https://openapi-generator.tech
+          prev: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+          first: https://openapi-generator.tech
+        included:
+        - ""
+        - ""
       properties:
         data:
           items:
             $ref: '#/components/schemas/transport_event'
           type: array
+        included:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/shipment'
+            - $ref: '#/components/schemas/container'
+            - $ref: '#/components/schemas/port'
+            - $ref: '#/components/schemas/metro_area'
+            - $ref: '#/components/schemas/terminal'
+            - $ref: '#/components/schemas/rail_terminal'
+            - $ref: '#/components/schemas/vessel'
+          type: array
+        links:
+          $ref: '#/components/schemas/links'
+        meta:
+          $ref: '#/components/schemas/meta'
     shipment_relationships_destination_data:
       example:
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -3479,6 +3509,7 @@ components:
         port_of_lading_name: port_of_lading_name
         pol_etd_at: 2000-01-23T04:56:07.000+00:00
         created_at: 2000-01-23T04:56:07.000+00:00
+        shipping_line_name: shipping_line_name
         pol_timezone: pol_timezone
         destination_name: destination_name
         destination_ata_at: 2000-01-23T04:56:07.000+00:00
@@ -3527,6 +3558,8 @@ components:
         destination_name:
           type: string
         shipping_line_scac:
+          type: string
+        shipping_line_name:
           type: string
         pod_vessel_name:
           type: string
@@ -4007,6 +4040,7 @@ components:
           type: string
     transport_event_attributes:
       example:
+        location_locode: location_locode
         timezone: timezone
         voyage_number: voyage_number
         event: container.transport.vessel_loaded
@@ -4028,6 +4062,9 @@ components:
           type: string
         timezone:
           description: IANA tz
+          type: string
+        location_locode:
+          description: UNLOCODE of the event location
           type: string
     transport_event_relationships_location_data:
       example:
@@ -4117,8 +4154,6 @@ components:
           data:
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             type: container
-        ? ""
-        : ""
         shipment:
           data:
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -4146,8 +4181,6 @@ components:
           $ref: '#/components/schemas/transport_event_relationships_terminal'
         container:
           $ref: '#/components/schemas/transport_event_relationships_container'
-        ? ""
-        : type: string
     estimated_event_attributes:
       properties:
         event:

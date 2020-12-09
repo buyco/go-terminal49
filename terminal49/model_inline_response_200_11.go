@@ -13,4 +13,6 @@ package terminal49
 type InlineResponse20011 struct {
 	Data []TransportEvent `json:"data,omitempty"`
 	Included []interface{} `json:"included,omitempty"`
+	Links Links `json:"links,omitempty"`
+	Meta Meta `json:"meta,omitempty"`
 }
