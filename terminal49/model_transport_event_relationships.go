@@ -11,7 +11,7 @@
 package terminal49
 // TransportEventRelationships struct for TransportEventRelationships
 type TransportEventRelationships struct {
-	Shipment ContainerRelationshipsShipment `json:"shipment,omitempty"`
+	Shipment TrackingRequestRelationshipsTrackedObject `json:"shipment,omitempty"`
 	Location TransportEventRelationshipsLocation `json:"location,omitempty"`
 	Vessel TransportEventRelationshipsVessel `json:"vessel,omitempty"`
 	Terminal TransportEventRelationshipsTerminal `json:"terminal,omitempty"`

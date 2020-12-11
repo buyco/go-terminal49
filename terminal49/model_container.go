@@ -13,5 +13,4 @@ package terminal49
 type Container struct {
 	Id string `json:"id"`
 	Attributes ContainerAttributes `json:"attributes,omitempty"`
-	Relationships ContainerRelationships `json:"relationships,omitempty"`
 }

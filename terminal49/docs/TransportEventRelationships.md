@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Shipment** | [**ContainerRelationshipsShipment**](container_relationships_shipment.md) |  | [optional] 
+**Shipment** | [**TrackingRequestRelationshipsTrackedObject**](tracking_request_relationships_tracked_object.md) |  | [optional] 
 **Location** | [**TransportEventRelationshipsLocation**](transport_event_relationships_location.md) |  | [optional] 
 **Vessel** | [**TransportEventRelationshipsVessel**](transport_event_relationships_vessel.md) |  | [optional] 
 **Terminal** | [**TransportEventRelationshipsTerminal**](transport_event_relationships_terminal.md) |  | [optional] 

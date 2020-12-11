@@ -1748,36 +1748,18 @@ components:
     container:
       description: Represents the equipment during a specific journey.
       example:
-        relationships:
-          shipment:
-            data:
-              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: shipment
-          pod_terminal:
-            data:
-              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: terminal
-          transport_events:
-            data:
-            - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: transport_event
-            - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              type: transport_event
         attributes:
           seal_number: seal_number
           final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
-          destination_timezone: destination_timezone
-          pod_timezone: pod_timezone
           pickup_lfd: 2000-01-23T04:56:07.000+00:00
           availability_known: true
           pod_full_out_at: 2000-01-23T04:56:07.000+00:00
-          destination_unloaded_at: 2000-01-23T04:56:07.000+00:00
           created_at: 2000-01-23T04:56:07.000+00:00
+          pod_arrived_at: 2000-01-23T04:56:07.000+00:00
           empty_terminated_at: 2000-01-23T04:56:07.000+00:00
           equipment_type: dry
           weight_in_lbs: 6.027456183070403
           number: number
-          empty_returned_timezone: empty_returned_timezone
           equipment_height: standard
           fees_at_pod_terminal:
           - amount: 1.4658129805029452
@@ -1786,7 +1768,6 @@ components:
             type: exam
           equipment_length: 0
           pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
-          current_transportation_mode: vessel
           holds_at_pod_terminal:
           - name: customs
             description: description
@@ -1803,8 +1784,6 @@ components:
           type: string
         attributes:
           $ref: '#/components/schemas/container_attributes'
-        relationships:
-          $ref: '#/components/schemas/container_relationships'
       required:
       - id
       title: Container model
@@ -2897,36 +2876,18 @@ components:
     inline_response_200_8:
       example:
         data:
-        - relationships:
-            shipment:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: shipment
-            pod_terminal:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: terminal
-            transport_events:
-              data:
-              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: transport_event
-              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: transport_event
-          attributes:
+        - attributes:
             seal_number: seal_number
             final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
-            destination_timezone: destination_timezone
-            pod_timezone: pod_timezone
             pickup_lfd: 2000-01-23T04:56:07.000+00:00
             availability_known: true
             pod_full_out_at: 2000-01-23T04:56:07.000+00:00
-            destination_unloaded_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
+            pod_arrived_at: 2000-01-23T04:56:07.000+00:00
             empty_terminated_at: 2000-01-23T04:56:07.000+00:00
             equipment_type: dry
             weight_in_lbs: 6.027456183070403
             number: number
-            empty_returned_timezone: empty_returned_timezone
             equipment_height: standard
             fees_at_pod_terminal:
             - amount: 1.4658129805029452
@@ -2935,7 +2896,6 @@ components:
               type: exam
             equipment_length: 0
             pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
-            current_transportation_mode: vessel
             holds_at_pod_terminal:
             - name: customs
               description: description
@@ -2946,36 +2906,18 @@ components:
             pod_discharged_at: 2000-01-23T04:56:07.000+00:00
             available_for_pickup: true
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        - relationships:
-            shipment:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: shipment
-            pod_terminal:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: terminal
-            transport_events:
-              data:
-              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: transport_event
-              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: transport_event
-          attributes:
+        - attributes:
             seal_number: seal_number
             final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
-            destination_timezone: destination_timezone
-            pod_timezone: pod_timezone
             pickup_lfd: 2000-01-23T04:56:07.000+00:00
             availability_known: true
             pod_full_out_at: 2000-01-23T04:56:07.000+00:00
-            destination_unloaded_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
+            pod_arrived_at: 2000-01-23T04:56:07.000+00:00
             empty_terminated_at: 2000-01-23T04:56:07.000+00:00
             equipment_type: dry
             weight_in_lbs: 6.027456183070403
             number: number
-            empty_returned_timezone: empty_returned_timezone
             equipment_height: standard
             fees_at_pod_terminal:
             - amount: 1.4658129805029452
@@ -2984,7 +2926,6 @@ components:
               type: exam
             equipment_length: 0
             pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
-            current_transportation_mode: vessel
             holds_at_pod_terminal:
             - name: customs
               description: description
@@ -3135,36 +3076,18 @@ components:
     inline_response_200_9:
       example:
         data:
-          relationships:
-            shipment:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: shipment
-            pod_terminal:
-              data:
-                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: terminal
-            transport_events:
-              data:
-              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: transport_event
-              - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                type: transport_event
           attributes:
             seal_number: seal_number
             final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
-            destination_timezone: destination_timezone
-            pod_timezone: pod_timezone
             pickup_lfd: 2000-01-23T04:56:07.000+00:00
             availability_known: true
             pod_full_out_at: 2000-01-23T04:56:07.000+00:00
-            destination_unloaded_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
+            pod_arrived_at: 2000-01-23T04:56:07.000+00:00
             empty_terminated_at: 2000-01-23T04:56:07.000+00:00
             equipment_type: dry
             weight_in_lbs: 6.027456183070403
             number: number
-            empty_returned_timezone: empty_returned_timezone
             equipment_height: standard
             fees_at_pod_terminal:
             - amount: 1.4658129805029452
@@ -3173,7 +3096,6 @@ components:
               type: exam
             equipment_length: 0
             pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
-            current_transportation_mode: vessel
             holds_at_pod_terminal:
             - name: customs
               description: description
@@ -3573,9 +3495,11 @@ components:
           type: string
         pol_atd_at:
           format: date-time
+          nullable: true
           type: string
         pod_eta_at:
           format: date-time
+          nullable: true
           type: string
         pod_ata_at:
           format: date-time
@@ -3604,18 +3528,15 @@ components:
       example:
         seal_number: seal_number
         final_destination_full_out_at: 2000-01-23T04:56:07.000+00:00
-        destination_timezone: destination_timezone
-        pod_timezone: pod_timezone
         pickup_lfd: 2000-01-23T04:56:07.000+00:00
         availability_known: true
         pod_full_out_at: 2000-01-23T04:56:07.000+00:00
-        destination_unloaded_at: 2000-01-23T04:56:07.000+00:00
         created_at: 2000-01-23T04:56:07.000+00:00
+        pod_arrived_at: 2000-01-23T04:56:07.000+00:00
         empty_terminated_at: 2000-01-23T04:56:07.000+00:00
         equipment_type: dry
         weight_in_lbs: 6.027456183070403
         number: number
-        empty_returned_timezone: empty_returned_timezone
         equipment_height: standard
         fees_at_pod_terminal:
         - amount: 1.4658129805029452
@@ -3624,7 +3545,6 @@ components:
           type: exam
         equipment_length: 0
         pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
-        current_transportation_mode: vessel
         holds_at_pod_terminal:
         - name: customs
           description: description
@@ -3645,6 +3565,7 @@ components:
           - flat rack
           - bulk
           - tank
+          nullable: true
           type: string
         equipment_length:
           enum:
@@ -3652,13 +3573,16 @@ components:
           - 20
           - 40
           - 45
+          nullable: true
           type: integer
         equipment_height:
           enum:
           - standard
           - high_cube
+          nullable: true
           type: string
         weight_in_lbs:
+          nullable: true
           type: number
         created_at:
           format: date-time
@@ -3675,6 +3599,7 @@ components:
           description: When available the pickup appointment time at the terminal
             is returned.
           format: date-time
+          nullable: true
           type: string
         availability_known:
           description: Whether Terminal 49 is receiving availability status from the
@@ -3685,16 +3610,13 @@ components:
             to be picked up at terminal.
           nullable: true
           type: boolean
-        current_transportation_mode:
-          description: '`unreleased`'
-          enum:
-          - vessel
-          - rail
-          - truck
-          - grounded
+        pod_arrived_at:
+          description: Time the vessel arrived at the POD
+          format: date-time
+          nullable: true
           type: string
         pod_discharged_at:
-          description: '`unreleased` Discharge time at the port of discharge'
+          description: Discharge time at the port of discharge
           format: date-time
           nullable: true
           type: string
@@ -3703,30 +3625,14 @@ components:
           format: date-time
           nullable: true
           type: string
-        destination_unloaded_at:
-          description: '`unreleased` Arrival or unloading time at final destination
-            for inland moves.'
-          format: date-time
-          nullable: true
-          type: string
         final_destination_full_out_at:
-          description: '`unreleased` Pickup time at final destination for inland moves.'
+          description: Pickup time at final destination for inland moves.
           format: date-time
           nullable: true
           type: string
         empty_terminated_at:
-          description: '`unreleased` Time empty container was returned.'
+          description: Time empty container was returned.
           format: date-time
-          nullable: true
-          type: string
-        pod_timezone:
-          description: '`unreleased` IANA tz'
-          type: string
-        destination_timezone:
-          description: '`unreleaed` IANA tz'
-          type: string
-        empty_returned_timezone:
-          description: '`unreleased` IANA tz'
           nullable: true
           type: string
         holds_at_pod_terminal:
@@ -3737,94 +3643,6 @@ components:
           items:
             $ref: '#/components/schemas/terminal_fee'
           type: array
-    container_relationships_transport_events_data:
-      example:
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        type: transport_event
-      properties:
-        id:
-          format: uuid
-          type: string
-        type:
-          enum:
-          - transport_event
-          type: string
-    container_relationships_transport_events:
-      description: The current, or most recent land location.
-      example:
-        data:
-        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          type: transport_event
-        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          type: transport_event
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/container_relationships_transport_events_data'
-          type: array
-    container_relationships_shipment_data:
-      example:
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        type: shipment
-      properties:
-        id:
-          format: uuid
-          type: string
-        type:
-          enum:
-          - shipment
-          type: string
-    container_relationships_shipment:
-      example:
-        data:
-          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          type: shipment
-      properties:
-        data:
-          $ref: '#/components/schemas/container_relationships_shipment_data'
-    container_relationships_pod_terminal_data:
-      example:
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        type: terminal
-      properties:
-        id:
-          format: uuid
-          type: string
-        type:
-          enum:
-          - terminal
-          type: string
-    container_relationships_pod_terminal:
-      example:
-        data:
-          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          type: terminal
-      properties:
-        data:
-          $ref: '#/components/schemas/container_relationships_pod_terminal_data'
-    container_relationships:
-      example:
-        shipment:
-          data:
-            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            type: shipment
-        pod_terminal:
-          data:
-            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            type: terminal
-        transport_events:
-          data:
-          - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            type: transport_event
-          - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            type: transport_event
-      properties:
-        transport_events:
-          $ref: '#/components/schemas/container_relationships_transport_events'
-        shipment:
-          $ref: '#/components/schemas/container_relationships_shipment'
-        pod_terminal:
-          $ref: '#/components/schemas/container_relationships_pod_terminal'
     port_attributes:
       properties:
         name:
@@ -3990,6 +3808,26 @@ components:
       - request_type
       - scac
       - status
+    tracking_request_relationships_tracked_object_data:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: shipment
+      properties:
+        id:
+          format: uuid
+          type: string
+        type:
+          enum:
+          - shipment
+          type: string
+    tracking_request_relationships_tracked_object:
+      example:
+        data:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: shipment
+      properties:
+        data:
+          $ref: '#/components/schemas/tracking_request_relationships_tracked_object_data'
     tracking_request_relationships:
       example:
         tracked_object:
@@ -3998,7 +3836,7 @@ components:
             type: shipment
       properties:
         tracked_object:
-          $ref: '#/components/schemas/container_relationships_shipment'
+          $ref: '#/components/schemas/tracking_request_relationships_tracked_object'
     webhook_attributes:
       example:
         active: true
@@ -4172,7 +4010,7 @@ components:
             type: terminal
       properties:
         shipment:
-          $ref: '#/components/schemas/container_relationships_shipment'
+          $ref: '#/components/schemas/tracking_request_relationships_tracked_object'
         location:
           $ref: '#/components/schemas/transport_event_relationships_location'
         vessel:

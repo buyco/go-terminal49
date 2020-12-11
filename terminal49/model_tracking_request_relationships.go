@@ -11,5 +11,5 @@
 package terminal49
 // TrackingRequestRelationships struct for TrackingRequestRelationships
 type TrackingRequestRelationships struct {
-	TrackedObject ContainerRelationshipsShipment `json:"tracked_object,omitempty"`
+	TrackedObject TrackingRequestRelationshipsTrackedObject `json:"tracked_object,omitempty"`
 }
