@@ -21,4 +21,5 @@ type TransportEventAttributes struct {
 	Timezone string `json:"timezone,omitempty"`
 	// UNLOCODE of the event location
 	LocationLocode string `json:"location_locode,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 }
