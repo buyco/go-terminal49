@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **CreatedAt** | [**time.Time**](time.Time.md) |  | [optional] 
 **SealNumber** | Pointer to **string** |  | [optional] 
 **PickupLfd** | Pointer to [**time.Time**](time.Time.md) | The last free day for pickup before deummurage accrues. | [optional] 
-**PickupApopintmentAt** | Pointer to [**time.Time**](time.Time.md) | When available the pickup appointment time at the terminal is returned. | [optional] 
+**PickupAppointmentAt** | Pointer to [**time.Time**](time.Time.md) | When available the pickup appointment time at the terminal is returned. | [optional] 
 **AvailabilityKnown** | **bool** | Whether Terminal 49 is receiving availability status from the terminal. | [optional] 
 **AvailableForPickup** | Pointer to **bool** | If availability_known is true, then whether container is available to be picked up at terminal. | [optional] 
 **PodArrivedAt** | Pointer to [**time.Time**](time.Time.md) | Time the vessel arrived at the POD | [optional] 

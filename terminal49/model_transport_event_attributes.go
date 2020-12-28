@@ -16,7 +16,7 @@ import (
 type TransportEventAttributes struct {
 	Event string `json:"event,omitempty"`
 	VoyageNumber string `json:"voyage_number,omitempty"`
-	Timestamp time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time `json:"timestamp,omitempty"`
 	// IANA tz
 	Timezone string `json:"timezone,omitempty"`
 	// UNLOCODE of the event location

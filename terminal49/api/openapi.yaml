@@ -1757,6 +1757,7 @@ components:
           created_at: 2000-01-23T04:56:07.000+00:00
           pod_arrived_at: 2000-01-23T04:56:07.000+00:00
           empty_terminated_at: 2000-01-23T04:56:07.000+00:00
+          pickup_appointment_at: 2000-01-23T04:56:07.000+00:00
           equipment_type: dry
           weight_in_lbs: 6.027456183070403
           number: number
@@ -1767,7 +1768,6 @@ components:
           - amount: 1.4658129805029452
             type: exam
           equipment_length: 0
-          pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
           holds_at_pod_terminal:
           - name: customs
             description: description
@@ -2885,6 +2885,7 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             pod_arrived_at: 2000-01-23T04:56:07.000+00:00
             empty_terminated_at: 2000-01-23T04:56:07.000+00:00
+            pickup_appointment_at: 2000-01-23T04:56:07.000+00:00
             equipment_type: dry
             weight_in_lbs: 6.027456183070403
             number: number
@@ -2895,7 +2896,6 @@ components:
             - amount: 1.4658129805029452
               type: exam
             equipment_length: 0
-            pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
             holds_at_pod_terminal:
             - name: customs
               description: description
@@ -2915,6 +2915,7 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             pod_arrived_at: 2000-01-23T04:56:07.000+00:00
             empty_terminated_at: 2000-01-23T04:56:07.000+00:00
+            pickup_appointment_at: 2000-01-23T04:56:07.000+00:00
             equipment_type: dry
             weight_in_lbs: 6.027456183070403
             number: number
@@ -2925,7 +2926,6 @@ components:
             - amount: 1.4658129805029452
               type: exam
             equipment_length: 0
-            pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
             holds_at_pod_terminal:
             - name: customs
               description: description
@@ -3085,6 +3085,7 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             pod_arrived_at: 2000-01-23T04:56:07.000+00:00
             empty_terminated_at: 2000-01-23T04:56:07.000+00:00
+            pickup_appointment_at: 2000-01-23T04:56:07.000+00:00
             equipment_type: dry
             weight_in_lbs: 6.027456183070403
             number: number
@@ -3095,7 +3096,6 @@ components:
             - amount: 1.4658129805029452
               type: exam
             equipment_length: 0
-            pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
             holds_at_pod_terminal:
             - name: customs
               description: description
@@ -3534,6 +3534,7 @@ components:
         created_at: 2000-01-23T04:56:07.000+00:00
         pod_arrived_at: 2000-01-23T04:56:07.000+00:00
         empty_terminated_at: 2000-01-23T04:56:07.000+00:00
+        pickup_appointment_at: 2000-01-23T04:56:07.000+00:00
         equipment_type: dry
         weight_in_lbs: 6.027456183070403
         number: number
@@ -3544,7 +3545,6 @@ components:
         - amount: 1.4658129805029452
           type: exam
         equipment_length: 0
-        pickup_apopintment_at: 2000-01-23T04:56:07.000+00:00
         holds_at_pod_terminal:
         - name: customs
           description: description
@@ -3595,7 +3595,7 @@ components:
           format: date-time
           nullable: true
           type: string
-        pickup_apopintment_at:
+        pickup_appointment_at:
           description: When available the pickup appointment time at the terminal
             is returned.
           format: date-time
