@@ -107,7 +107,7 @@ Name | Type | Description  | Notes
 
 Get a container's raw events
 
-Returns the carrier raw_events for a container
+Get a list of past and futuer (estimated) milestones for a container as reported by the carrier. Some of the data is normalized even though the API is called raw_events.   Normalized attributes: `event`, `estimated_at`, `actual_at` timestamps. Not all of the `event` values have been normalized. You can expect the the events related to container movements to be normalized but there are cases (paperwork \"milestones\" like customs release) where events are not normalized. 
 
 ### Required Parameters
 
@@ -141,7 +141,7 @@ Name | Type | Description  | Notes
 
 Get a container's transport events
 
-The canonical transport events for the container.  These are a verified subset of the raw events may also be sent as push notifications. 
+Get a list of past transport events (canonical) for a container. All data has been normalized across all carriers. These are a verified subset of the raw events may also be sent as Webhook Notifications to a webhook endpoint.  This does not provide any estiamted future events. See `container/:id/raw_events` endpoint for that.  
 
 ### Required Parameters
 

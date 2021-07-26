@@ -25,9 +25,13 @@ Name | Type | Description | Notes
 **PodAtaAt** | Pointer to [**time.Time**](time.Time.md) |  | [optional] 
 **DestinationEtaAt** | Pointer to [**time.Time**](time.Time.md) |  | [optional] 
 **DestinationAtaAt** | Pointer to [**time.Time**](time.Time.md) |  | [optional] 
-**PolTimezone** | **string** | IANA tz | [optional] 
-**PodTimezone** | **string** | IANA tz | [optional] 
-**DestinationTimezone** | **string** | IANA tz | [optional] 
+**PolTimezone** | Pointer to **string** | IANA tz | [optional] 
+**PodTimezone** | Pointer to **string** | IANA tz | [optional] 
+**DestinationTimezone** | Pointer to **string** | IANA tz | [optional] 
+**LineTrackingLastAttemptedAt** | Pointer to [**time.Time**](time.Time.md) | When Terminal49 last tried to update the shipment status from the shipping line | [optional] 
+**LineTrackingLastSucceededAt** | Pointer to [**time.Time**](time.Time.md) | When Terminal49 last successfully updated the shipment status from the shipping line | [optional] 
+**LineTrackingStoppedAt** | Pointer to [**time.Time**](time.Time.md) | When Terminal49 stopped checking at the shipping line | [optional] 
+**LineTrackingStoppedReason** | Pointer to **string** | The reason Terminal49 stopped checking | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
