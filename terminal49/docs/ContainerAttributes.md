@@ -18,6 +18,7 @@ Name | Type | Description | Notes
 **PodArrivedAt** | Pointer to [**time.Time**](time.Time.md) | Time the vessel arrived at the POD | [optional] 
 **PodDischargedAt** | Pointer to [**time.Time**](time.Time.md) | Discharge time at the port of discharge | [optional] 
 **PodFullOutAt** | Pointer to [**time.Time**](time.Time.md) | Full Out time at port of discharge. Null for inland moves. | [optional] 
+**PodFullOutChassisNumber** | Pointer to **string** | The chassis number used when container was picked up at POD (if available) | [optional] 
 **FinalDestinationFullOutAt** | Pointer to [**time.Time**](time.Time.md) | Pickup time at final destination for inland moves. | [optional] 
 **EmptyTerminatedAt** | Pointer to [**time.Time**](time.Time.md) | Time empty container was returned. | [optional] 
 **HoldsAtPodTerminal** | [**[]TerminalHold**](terminal_hold.md) |  | [optional] 

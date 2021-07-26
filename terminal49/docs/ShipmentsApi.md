@@ -81,6 +81,7 @@ Name | Type | Description  | Notes
  **pageSize** | **optional.Int32**|  | [default to 30]
  **q** | **optional.String**|  Search shipments by master bill of lading, reference number, or container number. | 
  **include** | **optional.String**| Comma delimited list of relations to include | 
+ **number** | **optional.String**| Search shipments by the original request tracking &#x60;request_number&#x60; | 
 
 ### Return type
 
