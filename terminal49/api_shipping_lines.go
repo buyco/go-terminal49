@@ -16,7 +16,6 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -74,8 +73,8 @@ func (a *ShippingLinesApiService) GetShippingLines(ctx _context.Context, localVa
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Body.IsSet() {
-		localVarPostBody = localVarOptionals.Body.Value()
+	if localVarOptionals != nil && localVarOptionals.Body != nil {
+		localVarPostBody = localVarOptionals.Body
 	}
 
 	if ctx != nil {
