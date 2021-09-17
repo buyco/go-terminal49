@@ -29,7 +29,7 @@ type ShippingLinesApiService service
 
 // GetShippingLinesOpts Optional parameters for the method 'GetShippingLines'
 type GetShippingLinesOpts struct {
-    Body optional.Map[string]interface{}
+    Body map[string]interface{}
 }
 
 /*
