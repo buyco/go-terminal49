@@ -116,6 +116,7 @@ Class | Method | HTTP request | Description
  - [ShipmentRelationshipsCustomerData](docs/ShipmentRelationshipsCustomerData.md)
  - [ShipmentRelationshipsDestination](docs/ShipmentRelationshipsDestination.md)
  - [ShipmentRelationshipsDestinationData](docs/ShipmentRelationshipsDestinationData.md)
+ - [ShipmentRelationshipsDestinationTerminal](docs/ShipmentRelationshipsDestinationTerminal.md)
  - [ShipmentRelationshipsPodTerminal](docs/ShipmentRelationshipsPodTerminal.md)
  - [ShipmentRelationshipsPortOfLading](docs/ShipmentRelationshipsPortOfLading.md)
  - [ShipmentRelationshipsPortOfLadingData](docs/ShipmentRelationshipsPortOfLadingData.md)

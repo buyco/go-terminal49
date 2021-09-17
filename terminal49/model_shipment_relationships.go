@@ -17,4 +17,5 @@ type ShipmentRelationships struct {
 	PortOfDischarge ShipmentRelationshipsPortOfLading `json:"port_of_discharge,omitempty"`
 	Customer ShipmentRelationshipsCustomer `json:"customer,omitempty"`
 	PodTerminal ShipmentRelationshipsPodTerminal `json:"pod_terminal,omitempty"`
+	DestinationTerminal ShipmentRelationshipsDestinationTerminal `json:"destination_terminal,omitempty"`
 }

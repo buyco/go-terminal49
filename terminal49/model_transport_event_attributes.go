@@ -15,11 +15,11 @@ import (
 // TransportEventAttributes struct for TransportEventAttributes
 type TransportEventAttributes struct {
 	Event string `json:"event,omitempty"`
-	VoyageNumber string `json:"voyage_number,omitempty"`
+	VoyageNumber *string `json:"voyage_number,omitempty"`
 	Timestamp *time.Time `json:"timestamp,omitempty"`
 	// IANA tz
-	Timezone string `json:"timezone,omitempty"`
+	Timezone *string `json:"timezone,omitempty"`
 	// UNLOCODE of the event location
-	LocationLocode string `json:"location_locode,omitempty"`
+	LocationLocode *string `json:"location_locode,omitempty"`
 	CreatedAt time.Time `json:"created_at,omitempty"`
 }

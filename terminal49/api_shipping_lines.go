@@ -16,6 +16,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,7 +29,7 @@ type ShippingLinesApiService service
 
 // GetShippingLinesOpts Optional parameters for the method 'GetShippingLines'
 type GetShippingLinesOpts struct {
-    Body map[string]interface{}
+    Body optional.Map[string]interface{}
 }
 
 /*
@@ -73,8 +74,8 @@ func (a *ShippingLinesApiService) GetShippingLines(ctx _context.Context, localVa
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Body != nil {
-		localVarPostBody = localVarOptionals.Body
+	if localVarOptionals != nil && localVarOptionals.Body.IsSet() {
+		localVarPostBody = localVarOptionals.Body.Value()
 	}
 
 	if ctx != nil {
