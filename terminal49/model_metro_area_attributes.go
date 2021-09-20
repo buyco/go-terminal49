@@ -17,5 +17,5 @@ type MetroAreaAttributes struct {
 	// IANA tz
 	Timezone string `json:"timezone,omitempty"`
 	// UN/LOCODE
-	Locode string `json:"locode,omitempty"`
+	Code string `json:"code,omitempty"`
 }
